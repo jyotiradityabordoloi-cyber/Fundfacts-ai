@@ -1,0 +1,114 @@
+{
+  "built_at": "2026-11-08T22:00:33+00:00",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "sources": {
+    "registry": 22,
+    "by_status": {
+      "active": 18,
+      "manual": 2,
+      "blocked": 1,
+      "historical": 1
+    },
+    "fetched": [
+      "hdfc_large_cap_sid",
+      "hdfc_flexi_cap_sid",
+      "hdfc_elss_sid",
+      "hdfc_mid_cap_sid",
+      "hdfc_small_cap_sid",
+      "hdfc_common_equity_kim",
+      "hdfc_factsheet_sep_2026",
+      "hdfc_small_cap_ssd",
+      "sebi_mf_faq",
+      "sebi_elss",
+      "sebi_investor_charter",
+      "amfi_intro_mf",
+      "amfi_types",
+      "amfi_expense_ratio",
+      "amfi_nav",
+      "amfi_categorization",
+      "amfi_risk",
+      "amfi_booklet"
+    ],
+    "not_fetched": {
+      "hdfc_request_statement": "manual file missing: save the page as data/manual/hdfc_request_statement.html",
+      "hdfc_cas": "manual file missing: save the page as data/manual/hdfc_cas.html",
+      "hdfc_scheme_pages_www": "skipped (blocked)",
+      "sebi_categorisation_2017": "skipped (historical)"
+    }
+  },
+  "facts": {
+    "found": 43,
+    "total": 50,
+    "coverage": {
+      "hdfc_large_cap": {
+        "expense_ratio": "found",
+        "exit_load": "found",
+        "min_sip": "missing",
+        "min_lumpsum": "found",
+        "lock_in": "found",
+        "riskometer": "missing",
+        "benchmark": "found",
+        "fund_manager": "found",
+        "category": "found",
+        "objective": "found"
+      },
+      "hdfc_flexi_cap": {
+        "expense_ratio": "found",
+        "exit_load": "found",
+        "min_sip": "missing",
+        "min_lumpsum": "found",
+        "lock_in": "found",
+        "riskometer": "found",
+        "benchmark": "found",
+        "fund_manager": "found",
+        "category": "found",
+        "objective": "found"
+      },
+      "hdfc_elss": {
+        "expense_ratio": "found",
+        "exit_load": "found",
+        "min_sip": "missing",
+        "min_lumpsum": "found",
+        "lock_in": "found",
+        "riskometer": "missing",
+        "benchmark": "found",
+        "fund_manager": "found",
+        "category": "found",
+        "objective": "found"
+      },
+      "hdfc_mid_cap": {
+        "expense_ratio": "found",
+        "exit_load": "found",
+        "min_sip": "missing",
+        "min_lumpsum": "found",
+        "lock_in": "found",
+        "riskometer": "missing",
+        "benchmark": "found",
+        "fund_manager": "found",
+        "category": "found",
+        "objective": "found"
+      },
+      "hdfc_small_cap": {
+        "expense_ratio": "found",
+        "exit_load": "found",
+        "min_sip": "found",
+        "min_lumpsum": "found",
+        "lock_in": "found",
+        "riskometer": "found",
+        "benchmark": "found",
+        "fund_manager": "found",
+        "category": "found",
+        "objective": "found"
+      }
+    }
+  },
+  "counts": {
+    "chunks": 2029,
+    "chroma": 2029,
+    "missing_ids": [],
+    "vector_spot_check": 26,
+    "vector_max_abs_diff": 1.4901161193847656e-08,
+    "export": 2029,
+    "export_bytes": 6204375
+  }
+}
