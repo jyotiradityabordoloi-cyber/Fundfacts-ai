@@ -19,6 +19,7 @@ class DocType(str, Enum):
     KIM = "KIM"
     SID = "SID"
     FACTSHEET = "factsheet"
+    SSD = "SSD"                # AMFI/AMC Scheme Summary Document
     FAQ = "FAQ"
     ARTICLE = "article"
     CIRCULAR = "circular"

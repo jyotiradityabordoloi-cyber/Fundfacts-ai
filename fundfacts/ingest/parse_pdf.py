@@ -123,7 +123,7 @@ def scheme_mentions(text: str, patterns: dict[str, re.Pattern]) -> list[str]:
 DOC_NAME_PATTERNS = {
     "hdfc_large_cap": re.compile(r"HDFC\s+Large\s+Cap\s+Fund|HDFC\s+Top\s+100", re.I),
     "hdfc_flexi_cap": re.compile(r"HDFC\s+Flexi\s+Cap\s+Fund|HDFC\s+Equity\s+Fund", re.I),
-    "hdfc_elss": re.compile(r"HDFC\s+ELSS\s*-?\s*Tax\s*saver|HDFC\s+TaxSaver", re.I),
+    "hdfc_elss": re.compile(r"HDFC\s+ELSS\s*-?\s*T\s?ax\s*saver|HDFC\s+TaxSaver", re.I),  # PDFs sometimes print "T ax"
     "hdfc_mid_cap": re.compile(r"HDFC\s+Mid[\s-]*Cap\s+(Opportunities\s+)?Fund", re.I),
     "hdfc_small_cap": re.compile(r"HDFC\s+Small\s+Cap\s+Fund", re.I),
 }

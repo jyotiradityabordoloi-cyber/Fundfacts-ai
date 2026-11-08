@@ -112,6 +112,22 @@
     "sections_removed": 48
   },
   {
+    "source_id": "hdfc_small_cap_ssd",
+    "pages": 2,
+    "chars": 8644,
+    "doc_date": null,
+    "empty": false,
+    "pdf_pages": 2,
+    "kept": 2,
+    "dropped": {
+      "no_scheme": 0,
+      "performance_page": 0,
+      "other_scheme": 0,
+      "empty": 0
+    },
+    "sections_removed": 0
+  },
+  {
     "source_id": "sebi_mf_faq",
     "pages": 17,
     "chars": 44895,

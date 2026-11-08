@@ -4,7 +4,7 @@ FundFacts AI is a facts-only mutual fund FAQ assistant for five HDFC Mutual Fund
 
 > **Facts-only. No investment advice.** This is an independent student project inspired by the Groww product experience. It is not affiliated with Groww or HDFC Mutual Fund.
 
-**Status:** Phases 1-3 of 10 are complete: skeleton and config, scraping (`python -m fundfacts.ingest.fetch` → `data/raw/`), and loading (`python -m fundfacts.ingest.load` → `data/docs/`, with performance/returns sections removed). See [docs/implementation.md](docs/implementation.md).
+**Status:** Phases 1-4 of 10 are complete: config, scraping (`python -m fundfacts.ingest.fetch`), loading (`python -m fundfacts.ingest.load`, performance sections removed) and fact extraction (`python -m fundfacts.ingest.extract_facts` → `data/facts/facts.json`, 43/50 facts found with page + quote).
 
 ## Docs
 - [Problem statement](docs/ProblemStatement.txt)
@@ -53,7 +53,7 @@ python -m pytest -q
 ```
 
 ## Sources
-The source list is [`sources.yaml`](sources.yaml): 19 ingested sources (9 HDFC Mutual Fund, 3 SEBI, 7 AMFI).
+The source list is [`sources.yaml`](sources.yaml): 20 ingested sources (9 HDFC Mutual Fund, 3 SEBI, 8 AMFI).
 - **HDFC scheme documents** come from HDFC's document server `files.hdfcfund.com`: five SIDs, the Common Equity KIM and the monthly factsheet.
 - **The `www.hdfcfund.com` website** blocks automated requests. Its two investor-service pages (statement requests, CAS) are saved by hand into `data/manual/`:
   - `data/manual/hdfc_request_statement.html` ← https://www.hdfcfund.com/services/additional-info/request-statement

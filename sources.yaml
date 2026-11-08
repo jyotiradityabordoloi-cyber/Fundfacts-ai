@@ -64,6 +64,14 @@ sources:
       Current expense ratio (as on 30 Sep 2026), benchmark, exit load, fund managers, minimum amounts
       (pp. 104-106) and riskometers (pp. 124-139). Performance/returns tables are NOT ingested.
 
+  - source_id: hdfc_small_cap_ssd
+    url: https://portal.amfiindia.com/spages/SSD_8547.pdf
+    publisher: AMFI
+    doc_type: SSD
+    title: Scheme Summary Document - HDFC Small Cap Fund (AMFI)
+    scheme_id: hdfc_small_cap
+    notes: Structured scheme summary (riskometer as on date, minimum SIP by frequency, benchmark, fund managers).
+
   # ---------------------------------------------------------------- AMC: investor services (manual)
   - source_id: hdfc_request_statement
     url: https://www.hdfcfund.com/services/additional-info/request-statement

@@ -1,0 +1,502 @@
+[
+ {
+  "scheme_id": "hdfc_large_cap",
+  "field": "expense_ratio",
+  "status": "found",
+  "value": "Direct Plan 1.00%; Regular Plan 1.55% (base expense ratio incl. statutory levies, excl. brokerage and transaction costs)",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 11,
+  "quote": "Regular: 1.55% Direct: 1.00%"
+ },
+ {
+  "scheme_id": "hdfc_large_cap",
+  "field": "exit_load",
+  "status": "found",
+  "value": "In respect of each purchase / switch-in of Units, an Exit Load of 1.00% is payable if Units are redeemed/ switched-out within 1 year from the date of allotment. - No Exit Load is payable if Units are redeemed / switched-out after 1 year from the date of allotment.",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_large_cap_sid",
+  "page": 5,
+  "quote": "Load Structure Exit Load: - In respect of each purchase / switch -in of Units, an Exit Load of 1.00% is payable if Units are redeemed/ switched-out within 1 year from the date of allotment. - No Exit Load is payable if Units are redeemed / switched -out after 1 year from the date of allotment."
+ },
+ {
+  "scheme_id": "hdfc_large_cap",
+  "field": "min_sip",
+  "status": "missing",
+  "value": null,
+  "as_of": null,
+  "source_id": null,
+  "page": null,
+  "quote": null
+ },
+ {
+  "scheme_id": "hdfc_large_cap",
+  "field": "min_lumpsum",
+  "status": "found",
+  "value": "Rs.100/- and any amount thereafter",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_large_cap_sid",
+  "page": 5,
+  "quote": "XII. Minimum Application Amount/ Switch In Rs.100/- and any amount thereafter"
+ },
+ {
+  "scheme_id": "hdfc_large_cap",
+  "field": "lock_in",
+  "status": "found",
+  "value": "No lock-in period; units can be redeemed or switched out on any business day at NAV-based prices",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_large_cap_sid",
+  "page": 4,
+  "quote": "Units of the scheme can be redeemed/switched out on any Business day at NAV based prices"
+ },
+ {
+  "scheme_id": "hdfc_large_cap",
+  "field": "riskometer",
+  "status": "missing",
+  "value": null,
+  "as_of": null,
+  "source_id": null,
+  "page": null,
+  "quote": null
+ },
+ {
+  "scheme_id": "hdfc_large_cap",
+  "field": "benchmark",
+  "status": "found",
+  "value": "NIFTY 100 Total Returns Index (TRI)",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_large_cap_sid",
+  "page": 4,
+  "quote": "The benchmark of the scheme is NIFTY 100 Total Returns Index (TRI)."
+ },
+ {
+  "scheme_id": "hdfc_large_cap",
+  "field": "fund_manager",
+  "status": "found",
+  "value": "Bhagyesh Kagalkar (Commodities related investments), Rahul Baijal",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 107,
+  "quote": "Bhagyesh Kagalkar (Commodities related investments): HDFC Large Cap Fund | Rahul Baijal: HDFC Large Cap Fund"
+ },
+ {
+  "scheme_id": "hdfc_large_cap",
+  "field": "category",
+  "status": "found",
+  "value": "Large Cap Fund",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 11,
+  "quote": "CATEGORY OF SCHEME LARGE CAP FUND"
+ },
+ {
+  "scheme_id": "hdfc_large_cap",
+  "field": "objective",
+  "status": "found",
+  "value": "To provide long-term capital appreciation/income by investing predominantly in Large-Cap companies.",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_large_cap_sid",
+  "page": 4,
+  "quote": "Investment Objective To provide long -term capital appreciation/income by investing predominantly in Large-Cap companies."
+ },
+ {
+  "scheme_id": "hdfc_flexi_cap",
+  "field": "expense_ratio",
+  "status": "found",
+  "value": "Direct Plan 0.67%; Regular Plan 1.27% (base expense ratio incl. statutory levies, excl. brokerage and transaction costs)",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 7,
+  "quote": "Regular: 1.27% Direct: 0.67%"
+ },
+ {
+  "scheme_id": "hdfc_flexi_cap",
+  "field": "exit_load",
+  "status": "found",
+  "value": "In respect of each purchase / switch-in of Units, an Exit Load of 1.00% is payable if Units are redeemed/ switched-out within 1 year from the date of allotment. - No Exit Load is payable if Units are redeemed / switched-out after 1 year from the date of allotment.",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_flexi_cap_sid",
+  "page": 5,
+  "quote": "Load Structure Exit Load: - In respect of each purchase / switch-in of Units, an Exit Load of 1.00% is payable if Units are redeemed/ switched -out within 1 year from the date of allotment. - No Exit Load is payable if Units are redeemed / switched -out after 1 year from the date of allotment."
+ },
+ {
+  "scheme_id": "hdfc_flexi_cap",
+  "field": "min_sip",
+  "status": "missing",
+  "value": null,
+  "as_of": null,
+  "source_id": null,
+  "page": null,
+  "quote": null
+ },
+ {
+  "scheme_id": "hdfc_flexi_cap",
+  "field": "min_lumpsum",
+  "status": "found",
+  "value": "Rs.100/- and any amount thereafter",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_flexi_cap_sid",
+  "page": 5,
+  "quote": "XII. Minimum Application Amount/ Switch In Rs.100/- and any amount thereafter"
+ },
+ {
+  "scheme_id": "hdfc_flexi_cap",
+  "field": "lock_in",
+  "status": "found",
+  "value": "No lock-in period; units can be redeemed or switched out on any business day at NAV-based prices",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_flexi_cap_sid",
+  "page": 4,
+  "quote": "Units of the scheme can be redeemed/switched out on any Business day at NAV based prices"
+ },
+ {
+  "scheme_id": "hdfc_flexi_cap",
+  "field": "riskometer",
+  "status": "found",
+  "value": "Very High Risk",
+  "as_of": "2025-11-28",
+  "source_id": "hdfc_common_equity_kim",
+  "page": 4,
+  "quote": "HDFC Flexi Cap Fund ... NIFTY 500 Index (TRI) ... The risk of the Scheme is Very High"
+ },
+ {
+  "scheme_id": "hdfc_flexi_cap",
+  "field": "benchmark",
+  "status": "found",
+  "value": "NIFTY 500 Index (TRI)",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_flexi_cap_sid",
+  "page": 4,
+  "quote": "The benchmark of the scheme is NIFTY 500 Index (TRI)."
+ },
+ {
+  "scheme_id": "hdfc_flexi_cap",
+  "field": "fund_manager",
+  "status": "found",
+  "value": "Bhagyesh Kagalkar (Commodities related investments), Amit Ganatra",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 107,
+  "quote": "Bhagyesh Kagalkar (Commodities related investments): HDFC Flexi Cap Fund | Amit Ganatra: HDFC Flexi Cap Fund"
+ },
+ {
+  "scheme_id": "hdfc_flexi_cap",
+  "field": "category",
+  "status": "found",
+  "value": "Flexi Cap Fund",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 7,
+  "quote": "CATEGORY OF SCHEME FLEXI CAP FUND"
+ },
+ {
+  "scheme_id": "hdfc_flexi_cap",
+  "field": "objective",
+  "status": "found",
+  "value": "To generate capital appreciation / income from a portfolio, predominantly invested in equity & equity related instruments.",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_flexi_cap_sid",
+  "page": 4,
+  "quote": "Investment Objective To generate capital appreciation / income from a portfolio, predominantly invested in equity & equity related instruments."
+ },
+ {
+  "scheme_id": "hdfc_elss",
+  "field": "expense_ratio",
+  "status": "found",
+  "value": "Direct Plan 1.13%; Regular Plan 1.70% (base expense ratio incl. statutory levies, excl. brokerage and transaction costs)",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 62,
+  "quote": "Regular: 1.70% Direct: 1.13%"
+ },
+ {
+  "scheme_id": "hdfc_elss",
+  "field": "exit_load",
+  "status": "found",
+  "value": "Nil",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_elss_sid",
+  "page": 5,
+  "quote": "Load Structure Exit Load: Nil"
+ },
+ {
+  "scheme_id": "hdfc_elss",
+  "field": "min_sip",
+  "status": "missing",
+  "value": null,
+  "as_of": null,
+  "source_id": null,
+  "page": null,
+  "quote": null
+ },
+ {
+  "scheme_id": "hdfc_elss",
+  "field": "min_lumpsum",
+  "status": "found",
+  "value": "Rs. 500/- and in multiples of Rs. 500 thereafter.",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_elss_sid",
+  "page": 5,
+  "quote": "XII. Minimum Application Amount/ Switch In Rs. 500/ - and in multiples of Rs. 500 thereafter."
+ },
+ {
+  "scheme_id": "hdfc_elss",
+  "field": "lock_in",
+  "status": "found",
+  "value": "3 years from the date of allotment of the respective Units",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 62,
+  "quote": "LOCK-IN PERIOD 3 years from the date of allotment of the respective Units"
+ },
+ {
+  "scheme_id": "hdfc_elss",
+  "field": "riskometer",
+  "status": "missing",
+  "value": null,
+  "as_of": null,
+  "source_id": null,
+  "page": null,
+  "quote": null
+ },
+ {
+  "scheme_id": "hdfc_elss",
+  "field": "benchmark",
+  "status": "found",
+  "value": "NIFTY 500 Index (TRI)",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_elss_sid",
+  "page": 4,
+  "quote": "The benchmark of the scheme is NIFTY 500 Index (TRI)."
+ },
+ {
+  "scheme_id": "hdfc_elss",
+  "field": "fund_manager",
+  "status": "found",
+  "value": "Amar Kalkundrikar",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 108,
+  "quote": "Amar Kalkundrikar: HDFC ELSS - T ax Saver"
+ },
+ {
+  "scheme_id": "hdfc_elss",
+  "field": "category",
+  "status": "found",
+  "value": "ELSS - Tax Saver Fund",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 62,
+  "quote": "CATEGORY OF SCHEME ELSS - TAX SAVER FUND"
+ },
+ {
+  "scheme_id": "hdfc_elss",
+  "field": "objective",
+  "status": "found",
+  "value": "To generate capital appreciation / income from a portfolio, comprising predominantly of equity & equity related instruments.",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_elss_sid",
+  "page": 4,
+  "quote": "Investment Objective To generate capital appreciation / income from a portfolio, comprising predominantly of equity & equity related instruments."
+ },
+ {
+  "scheme_id": "hdfc_mid_cap",
+  "field": "expense_ratio",
+  "status": "found",
+  "value": "Direct Plan 0.71%; Regular Plan 1.26% (base expense ratio incl. statutory levies, excl. brokerage and transaction costs)",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 13,
+  "quote": "Regular: 1.26% Direct: 0.71%"
+ },
+ {
+  "scheme_id": "hdfc_mid_cap",
+  "field": "exit_load",
+  "status": "found",
+  "value": "In respect of each purchase / switch-in of Units, an Exit Load of 1.00% is payable if Units are redeemed/ switched-out within 1 year from the date of allotment. No Exit Load is payable if Units are redeemed / switched-out after 1 year from the date of allotment.",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_mid_cap_sid",
+  "page": 5,
+  "quote": "Load Structure Exit Load: • In respect of each purchase / switch-in of Units, an Exit Load of 1.00% is payable if Units are redeemed/ switched -out within 1 year from the date of allotment. • No Exit Load is payable if Units are redeemed / switched-out after 1 year from the date of allotment."
+ },
+ {
+  "scheme_id": "hdfc_mid_cap",
+  "field": "min_sip",
+  "status": "missing",
+  "value": null,
+  "as_of": null,
+  "source_id": null,
+  "page": null,
+  "quote": null
+ },
+ {
+  "scheme_id": "hdfc_mid_cap",
+  "field": "min_lumpsum",
+  "status": "found",
+  "value": "Rs.100/- and any amount thereafter",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_mid_cap_sid",
+  "page": 5,
+  "quote": "XII. Minimum Application Amount/ Switch In Rs.100/- and any amount thereafter"
+ },
+ {
+  "scheme_id": "hdfc_mid_cap",
+  "field": "lock_in",
+  "status": "found",
+  "value": "No lock-in period; units can be redeemed or switched out on any business day at NAV-based prices",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_mid_cap_sid",
+  "page": 4,
+  "quote": "Units of the scheme can be redeemed/switched out on any Business day at NAV based prices"
+ },
+ {
+  "scheme_id": "hdfc_mid_cap",
+  "field": "riskometer",
+  "status": "missing",
+  "value": null,
+  "as_of": null,
+  "source_id": null,
+  "page": null,
+  "quote": null
+ },
+ {
+  "scheme_id": "hdfc_mid_cap",
+  "field": "benchmark",
+  "status": "found",
+  "value": "NIFTY MIDCAP 150 (TRI)",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_mid_cap_sid",
+  "page": 4,
+  "quote": "The benchmark of the scheme is NIFTY MIDCAP 150 (TRI)."
+ },
+ {
+  "scheme_id": "hdfc_mid_cap",
+  "field": "fund_manager",
+  "status": "found",
+  "value": "Chirag Setalvad, Bhagyesh Kagalkar (Commodities related investments)",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 107,
+  "quote": "Chirag Setalvad: HDFC Mid Cap Fund | Bhagyesh Kagalkar (Commodities related investments): HDFC Mid Cap Fund"
+ },
+ {
+  "scheme_id": "hdfc_mid_cap",
+  "field": "category",
+  "status": "found",
+  "value": "Mid Cap Fund",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 13,
+  "quote": "CATEGORY OF SCHEME MID CAP FUND"
+ },
+ {
+  "scheme_id": "hdfc_mid_cap",
+  "field": "objective",
+  "status": "found",
+  "value": "To provide long-term capital appreciation/income by investing predominantly in Mid-Cap companies.",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_mid_cap_sid",
+  "page": 4,
+  "quote": "Investment Objective To provide long -term capital appreciation/income by investing predominantly in Mid-Cap companies."
+ },
+ {
+  "scheme_id": "hdfc_small_cap",
+  "field": "expense_ratio",
+  "status": "found",
+  "value": "Direct Plan 0.76%; Regular Plan 1.52% (base expense ratio incl. statutory levies, excl. brokerage and transaction costs)",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 15,
+  "quote": "Regular: 1.52% Direct: 0.76%"
+ },
+ {
+  "scheme_id": "hdfc_small_cap",
+  "field": "exit_load",
+  "status": "found",
+  "value": "In respect of each purchase / switch-in of Units, an Exit Load of 1.00% is payable if Units are redeemed/ switched-out within 1 year from the date of allotment. '- No Exit Load is payable if Units are redeemed / switched-out after 1 year from the date of allotment.",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_small_cap_sid",
+  "page": 5,
+  "quote": "Load Structure Exit Load: - In respect of each purchase / switch-in of Units, an Exit Load of 1.00% is payable if Units are redeemed/ switched -out within 1 year from the date of allotment. '- No Exit Load is payable if Units are redeemed / switched -out after 1 year from the date of allotment."
+ },
+ {
+  "scheme_id": "hdfc_small_cap",
+  "field": "min_sip",
+  "status": "found",
+  "value": "SIP minimum per instalment: DSIP, WSIP, MSIP - Rs. 100; QSIP - Rs. 1500; HSIP - Rs. 2500; YSIP - Rs. 5000",
+  "as_of": null,
+  "source_id": "hdfc_small_cap_ssd",
+  "page": 1,
+  "quote": "Minimum amount For SIP DSIP, WSIP, MSIP - Rs. 100; QSIP - Rs. 1500; HSIP - Rs. 2500; YSIP - Rs. 5000"
+ },
+ {
+  "scheme_id": "hdfc_small_cap",
+  "field": "min_lumpsum",
+  "status": "found",
+  "value": "Rs.100/- and any amount thereafter",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_small_cap_sid",
+  "page": 5,
+  "quote": "XII. Minimum Application Amount/ Switch In Rs.100/- and any amount thereafter"
+ },
+ {
+  "scheme_id": "hdfc_small_cap",
+  "field": "lock_in",
+  "status": "found",
+  "value": "No lock-in period; units can be redeemed or switched out on any business day at NAV-based prices",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_small_cap_sid",
+  "page": 4,
+  "quote": "Units of the scheme can be redeemed/switched out on any Business day at NAV based prices"
+ },
+ {
+  "scheme_id": "hdfc_small_cap",
+  "field": "riskometer",
+  "status": "found",
+  "value": "Very High Risk",
+  "as_of": null,
+  "source_id": "hdfc_small_cap_ssd",
+  "page": 1,
+  "quote": "Riskometer (as on Date) Very High Risk"
+ },
+ {
+  "scheme_id": "hdfc_small_cap",
+  "field": "benchmark",
+  "status": "found",
+  "value": "BSE 250 SmallCap Index (TRI)",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_small_cap_sid",
+  "page": 4,
+  "quote": "The benchmark of the scheme is BSE 250 SmallCap Index (TRI)."
+ },
+ {
+  "scheme_id": "hdfc_small_cap",
+  "field": "fund_manager",
+  "status": "found",
+  "value": "Chirag Setalvad, Bhagyesh Kagalkar (Commodities related investments)",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 107,
+  "quote": "Chirag Setalvad: HDFC Small Cap Fund | Bhagyesh Kagalkar (Commodities related investments): HDFC Small Cap Fund"
+ },
+ {
+  "scheme_id": "hdfc_small_cap",
+  "field": "category",
+  "status": "found",
+  "value": "Small Cap Fund",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 15,
+  "quote": "CATEGORY OF SCHEME SMALL CAP FUND"
+ },
+ {
+  "scheme_id": "hdfc_small_cap",
+  "field": "objective",
+  "status": "found",
+  "value": "To provide long-term capital appreciation /income by investing predominantly in Small-Cap companies.",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_small_cap_sid",
+  "page": 4,
+  "quote": "Investment Objective To provide long -term capital appreciation /income by investing predominantly in Small-Cap companies."
+ }
+]
