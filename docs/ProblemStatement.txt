@@ -1,0 +1,46 @@
+PROBLEM STATEMENT - FundFacts AI (facts-only mutual fund FAQ assistant)
+Independent student project, inspired by the Groww product experience.
+Not affiliated with Groww or HDFC Mutual Fund.
+
+Build a small FAQ assistant that answers factual questions about five HDFC Mutual Fund
+schemes - expense ratio, exit load, minimum SIP, ELSS lock-in, riskometer, benchmark,
+and how to download statements - using only official public pages from the AMC, SEBI
+and AMFI. Every answer must include one verified source link. No advice.
+
+Who it helps
+  Retail users comparing schemes; support/content teams answering repetitive MF questions.
+
+Scope
+  AMC: HDFC Mutual Fund
+  Schemes (Direct plan, Growth option):
+    1. HDFC Large Cap Fund
+    2. HDFC Flexi Cap Fund
+    3. HDFC ELSS Tax Saver Fund
+    4. HDFC Mid Cap Fund
+    5. HDFC Small Cap Fund
+  Sources: 15-25 official public URLs from HDFC Mutual Fund, SEBI or AMFI only.
+  Only registered URLs are fetched - no link following. Where hdfcfund.com blocks
+  automated access, the owner downloads the document manually; the original URL
+  remains the citation.
+
+Core requirements
+  1. Answer factual mutual fund questions only.
+  2. Every answer contains one verified source URL.
+  3. Answers are at most three sentences.
+  4. Refuse investment recommendations.
+  5. Do not invent missing facts or citations.
+  6. Reject and never store PII (PAN, Aadhaar, account numbers, OTPs, emails, phones).
+  7. Display "Last updated from sources: <date>".
+  8. Do not calculate or compare investment returns.
+  UI: welcome line, 3 example questions, note "Facts-only. No investment advice."
+
+Technical approach
+  - Phase-wise RAG with every stage stored on disk:
+    scrape -> load -> extract facts -> chunk -> embed -> vector DB.
+  - Embeddings: sentence-transformers/all-MiniLM-L6-v2 (same model for ingestion and query).
+  - Vector DB: ChromaDB. Configurable via config.yaml.
+  - LLM: Claude (Anthropic), model read from .env.
+  - Hosting: Vercel (static UI + FastAPI function). Code and docs on GitHub.
+
+Deliverables
+  Working prototype link, source list (CSV/MD), README, sample Q&A file, disclaimer snippet.
