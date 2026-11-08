@@ -1,0 +1,210 @@
+[
+  {
+    "source_id": "hdfc_large_cap_sid",
+    "pages": 74,
+    "chars": 197120,
+    "doc_date": "2025-11-21",
+    "empty": false,
+    "pdf_pages": 74,
+    "kept": 74,
+    "dropped": {
+      "no_scheme": 0,
+      "performance_page": 0,
+      "other_scheme": 0,
+      "empty": 0
+    },
+    "sections_removed": 4
+  },
+  {
+    "source_id": "hdfc_flexi_cap_sid",
+    "pages": 74,
+    "chars": 198703,
+    "doc_date": "2025-11-21",
+    "empty": false,
+    "pdf_pages": 74,
+    "kept": 74,
+    "dropped": {
+      "no_scheme": 0,
+      "performance_page": 0,
+      "other_scheme": 0,
+      "empty": 0
+    },
+    "sections_removed": 4
+  },
+  {
+    "source_id": "hdfc_elss_sid",
+    "pages": 72,
+    "chars": 195055,
+    "doc_date": "2025-11-21",
+    "empty": false,
+    "pdf_pages": 72,
+    "kept": 72,
+    "dropped": {
+      "no_scheme": 0,
+      "performance_page": 0,
+      "other_scheme": 0,
+      "empty": 0
+    },
+    "sections_removed": 4
+  },
+  {
+    "source_id": "hdfc_mid_cap_sid",
+    "pages": 73,
+    "chars": 196572,
+    "doc_date": "2025-11-21",
+    "empty": false,
+    "pdf_pages": 73,
+    "kept": 73,
+    "dropped": {
+      "no_scheme": 0,
+      "performance_page": 0,
+      "other_scheme": 0,
+      "empty": 0
+    },
+    "sections_removed": 4
+  },
+  {
+    "source_id": "hdfc_small_cap_sid",
+    "pages": 73,
+    "chars": 195912,
+    "doc_date": "2025-11-21",
+    "empty": false,
+    "pdf_pages": 73,
+    "kept": 73,
+    "dropped": {
+      "no_scheme": 0,
+      "performance_page": 0,
+      "other_scheme": 0,
+      "empty": 0
+    },
+    "sections_removed": 5
+  },
+  {
+    "source_id": "hdfc_common_equity_kim",
+    "pages": 25,
+    "chars": 155252,
+    "doc_date": "2025-11-28",
+    "empty": false,
+    "pdf_pages": 204,
+    "kept": 25,
+    "dropped": {
+      "no_scheme": 174,
+      "performance_page": 0,
+      "other_scheme": 5,
+      "empty": 0
+    },
+    "sections_removed": 15
+  },
+  {
+    "source_id": "hdfc_factsheet_sep_2026",
+    "pages": 18,
+    "chars": 39705,
+    "doc_date": "2026-09-30",
+    "empty": false,
+    "pdf_pages": 140,
+    "kept": 18,
+    "dropped": {
+      "no_scheme": 105,
+      "performance_page": 15,
+      "other_scheme": 2,
+      "empty": 0
+    },
+    "sections_removed": 48
+  },
+  {
+    "source_id": "sebi_mf_faq",
+    "pages": 17,
+    "chars": 44895,
+    "doc_date": "2024-08-31",
+    "empty": false,
+    "pdf_pages": 17,
+    "kept": 17,
+    "dropped": {
+      "no_scheme": 0,
+      "performance_page": 0,
+      "other_scheme": 0,
+      "empty": 0
+    },
+    "sections_removed": 0
+  },
+  {
+    "source_id": "sebi_elss",
+    "pages": 1,
+    "chars": 2735,
+    "doc_date": null,
+    "empty": false,
+    "html_chars": 2735
+  },
+  {
+    "source_id": "sebi_investor_charter",
+    "pages": 1,
+    "chars": 38233,
+    "doc_date": null,
+    "empty": false,
+    "html_chars": 38233
+  },
+  {
+    "source_id": "amfi_intro_mf",
+    "pages": 1,
+    "chars": 2840,
+    "doc_date": null,
+    "empty": false,
+    "html_chars": 2840
+  },
+  {
+    "source_id": "amfi_types",
+    "pages": 1,
+    "chars": 5841,
+    "doc_date": null,
+    "empty": false,
+    "html_chars": 5841
+  },
+  {
+    "source_id": "amfi_expense_ratio",
+    "pages": 1,
+    "chars": 1819,
+    "doc_date": null,
+    "empty": false,
+    "html_chars": 1819
+  },
+  {
+    "source_id": "amfi_nav",
+    "pages": 1,
+    "chars": 3498,
+    "doc_date": null,
+    "empty": false,
+    "html_chars": 3498
+  },
+  {
+    "source_id": "amfi_categorization",
+    "pages": 1,
+    "chars": 14425,
+    "doc_date": null,
+    "empty": false,
+    "html_chars": 14425
+  },
+  {
+    "source_id": "amfi_risk",
+    "pages": 1,
+    "chars": 7449,
+    "doc_date": null,
+    "empty": false,
+    "html_chars": 7449
+  },
+  {
+    "source_id": "amfi_booklet",
+    "pages": 30,
+    "chars": 30975,
+    "doc_date": null,
+    "empty": false,
+    "pdf_pages": 30,
+    "kept": 30,
+    "dropped": {
+      "no_scheme": 0,
+      "performance_page": 0,
+      "other_scheme": 0,
+      "empty": 0
+    },
+    "sections_removed": 0
+  }
+]

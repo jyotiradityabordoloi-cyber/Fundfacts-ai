@@ -58,6 +58,8 @@ class RawFetch(BaseModel):
 class Page(BaseModel):
     n: int = Field(ge=1)
     text: str
+    scheme_ids: list[str] = []      # in-scope schemes named on this page
+    removed: list[str] = []         # sections cut out (e.g. performance tables), for transparency
 
 
 class Document(BaseModel):
