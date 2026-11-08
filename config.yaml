@@ -1,0 +1,51 @@
+# FundFacts AI configuration. Environment variables override these values
+# (see fundfacts/config.py for the mapping). Secrets live only in .env.
+
+paths:
+  sources: sources.yaml
+  raw: data/raw
+  manual: data/manual
+  docs: data/docs
+  facts: data/facts
+  chunks: data/chunks
+  embeddings: data/embeddings
+  chroma: vector_store/chroma
+  index_export: vector_store/index.json
+  build_report: data/build_report.json
+
+scrape:
+  timeout_s: 30
+  delay_s: 0.5
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+
+chunking:
+  size: 700        # characters (prose and PDF pages)
+  overlap: 120
+  max_chars: 1600  # hard upper bound checked in Phase 5
+
+embedding:
+  model: sentence-transformers/all-MiniLM-L6-v2
+  backend: auto    # auto | sentence-transformers | onnx  (Vercel uses onnx)
+  dim: 384
+
+vector_db:
+  backend: auto    # auto | chroma | json  (Vercel uses the json export)
+  collection: fundfacts
+
+retrieval:
+  top_k: 4
+  min_similarity: 0.25
+  scheme_boost: 0.08
+  phrase_bonus: 0.06
+  phrase_bonus_cap: 0.12
+
+llm:
+  model: claude-haiku-5-5
+  temperature: 0.1
+  max_tokens: 400
+  timeout_s: 30
+
+answer:
+  max_sentences: 3
+  max_question_chars: 500
+  timezone_offset_minutes: 330   # IST, for "Last updated from sources"

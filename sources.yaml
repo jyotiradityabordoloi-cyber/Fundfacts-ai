@@ -1,0 +1,166 @@
+# FundFacts AI - source registry (the allowlist).
+# Only these URLs are ever fetched; links inside them are never followed.
+# Publishers are restricted to the AMC (HDFC Mutual Fund), SEBI and AMFI.
+#
+# status:
+#   active     - fetched automatically by the pipeline
+#   manual     - www.hdfcfund.com blocks automated requests (HTTP 403); the owner saves the
+#                page/file into data/manual/<source_id>.<ext>. The URL below stays the citation.
+#   blocked    - not fetchable and not ingested (kept for transparency)
+#   historical - superseded; excluded from the corpus
+
+sources:
+  # ---------------------------------------------------------------- AMC: scheme documents
+  - source_id: hdfc_large_cap_sid
+    url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20Large%20Cap%20Fund%20dated%20November%2021,%202025.pdf
+    publisher: AMC
+    doc_type: SID
+    title: Scheme Information Document - HDFC Large Cap Fund (21 Nov 2025)
+    scheme_id: hdfc_large_cap
+    notes: Objective, asset allocation, benchmark, exit load, minimum application amounts, plans/options.
+
+  - source_id: hdfc_flexi_cap_sid
+    url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20Flexi%20Cap%20Fund%20dated%20November%2021,%202025.pdf
+    publisher: AMC
+    doc_type: SID
+    title: Scheme Information Document - HDFC Flexi Cap Fund (21 Nov 2025)
+    scheme_id: hdfc_flexi_cap
+
+  - source_id: hdfc_elss_sid
+    url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20ELSS%20Tax%20Saver%20Fund%20dated%20November%2021,%202025.pdf
+    publisher: AMC
+    doc_type: SID
+    title: Scheme Information Document - HDFC ELSS Tax Saver Fund (21 Nov 2025)
+    scheme_id: hdfc_elss
+    notes: Source for the 3-year lock-in and Section 80C terms.
+
+  - source_id: hdfc_mid_cap_sid
+    url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20Mid%20Cap%20Fund%20dated%20November%2021,%202025_1.pdf
+    publisher: AMC
+    doc_type: SID
+    title: Scheme Information Document - HDFC Mid Cap Fund (21 Nov 2025)
+    scheme_id: hdfc_mid_cap
+
+  - source_id: hdfc_small_cap_sid
+    url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20Small%20Cap%20Fund%20dated%20November%2021,%202025.pdf
+    publisher: AMC
+    doc_type: SID
+    title: Scheme Information Document - HDFC Small Cap Fund (21 Nov 2025)
+    scheme_id: hdfc_small_cap
+
+  - source_id: hdfc_common_equity_kim
+    url: https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf
+    publisher: AMC
+    doc_type: KIM
+    title: Key Information Memorandum - HDFC equity schemes (28 Nov 2025)
+    notes: One KIM covering all HDFC equity schemes, including the five in scope.
+
+  - source_id: hdfc_factsheet_sep_2026
+    url: https://files.hdfcfund.com/s3fs-public/2026-10/HDFC%20MF%20Factsheet%20-%20September%202026.pdf
+    publisher: AMC
+    doc_type: factsheet
+    title: HDFC MF Factsheet - September 2026
+    notes: >-
+      Current expense ratio (as on 30 Sep 2026), benchmark, exit load, fund managers, minimum amounts
+      (pp. 104-106) and riskometers (pp. 124-139). Performance/returns tables are NOT ingested.
+
+  # ---------------------------------------------------------------- AMC: investor services (manual)
+  - source_id: hdfc_request_statement
+    url: https://www.hdfcfund.com/services/additional-info/request-statement
+    publisher: AMC
+    doc_type: guide
+    title: HDFC Mutual Fund - Request Statement (account and capital gains statements)
+    status: manual
+    notes: Save the page as HTML to data/manual/hdfc_request_statement.html.
+
+  - source_id: hdfc_cas
+    url: https://www.hdfcfund.com/services/consolidated-account-statement
+    publisher: AMC
+    doc_type: guide
+    title: HDFC Mutual Fund - Download Consolidated Account Statement
+    status: manual
+    notes: Save the page as HTML to data/manual/hdfc_cas.html.
+
+  # ---------------------------------------------------------------- SEBI
+  - source_id: sebi_mf_faq
+    url: https://www.sebi.gov.in/sebi_data/faqfiles/sep-2024/1727242783639.pdf
+    publisher: SEBI
+    doc_type: FAQ
+    title: SEBI - FAQs for Mutual Fund Investors (updated as on 31 Aug 2024)
+    notes: NAV, SID/KIM, consolidated account statement (CAS), investor protection.
+
+  - source_id: sebi_elss
+    url: https://investor.sebi.gov.in/elss.html
+    publisher: SEBI
+    doc_type: guide
+    title: SEBI Investor - A Guide to ELSS
+    notes: 3-year lock-in, Section 80C limit, how ELSS works.
+
+  - source_id: sebi_investor_charter
+    url: https://investor.sebi.gov.in/Investor-charter.html
+    publisher: SEBI
+    doc_type: guide
+    title: SEBI - Investor Charter
+    notes: Investor rights, grievance redressal; used as the privacy/safety link.
+
+  # ---------------------------------------------------------------- AMFI
+  - source_id: amfi_intro_mf
+    url: https://www.amfiindia.com/investor/knowledge-center-info?zoneName=IntroductionMutualFunds
+    publisher: AMFI
+    doc_type: article
+    title: AMFI - Introduction to Mutual Funds
+
+  - source_id: amfi_types
+    url: https://www.amfiindia.com/investor/knowledge-center-info?zoneName=TypesOfMutualFundSchemes
+    publisher: AMFI
+    doc_type: article
+    title: AMFI - Types of Mutual Fund Schemes
+
+  - source_id: amfi_expense_ratio
+    url: https://www.amfiindia.com/investor/knowledge-center-info?zoneName=expenseRatio
+    publisher: AMFI
+    doc_type: article
+    title: AMFI - Expense Ratio
+
+  - source_id: amfi_nav
+    url: https://www.amfiindia.com/investor/knowledge-center-info?zoneName=NetAssetValueNAV
+    publisher: AMFI
+    doc_type: article
+    title: AMFI - Net Asset Value (NAV)
+
+  - source_id: amfi_categorization
+    url: https://www.amfiindia.com/investor/knowledge-center-info?zoneName=CategorizationOfMutualFundSchemes
+    publisher: AMFI
+    doc_type: article
+    title: AMFI - Categorization of Mutual Fund Schemes
+    notes: Large/Mid/Small/Flexi Cap definitions and ELSS lock-in framing.
+
+  - source_id: amfi_risk
+    url: https://www.amfiindia.com/investor/knowledge-center-info?zoneName=riskInMutualFunds
+    publisher: AMFI
+    doc_type: article
+    title: AMFI - Risks in Mutual Funds
+    notes: Used as the educational link for advice refusals.
+
+  - source_id: amfi_booklet
+    url: https://www.amfiindia.com/uploads/AMFI_Understanding_Mutual_Funds_IAP_Booklet_Final_Website_version_860a5b77aa.pdf
+    publisher: AMFI
+    doc_type: guide
+    title: AMFI - Understanding Mutual Funds (investor awareness booklet)
+
+  # ---------------------------------------------------------------- reviewed, not ingested
+  - source_id: hdfc_scheme_pages_www
+    url: https://www.hdfcfund.com/explore/mutual-funds/hdfc-flexi-cap-fund/direct
+    publisher: AMC
+    doc_type: article
+    title: HDFC MF scheme pages on www.hdfcfund.com (all five schemes)
+    status: blocked
+    notes: HTTP 403 to automated requests; the same facts come from the SIDs, KIM and factsheet above.
+
+  - source_id: sebi_categorisation_2017
+    url: https://www.sebi.gov.in/sebi_data/attachdocs/oct-2017/1509103633344.pdf
+    publisher: SEBI
+    doc_type: circular
+    title: SEBI - Categorization and Rationalization of MF Schemes (Oct 2017)
+    status: historical
+    notes: Superseded; AMFI's categorisation article is used instead.
