@@ -1,18 +1,54 @@
 # FundFacts AI
 
-FundFacts AI is a facts-only mutual fund FAQ assistant for five HDFC Mutual Fund schemes: Large Cap, Flexi Cap, ELSS Tax Saver, Mid Cap and Small Cap (Direct, Growth). It answers only from official AMC, SEBI and AMFI sources. Each answer is at most three sentences and cites one verified source.
+**FundFacts AI is a facts-only mutual fund FAQ assistant for five HDFC Mutual Fund schemes.** It answers questions like "What is the expense ratio?", "Is there an exit load?", "What is the ELSS lock-in?" and "What is the benchmark?". Answers come only from official HDFC Mutual Fund, SEBI and AMFI documents. Each answer is **at most three sentences** and cites **one verified source**, with **"Last updated from sources"**. It never gives advice and never quotes returns.
 
-> **Facts-only. No investment advice.** This is an independent student project inspired by the Groww product experience. It is not affiliated with Groww or HDFC Mutual Fund.
+> **Facts-only. No investment advice.** An independent student project inspired by the Groww product experience. It is not affiliated with Groww or HDFC Mutual Fund.
 
-**Status:** Phases 1-9 of 10 are complete: config, scraping (`python -m fundfacts.ingest.fetch`), loading (`python -m fundfacts.ingest.load`, performance sections removed) and fact extraction (`python -m fundfacts.ingest.extract_facts` → `data/facts/facts.json`, 43/50 facts found with page + quote), and chunking (`python -m fundfacts.ingest.chunk` → `data/chunks/chunks.json`, 2,029 chunks incl. 43 fact cards), and embeddings (`python -m fundfacts.ingest.embed` → `data/embeddings/embeddings.json`, all-MiniLM-L6-v2, 384-d), and the vector store (`python -m fundfacts.ingest.store` → ChromaDB in `vector_store/chroma/`, verified, exported to `vector_store/index.json`, report in `data/build_report.json`), and the answer pipeline (guardrails → intent → exact fact lookup → retrieval → Claude or extractive fallback → verifier). Try it: `python scripts/ask.py "What is the exit load of HDFC Small Cap Fund?"`. Evaluation: 40 gold questions, 100% fact and source accuracy (`eval/last_run.json`). The web app runs locally with `uvicorn api.index:app --port 8000` (open http://127.0.0.1:8000).
+- **Live app:** _add your Vercel URL here after deployment_
+- **Deliverables:**
+  - [SOURCES.md](SOURCES.md) and [sources.csv](sources.csv): the source list
+  - [SAMPLE_QA.md](SAMPLE_QA.md): real answers and refusals
+  - [DISCLAIMER.md](DISCLAIMER.md): the disclaimer text used in the UI
+  - [eval/last_run.json](eval/last_run.json): evaluation results
+- **Design docs:** [Problem statement](docs/ProblemStatement.txt) · [PRD](docs/PRD.md) · [Architecture](docs/architecture.md) · [Implementation plan](docs/implementation.md)
 
-## Docs
-- [Problem statement](docs/ProblemStatement.txt)
-- [PRD](docs/PRD.md)
-- [Architecture](docs/architecture.md)
-- [Implementation plan](docs/implementation.md)
+## Scope
+| | |
+|---|---|
+| AMC | HDFC Mutual Fund |
+| Schemes (Direct, Growth) | HDFC Large Cap Fund, HDFC Flexi Cap Fund, HDFC ELSS Tax Saver Fund, HDFC Mid Cap Fund, HDFC Small Cap Fund |
+| Sources | 20 registered official URLs (HDFC Mutual Fund, SEBI, AMFI); 18 ingested automatically, 2 via manual download ([SOURCES.md](SOURCES.md)) |
+| Facts | Expense ratio, exit load, minimum SIP, minimum lumpsum, lock-in, riskometer, benchmark, fund managers, category, objective; plus SEBI/AMFI concepts (NAV, CAS, ELSS, TER) |
 
-## Setup
+## How it works
+RAG pipeline in which every stage writes its output to disk, so each step can be inspected:
+
+| Phase | Command | Output |
+|---|---|---|
+| Scrape (registered URLs only, no link following) | `python -m fundfacts.ingest.fetch` | `data/raw/` + `manifest.json` |
+| Load (performance sections removed) | `python -m fundfacts.ingest.load` | `data/docs/*.json` |
+| Extract facts (value + page + verbatim quote) | `python -m fundfacts.ingest.extract_facts` | `data/facts/facts.json` |
+| Chunk (fact cards + page-bounded passages) | `python -m fundfacts.ingest.chunk` | `data/chunks/chunks.json` |
+| Embed (`sentence-transformers/all-MiniLM-L6-v2`) | `python -m fundfacts.ingest.embed` | `data/embeddings/embeddings.json` |
+| Store in ChromaDB + verify + export | `python -m fundfacts.ingest.store` | `vector_store/chroma/`, `vector_store/index.json`, `data/build_report.json` |
+
+**Answering a question** (`fundfacts/query/`):
+1. **Guardrails.** Personal data, advice requests and returns questions are refused politely, with an educational link.
+2. **Intent.** Rules work out which scheme and which fact are being asked about.
+3. **Exact fact lookup.** If the fact is in the fact table, the answer comes from that quoted line, with no AI writing.
+4. **Retrieval.** ChromaDB search with the same embedding model, with an explained re-rank.
+5. **Writing the answer.** **Claude** writes it from the retrieved passages only. Without an API key, the best sentences are quoted verbatim instead.
+6. **Verifier.**
+   - The cited passage must have been retrieved.
+   - The URL must be in the source registry.
+   - **Every number must appear in the source.**
+   - The answer must be at most 3 sentences, with no advice wording.
+
+   If any check fails, the reply is "not found". The assistant never guesses.
+
+Every response also lists its evidence (passage ids, scores, quote), shown in the UI as **"Why this answer"**.
+
+## Run it locally
 Requires Python 3.11+.
 
 ```bash
@@ -31,30 +67,84 @@ pip install -r requirements-ingest.txt
 copy .env.example .env
 ```
 
-Then add your `ANTHROPIC_API_KEY` to `.env`.
-
-## Phase 1 commands
-Print the validated configuration (the API key is masked):
+Optionally, put your `ANTHROPIC_API_KEY` in `.env`. Without a key, the app quotes its sources verbatim instead of letting Claude write the answer.
 
 ```bash
-python -m fundfacts.config
+uvicorn api.index:app --port 8000
 ```
 
-Summarise the source registry and check every URL and manual file. This saves nothing:
+Open http://127.0.0.1:8000. To ask from the terminal instead:
 
 ```bash
-python -m fundfacts.sources --check
+python scripts/ask.py --evidence "What is the exit load of HDFC Small Cap Fund?"
 ```
 
-Run the tests:
+To rebuild the whole corpus (about 5 minutes on CPU), run the six phases in the table above in order. Then regenerate the deliverables:
+
+```bash
+python scripts/make_docs.py
+```
+
+## Tests and evaluation
 
 ```bash
 python -m pytest -q
 ```
 
-## Sources
-The source list is [`sources.yaml`](sources.yaml): 20 ingested sources (9 HDFC Mutual Fund, 3 SEBI, 8 AMFI).
-- **HDFC scheme documents** come from HDFC's document server `files.hdfcfund.com`: five SIDs, the Common Equity KIM and the monthly factsheet.
-- **The `www.hdfcfund.com` website** blocks automated requests. Its two investor-service pages (statement requests, CAS) are saved by hand into `data/manual/`:
-  - `data/manual/hdfc_request_statement.html` ← https://www.hdfcfund.com/services/additional-info/request-statement
-  - `data/manual/hdfc_cas.html` ← https://www.hdfcfund.com/services/consolidated-account-statement
+There are 145 tests covering:
+- configuration and the source registry
+- scraping, loading and the removal of performance text
+- every hand-checked fact value
+- chunking, and that ChromaDB matches the Vercel export
+- ONNX vs sentence-transformers parity
+- guardrails, the verifier, edge cases and the API
+
+The evaluation set in [eval/questions.yaml](eval/questions.yaml) has **40 questions**, run without an LLM:
+
+| Metric | Result | Target |
+|---|---|---|
+| Fact accuracy | 100% | ≥ 95% |
+| Correct source cited | 100% | ≥ 90% |
+| Refusals / not found correct | 100% | 100% |
+| One link per answer, ≤ 3 sentences | yes | yes |
+
+## Deploy on Vercel
+The web page is static (`public/index.html`) and the API is a Python function (`api/index.py`). Vercel can't run PyTorch or a ChromaDB server inside a function, so the live app makes two substitutions:
+- **Embeddings:** the **same MiniLM model in ONNX form** (identical vectors, which a test checks).
+- **Search:** the **exact export of the ChromaDB collection** (`vector_store/index.json`).
+
+Steps:
+1. Push this repository to GitHub.
+2. In Vercel, choose **Add New… → Project** and import the repository. Set **Framework Preset: Other**, with no build command.
+3. Optional: under **Settings → Environment Variables**, add `ANTHROPIC_API_KEY` (and `CLAUDE_MODEL` to override the default `claude-haiku-5-5`).
+4. Click **Deploy**. The first question after the app has been idle downloads the ONNX model (about 90 MB) into `/tmp`, so it takes a few seconds.
+
+After that, every push to `main` redeploys automatically.
+
+## Configuration
+Everything is in [`config.yaml`](config.yaml), with environment overrides: `CLAUDE_MODEL`, `ANTHROPIC_API_KEY`, `EMBEDDING_BACKEND`, `VECTOR_DB`, `TOP_K`, `MIN_SIMILARITY`. Secrets live only in `.env` and in Vercel's environment variables, never in the repository.
+
+## Privacy and safety
+- **Personal data:** PAN, Aadhaar, phone numbers, emails, OTPs and account/folio numbers are refused before any processing, and never echoed back.
+- **Nothing is stored:** questions are not logged, stored or sent anywhere except, after the guardrails pass, to Claude.
+- **No performance figures:** returns tables are removed from documents during loading. Return questions are refused with a link to the official document.
+
+## Known limits
+- **Seven facts are missing.** Minimum SIP is missing for 4 schemes and the riskometer for 3, because they're only stated in the schemes' Scheme Summary Documents, which sit behind the blocked `www.hdfcfund.com`. The assistant says "not found" instead of guessing. Saving those PDFs into `data/manual/` and re-running the pipeline fills the gaps.
+- **Snapshot data.** Facts come from documents dated 21 Nov 2025 (SIDs), 28 Nov 2025 (KIM) and 30 Sep 2026 (factsheet). Re-run the pipeline when new documents are published.
+- **Regex guardrails.** Guardrails and intent detection are rule-based. Unusual phrasing may be refused unnecessarily, or routed to search instead of the exact fact table.
+- **Quoted answers without Claude.** Without an API key, general questions get correct but verbatim answers. The "how to download a statement" pages need the two manual downloads.
+- **Five schemes only.** Other HDFC schemes and other fund houses are politely declined.
+
+## Project structure
+```
+api/index.py              FastAPI app (Vercel function)
+public/index.html         web UI
+fundfacts/ingest/         fetch, load, extract_facts, chunk, embed, store
+fundfacts/query/          guardrails, intent, fact_lookup, retriever, verifier, answer
+fundfacts/llm/            Claude client
+config.yaml  sources.yaml configuration and source registry
+data/  vector_store/      every pipeline stage's output
+tests/  eval/             tests and the gold evaluation set
+docs/                     problem statement, PRD, architecture, implementation plan
+```
