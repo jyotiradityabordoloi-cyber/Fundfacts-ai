@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from fastapi import FastAPI  # noqa: E402
+from fastapi import FastAPI, Request  # noqa: E402
 from fastapi.responses import JSONResponse  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
 
@@ -77,6 +77,16 @@ def meta():
 @app.post("/api/chat", response_model=Answer)
 def chat(body: ChatIn):
     return answer(body.message)
+
+
+@app.api_route("/{full_path:path}", methods=["GET", "POST"], include_in_schema=False)
+def _route_debug(full_path: str, request: Request):  # TEMPORARY: shows how Vercel passes paths
+    keep = ("x-vercel", "x-forwarded", "x-matched", "x-now", "x-real")
+    return JSONResponse(status_code=404, content={
+        "detail": "Not Found", "path": request.url.path, "root_path": request.scope.get("root_path"),
+        "raw_path": (request.scope.get("raw_path") or b"").decode(errors="replace"),
+        "headers": {k: v for k, v in request.headers.items() if k.startswith(keep)},
+    })
 
 
 @app.exception_handler(Exception)
