@@ -1,15 +1,15 @@
 {
-  "total": 2029,
+  "total": 2022,
   "by_kind": {
     "fact_card": 43,
-    "pdf": 1843,
+    "pdf": 1836,
     "prose": 143
   },
   "by_source": {
     "hdfc_factsheet_sep_2026": 92,
     "hdfc_large_cap_sid": 385,
     "hdfc_flexi_cap_sid": 254,
-    "hdfc_common_equity_kim": 283,
+    "hdfc_common_equity_kim": 276,
     "hdfc_elss_sid": 273,
     "hdfc_mid_cap_sid": 252,
     "hdfc_small_cap_sid": 179,
@@ -25,7 +25,7 @@
     "amfi_risk": 14,
     "amfi_booklet": 62
   },
-  "duplicates_removed": 611,
+  "duplicates_removed": 610,
   "avg_chars": 534,
   "max_chars": 822,
   "fact_cards_per_scheme": {

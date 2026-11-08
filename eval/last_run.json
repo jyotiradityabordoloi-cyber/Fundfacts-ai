@@ -1,0 +1,9 @@
+{
+  "questions": 40,
+  "fact_accuracy": 1.0,
+  "source_accuracy": 1.0,
+  "refusal_and_not_found_accuracy": 1.0,
+  "every_answer_has_one_link": true,
+  "all_within_3_sentences": true,
+  "failures": []
+}

@@ -26334,10 +26334,10 @@
   "page": 4,
   "section": "SCHEME",
   "kind": "pdf",
-  "text": "(as per AMFI Tier I Benchmark) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER NIFTY 500 Index (TRI) (as per AMFI Tier I Benchmark) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER NIFTY 500 Index (TRI) (as per AMFI Tier I Benchmark) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER NIFTY LargeMidcap 250 Index (TRI) (as per AMFI Tier I Benchmark)",
+  "text": "(as per AMFI Tier I Benchmark) NIFTY 500 Index (TRI) (as per AMFI Tier I Benchmark) NIFTY 500 Index (TRI) (as per AMFI Tier I Benchmark) NIFTY LargeMidcap 250 Index (TRI) (as per AMFI Tier I Benchmark) Nifty 50 Index (TRI)",
   "char_span": [
    1940,
-   2552
+   2162
   ],
   "title": "Key Information Memorandum - HDFC equity schemes (28 Nov 2025)",
   "url": "https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf",
@@ -26345,41 +26345,7 @@
   "doc_type": "KIM",
   "doc_date": "2025-11-28",
   "fetched_at": "2026-11-08T21:35:37+00:00",
-  "chars": 612
- },
- {
-  "chunk_id": "hdfc_common_equity_kim::p4::04",
-  "source_id": "hdfc_common_equity_kim",
-  "scheme_id": "hdfc_flexi_cap",
-  "page": 4,
-  "section": "RISKOMETER",
-  "kind": "pdf",
-  "text": "RISKOMETER NIFTY LargeMidcap 250 Index (TRI) (as per AMFI Tier I Benchmark) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER Nifty 50 Index (TRI) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER The risk of the Benchmark is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER The risk of the Benchmark is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk",
-  "char_span": null,
-  "title": "Key Information Memorandum - HDFC equity schemes (28 Nov 2025)",
-  "url": "https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf",
-  "publisher": "AMC",
-  "doc_type": "KIM",
-  "doc_date": "2025-11-28",
-  "fetched_at": "2026-11-08T21:35:37+00:00",
-  "chars": 639
- },
- {
-  "chunk_id": "hdfc_common_equity_kim::p4::05",
-  "source_id": "hdfc_common_equity_kim",
-  "scheme_id": null,
-  "page": 4,
-  "section": "RISKOMETER",
-  "kind": "pdf",
-  "text": "RISKOMETER The risk of the Benchmark is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER The risk of the Benchmark is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER The risk of the Benchmark is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER",
-  "char_span": null,
-  "title": "Key Information Memorandum - HDFC equity schemes (28 Nov 2025)",
-  "url": "https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf",
-  "publisher": "AMC",
-  "doc_type": "KIM",
-  "doc_date": "2025-11-28",
-  "fetched_at": "2026-11-08T21:35:37+00:00",
-  "chars": 430
+  "chars": 222
  },
  {
   "chunk_id": "hdfc_common_equity_kim::p5::00",
@@ -26445,10 +26411,10 @@
   "page": 5,
   "section": "SCHEME",
   "kind": "pdf",
-  "text": "• to generate long-term capital appreciation / income • investment predominantly of equity & equity related instruments BSE SENSEX Index (TRI) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER BSE India Infrastructure Index (TRI) (as per AMFI Tier I Benchmark) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER NIFTY Midcap 150 (TRI) (as per AMFI Tier I Benchmark) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk",
+  "text": "• to generate long-term capital appreciation / income • investment predominantly of equity & equity related instruments BSE SENSEX Index (TRI) BSE India Infrastructure Index (TRI) (as per AMFI Tier I Benchmark) NIFTY Midcap 150 (TRI) (as per AMFI Tier I Benchmark) BSE 250 SmallCap Index (TRI) (as per AMFI Tier I Benchmark) NIFTY 500 Index (TRI) (as per AMFI Tier I Benchmark)",
   "char_span": [
    901,
-   1565
+   1278
   ],
   "title": "Key Information Memorandum - HDFC equity schemes (28 Nov 2025)",
   "url": "https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf",
@@ -26456,24 +26422,7 @@
   "doc_type": "KIM",
   "doc_date": "2025-11-28",
   "fetched_at": "2026-11-08T21:35:37+00:00",
-  "chars": 664
- },
- {
-  "chunk_id": "hdfc_common_equity_kim::p5::04",
-  "source_id": "hdfc_common_equity_kim",
-  "scheme_id": null,
-  "page": 5,
-  "section": "RISKOMETER",
-  "kind": "pdf",
-  "text": "RISKOMETER BSE 250 SmallCap Index (TRI) (as per AMFI Tier I Benchmark) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER NIFTY 500 Index (TRI) (as per AMFI Tier I Benchmark) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER The risk of the Benchmark is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER The risk of the Benchmark is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk",
-  "char_span": null,
-  "title": "Key Information Memorandum - HDFC equity schemes (28 Nov 2025)",
-  "url": "https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf",
-  "publisher": "AMC",
-  "doc_type": "KIM",
-  "doc_date": "2025-11-28",
-  "fetched_at": "2026-11-08T21:35:37+00:00",
-  "chars": 666
+  "chars": 377
  },
  {
   "chunk_id": "hdfc_common_equity_kim::p6::00",
@@ -26536,10 +26485,10 @@
   "page": 6,
   "section": "SCHEME",
   "kind": "pdf",
-  "text": "# For latest riskometer, investors may refer to the Monthly Portfolios disclosed on the website of the Fund viz. www.hdfcfund.com HDFC Multi Cap Fund An open ended equity scheme investing across large cap, mid cap & small cap stocks • investment in equity and equity related securities of large cap, mid cap and small cap companies. • to generate long-term capital appreciation/ income NIFTY 500 Index (TRI) (as per AMFI Tier I Benchmark) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER Nifty Housing Index (TRI) (as per AMFI Tier I Benchmark)",
+  "text": "# For latest riskometer, investors may refer to the Monthly Portfolios disclosed on the website of the Fund viz. www.hdfcfund.com HDFC Multi Cap Fund An open ended equity scheme investing across large cap, mid cap & small cap stocks • investment in equity and equity related securities of large cap, mid cap and small cap companies. • to generate long-term capital appreciation/ income NIFTY 500 Index (TRI) (as per AMFI Tier I Benchmark) Nifty Housing Index (TRI) (as per AMFI Tier I Benchmark) NIFTY Financial Services Index (TRI) (as per AMFI Tier I Benchmark) MSCI World Index Nifty 500 MULTICAP 50:25:25 Index (TRI) (as per AMFI Tier I Benchmark)",
   "char_span": [
    1819,
-   2451
+   2470
   ],
   "title": "Key Information Memorandum - HDFC equity schemes (28 Nov 2025)",
   "url": "https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf",
@@ -26547,58 +26496,7 @@
   "doc_type": "KIM",
   "doc_date": "2025-11-28",
   "fetched_at": "2026-11-08T21:35:37+00:00",
-  "chars": 632
- },
- {
-  "chunk_id": "hdfc_common_equity_kim::p6::04",
-  "source_id": "hdfc_common_equity_kim",
-  "scheme_id": "hdfc_large_cap",
-  "page": 6,
-  "section": "RISKOMETER",
-  "kind": "pdf",
-  "text": "RISKOMETER Nifty Housing Index (TRI) (as per AMFI Tier I Benchmark) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER NIFTY Financial Services Index (TRI) (as per AMFI Tier I Benchmark) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER MSCI World Index The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER Nifty 500 MULTICAP 50:25:25 Index (TRI) (as per AMFI Tier I Benchmark)",
-  "char_span": null,
-  "title": "Key Information Memorandum - HDFC equity schemes (28 Nov 2025)",
-  "url": "https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf",
-  "publisher": "AMC",
-  "doc_type": "KIM",
-  "doc_date": "2025-11-28",
-  "fetched_at": "2026-11-08T21:35:37+00:00",
-  "chars": 634
- },
- {
-  "chunk_id": "hdfc_common_equity_kim::p6::05",
-  "source_id": "hdfc_common_equity_kim",
-  "scheme_id": "hdfc_large_cap",
-  "page": 6,
-  "section": "RISKOMETER",
-  "kind": "pdf",
-  "text": "RISKOMETER Nifty 500 MULTICAP 50:25:25 Index (TRI) (as per AMFI Tier I Benchmark) The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER The risk of the Benchmark is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER The risk of the Benchmark is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER The risk of the Benchmark is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk",
-  "char_span": null,
-  "title": "Key Information Memorandum - HDFC equity schemes (28 Nov 2025)",
-  "url": "https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf",
-  "publisher": "AMC",
-  "doc_type": "KIM",
-  "doc_date": "2025-11-28",
-  "fetched_at": "2026-11-08T21:35:37+00:00",
-  "chars": 627
- },
- {
-  "chunk_id": "hdfc_common_equity_kim::p6::06",
-  "source_id": "hdfc_common_equity_kim",
-  "scheme_id": "hdfc_large_cap",
-  "page": 6,
-  "section": "RISKOMETER",
-  "kind": "pdf",
-  "text": "RISKOMETER The risk of the Benchmark is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER The risk of the Benchmark is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER",
-  "char_span": null,
-  "title": "Key Information Memorandum - HDFC equity schemes (28 Nov 2025)",
-  "url": "https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf",
-  "publisher": "AMC",
-  "doc_type": "KIM",
-  "doc_date": "2025-11-28",
-  "fetched_at": "2026-11-08T21:35:37+00:00",
-  "chars": 290
+  "chars": 651
  },
  {
   "chunk_id": "hdfc_common_equity_kim::p13::00",
@@ -31179,10 +31077,10 @@
   "page": 183,
   "section": "NAME OF SCHEME",
   "kind": "pdf",
-  "text": "• To generate long-term capital appreciation/income • Investments in a diversified portfolio of equity & equity related instruments, debt & money market instruments and Gold related instruments An open ended hybrid scheme investing predominantly in equity and equity related instruments. HDFC Hybrid Equity Fund • to generate long-term capital appreciation / income • investments predominantly in equity & equity related instruments. The Scheme will also invest in debt and money market instruments The risk of the Benchmark is Low Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk",
+  "text": "• To generate long-term capital appreciation/income • Investments in a diversified portfolio of equity & equity related instruments, debt & money market instruments and Gold related instruments An open ended hybrid scheme investing predominantly in equity and equity related instruments. HDFC Hybrid Equity Fund • to generate long-term capital appreciation / income • investments predominantly in equity & equity related instruments. The Scheme will also invest in debt and money market instruments",
   "char_span": [
    2147,
-   2768
+   2645
   ],
   "title": "Key Information Memorandum - HDFC equity schemes (28 Nov 2025)",
   "url": "https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf",
@@ -31190,24 +31088,7 @@
   "doc_type": "KIM",
   "doc_date": "2025-11-28",
   "fetched_at": "2026-11-08T21:35:37+00:00",
-  "chars": 621
- },
- {
-  "chunk_id": "hdfc_common_equity_kim::p183::08",
-  "source_id": "hdfc_common_equity_kim",
-  "scheme_id": "hdfc_flexi_cap",
-  "page": 183,
-  "section": "RISKOMETER",
-  "kind": "pdf",
-  "text": "RISKOMETER The risk of the Scheme is Moderately High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER The risk of the Scheme is High Low Risk Low to Moderate Risk Moderately High Risk High Risk Very High Risk Moderate Risk RISKOMETER The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER The risk of the Scheme is Moderate Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER",
-  "char_span": null,
-  "title": "Key Information Memorandum - HDFC equity schemes (28 Nov 2025)",
-  "url": "https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf",
-  "publisher": "AMC",
-  "doc_type": "KIM",
-  "doc_date": "2025-11-28",
-  "fetched_at": "2026-11-08T21:35:37+00:00",
-  "chars": 558
+  "chars": 498
  },
  {
   "chunk_id": "hdfc_common_equity_kim::p184::00",
@@ -31370,10 +31251,10 @@
   "page": 184,
   "section": "",
   "kind": "pdf",
-  "text": "HDFC NIFTY Midcap 150 Index Fund • Returns that are commensurate (before fees and expenses) with the performance of the NIFTY Midcap 150 Index (TRI) over long term, subject to tracking error. • Investment in equity securities covered by the NIFTY Midcap 150 Index The risk of the Scheme is Very High Low Risk Low to Moderate Risk Moderate Risk Moderately High Risk High Risk Very High Risk RISKOMETER",
+  "text": "HDFC NIFTY Midcap 150 Index Fund • Returns that are commensurate (before fees and expenses) with the performance of the NIFTY Midcap 150 Index (TRI) over long term, subject to tracking error. • Investment in equity securities covered by the NIFTY Midcap 150 Index",
   "char_span": [
    4814,
-   5214
+   5077
   ],
   "title": "Key Information Memorandum - HDFC equity schemes (28 Nov 2025)",
   "url": "https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf",
@@ -31381,7 +31262,7 @@
   "doc_type": "KIM",
   "doc_date": "2025-11-28",
   "fetched_at": "2026-11-08T21:35:37+00:00",
-  "chars": 400
+  "chars": 263
  },
  {
   "chunk_id": "hdfc_common_equity_kim::p196::00",

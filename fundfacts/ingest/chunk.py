@@ -50,6 +50,9 @@ PAGE_HEADER = re.compile(  # running headers/footers repeated on every page of a
     r"|^Page \d+(\s*Fields SCHEME SUMMARY DOCUMENT)?$|^Fields SCHEME SUMMARY DOCUMENT$",
     re.I,
 )
+# Printed scale of riskometer dials (images) - text with no meaning on its own.
+RISKOMETER_DIAL = re.compile(r"^(RISKOMETER|Low Risk|Low to Moderate Risk|Moderate Risk( Moderately High Risk)?|"
+                             r"Moderately High Risk|High Risk|Very High Risk|The risk of the (Benchmark|Scheme) is [A-Za-z ]+)$")
 HEADING = re.compile(r"^([IVXL]+\.\s+\S.*|[A-Z][A-Z0-9 &/,()'-]{5,60})$")
 END_PUNCT = re.compile(r"[.:;?!)]$")
 
@@ -67,7 +70,7 @@ def paragraphs(text: str) -> list[tuple[str, str]]:
 
     for line in text.splitlines():
         line = line.strip()
-        if not line or PAGE_HEADER.match(line):
+        if not line or PAGE_HEADER.match(line) or RISKOMETER_DIAL.match(line):
             continue
         if HEADING.match(line) and len(line) < 70:
             flush()

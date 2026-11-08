@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-11-08T22:00:33+00:00",
+  "built_at": "2026-11-08T22:10:37+00:00",
   "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
   "sources": {
     "registry": 22,
@@ -103,12 +103,12 @@
     }
   },
   "counts": {
-    "chunks": 2029,
-    "chroma": 2029,
+    "chunks": 2022,
+    "chroma": 2022,
     "missing_ids": [],
     "vector_spot_check": 26,
     "vector_max_abs_diff": 1.4901161193847656e-08,
-    "export": 2029,
-    "export_bytes": 6204375
+    "export": 2022,
+    "export_bytes": 6181843
   }
 }
