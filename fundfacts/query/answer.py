@@ -1,6 +1,6 @@
 """Steps 1-6 - question -> verified, cited answer (architecture §3).
 
-1 guardrails -> 2 intent -> 3a exact fact lookup -> 3b retrieval -> 4 Claude (or extractive)
+1 guardrails -> 2 intent -> 3a exact fact lookup -> 3b retrieval -> 4 LLM - Gemini (free) or Claude, or extractive without a key
 -> 5 verifier -> 6 response with ONE source URL, "last updated" date and evidence.
 The question is never logged or stored.
 """
@@ -12,7 +12,7 @@ from datetime import datetime, timedelta, timezone
 from functools import lru_cache
 
 from fundfacts.config import settings
-from fundfacts.llm import claude_client
+from fundfacts.llm import router as llm
 from fundfacts.query import fact_lookup, guardrails, intent as intent_mod, retriever, verifier
 from fundfacts.schemas import Answer, AnswerType, Evidence, FactField
 from fundfacts.schemes import SCHEMES
@@ -143,17 +143,17 @@ def _rag_answer(question: str, it: intent_mod.Intent) -> Answer | None:
         return None
     by_id = {h.chunk_id: h for h in hits}
     candidates: list[tuple[str, retriever.Hit]] = []
-    if claude_client.enabled():
+    if llm.enabled():
         context = "\n\n".join(f"[{h.chunk_id}] ({h.meta['title']}, page {h.meta['page']})\n{h.text}" for h in hits)
         try:
-            raw = claude_client.generate(SYSTEM_PROMPT, f"CONTEXT:\n{context}\n\nQUESTION: {question}")
+            raw = llm.generate(SYSTEM_PROMPT, f"CONTEXT:\n{context}\n\nQUESTION: {question}")
             if raw.strip().startswith("NOT_FOUND"):
                 return None
             m = re.search(r"\{.*\}", raw, re.S)
             data = json.loads(m.group(0)) if m else {}
             if data.get("chunk_id") in by_id and data.get("answer"):
                 candidates.append((verifier.trim_sentences(data["answer"]), by_id[data["chunk_id"]]))
-        except (claude_client.LLMUnavailable, json.JSONDecodeError):
+        except (llm.LLMUnavailable, json.JSONDecodeError):
             pass
     candidates += [(verifier.trim_sentences(t), h) for t, h in _extractive_candidates(question, hits, it.scheme_id)]
 

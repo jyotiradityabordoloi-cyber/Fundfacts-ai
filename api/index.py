@@ -68,7 +68,7 @@ def meta():
         "examples": EXAMPLES,
         "disclaimer": DISCLAIMER,
         "schemes": [s.name for s in SCHEMES.values()],
-        "llm": {"provider": "anthropic", "model": settings.llm.model, "enabled": settings.llm.enabled},
+        "llm": {"provider": settings.llm.active, "model": settings.llm.model, "enabled": settings.llm.enabled},
         "embedding_model": settings.embedding.model,
         "build": _build_info(),
     }

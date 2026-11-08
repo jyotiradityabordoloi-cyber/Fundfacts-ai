@@ -22,7 +22,7 @@ flowchart LR
     U[User browser] -->|HTTPS| V[Vercel CDN<br/>public/index.html]
     U -->|POST /api/chat| F[Vercel Python function<br/>FastAPI api/index.py]
     F -->|reads, bundled| IDX[(vector_store/index.json<br/>facts.json, sources.yaml)]
-    F -->|context-only prompt| L[Claude API<br/>Anthropic]
+    F -->|context-only prompt| L[LLM<br/>Gemini free tier / Claude]
     F -.->|first cold start only| HF[Hugging Face<br/>MiniLM ONNX weights]
     subgraph Offline
       ING[Ingestion pipeline] -->|fetch registered URLs| SRC[HDFC MF / SEBI / AMFI pages and PDFs]
@@ -135,7 +135,7 @@ Questions that name a field but no scheme (e.g. "ELSS lock-in?") use the scheme 
 5. Every score adjustment is recorded in `evidence`, so a reviewer can see why a chunk won.
 
 ### Step 4: Generation (`llm/`)
-- **Client:** `llm/claude_client.py` exposes `generate(system: str, user: str) -> str` over the Anthropic Messages API. The model is set by `CLAUDE_MODEL` (default `claude-haiku-5-5`).
+- **Clients:** `llm/router.py` picks the provider (`LLM_PROVIDER`, default `auto`): **Gemini** (`llm/gemini_client.py`, free tier, `GEMINI_API_KEY`, default `gemini-2.5-flash`), else **Claude** (`llm/claude_client.py`, `ANTHROPIC_API_KEY`), else no LLM. Both expose `generate(system, user) -> str`; a quota error or failure raises `LLMUnavailable` and the verified-quote fallback is used.
 - **Prompt contract:**
   - use only the numbered context
   - ≤ 3 sentences
@@ -198,7 +198,7 @@ flowchart LR
 | Bundle size (~250 MB limit) | `requirements.txt` holds only runtime packages (fastapi, numpy, onnxruntime, tokenizers, httpx, pydantic, pyyaml). PyTorch, ChromaDB and sentence-transformers live in `requirements-ingest.txt` |
 | Embeddings on Vercel | The same all-MiniLM-L6-v2 weights in ONNX (from the model's Hugging Face repo), downloaded to `/tmp` on cold start and cached for the warm instance. Equivalence with sentence-transformers is checked in tests (cosine ≥ 0.9999) |
 | Vector DB on Vercel | NumPy cosine search over `index.json`, an exact export of the Chroma collection. Locally, `VECTOR_DB=chroma` queries ChromaDB directly |
-| Secrets | `ANTHROPIC_API_KEY` set in Vercel environment variables; `.env` is git-ignored |
+| Secrets | `GEMINI_API_KEY` (free) or `ANTHROPIC_API_KEY` set in Vercel environment variables; `.env` is git-ignored |
 | Releases | Every push to `main` deploys; preview deploys for branches |
 
 ---
@@ -215,7 +215,8 @@ flowchart LR
 | `vector_db.collection` | `fundfacts` | Chroma collection name |
 | `retrieval.top_k` / `min_similarity` | `4` / `0.25` | Retrieval knobs |
 | `chunking.size` / `overlap` | `700` / `120` | Prose chunking |
-| `llm.model` | `claude-haiku-5-5` | Claude model (override with `CLAUDE_MODEL`) |
+| `llm.provider` | `auto` | `auto` / `gemini` / `anthropic` / `none` |
+| `llm.gemini_model` / `llm.anthropic_model` | `gemini-2.5-flash` / `claude-haiku-5-5` | Model per provider |
 | `llm.temperature` / `max_tokens` / `timeout_s` | `0.1` / `400` / `30` | Generation limits |
 | `answer.max_sentences` | `3` | PRD FR3 |
 
@@ -237,7 +238,7 @@ flowchart LR
 ## 8. Security and privacy
 - **PII:** rejected by guardrails before retrieval or the LLM; never echoed, logged or stored. No cookies, no analytics.
 - **Prompt injection from sources:** retrieved text is wrapped in delimited, numbered context. The system prompt tells the model to treat it as data. The verifier limits the damage any injected text could do, because answers must cite retrieved chunks and contain only grounded numbers.
-- **Outbound calls:** only to the Anthropic API (Claude) and (on cold start) Hugging Face for model weights.
+- **Outbound calls:** only to the configured LLM provider (Gemini or Claude) and (on cold start) Hugging Face for model weights.
 - **CORS:** same-origin in production. The UI and API share the Vercel domain.
 
 ---

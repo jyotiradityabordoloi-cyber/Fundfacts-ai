@@ -25,7 +25,7 @@ def test_meta_has_ui_contract(client):
     m = client.get("/api/meta").json()
     assert m["name"] == "FundFacts AI" and len(m["examples"]) == 3 and len(m["schemes"]) == 5
     assert "Facts-only. No investment advice." in m["disclaimer"]
-    assert m["llm"]["provider"] == "anthropic" and "api_key" not in json.dumps(m)
+    assert m["llm"]["provider"] in (None, "gemini", "anthropic") and "api_key" not in json.dumps(m)
 
 
 @pytest.mark.parametrize("payload", [{"message": ""}, {"message": "x" * 501}, {}])
@@ -35,7 +35,7 @@ def test_invalid_requests_rejected(client, payload):
 
 @built
 def test_chat_answer_shape(client, monkeypatch):
-    monkeypatch.setattr(settings.llm, "api_key", "")
+    monkeypatch.setattr(settings.llm, "provider", "none")
     r = client.post("/api/chat", json={"message": "What is the exit load of HDFC Small Cap Fund?"}).json()
     assert r["type"] == "answer" and r["path"] == "fact"
     assert r["source_url"].startswith("https://files.hdfcfund.com/") and r["last_updated"]

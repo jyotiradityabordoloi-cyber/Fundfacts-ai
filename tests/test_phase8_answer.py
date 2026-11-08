@@ -19,7 +19,7 @@ built = pytest.mark.skipif(not settings.paths.index_export.exists(), reason="run
 
 @pytest.fixture(autouse=True)
 def no_llm(monkeypatch):
-    monkeypatch.setattr(settings.llm, "api_key", "")
+    monkeypatch.setattr(settings.llm, "provider", "none")
 
 
 # ------------------------------------------------------------------ guardrails
@@ -132,12 +132,12 @@ def test_eval_set_meets_targets():
 
 
 @built
-def test_claude_path_is_verified(monkeypatch):
-    """A fake Claude that invents a number is rejected; a grounded one is accepted."""
-    from fundfacts.llm import claude_client
+def test_llm_path_is_verified(monkeypatch):
+    """A fake LLM (any provider) that invents a number is rejected; a grounded answer is accepted."""
+    from fundfacts.llm import router
     from fundfacts.query import answer as ans
 
-    monkeypatch.setattr(claude_client, "enabled", lambda: True)
+    monkeypatch.setattr(router, "enabled", lambda: True)
     holder = {}
 
     def fake_generate(system, user):
@@ -145,7 +145,7 @@ def test_claude_path_is_verified(monkeypatch):
         holder["cid"] = cid
         return json.dumps({"answer": holder["text"], "chunk_id": cid})
 
-    monkeypatch.setattr(claude_client, "generate", fake_generate)
+    monkeypatch.setattr(router, "generate", fake_generate)
     holder["text"] = "NAV stands for Net Asset Value and is 99.99% accurate."  # ungrounded number
     bad = ans.answer("What is NAV?")
     assert "99.99" not in bad.text

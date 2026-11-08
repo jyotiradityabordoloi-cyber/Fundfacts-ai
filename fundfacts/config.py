@@ -72,15 +72,33 @@ class Retrieval(BaseModel):
 
 
 class LLM(BaseModel):
-    model: str
+    provider: Literal["auto", "gemini", "anthropic", "none"] = "auto"
+    gemini_model: str = "gemini-2.5-flash"
+    anthropic_model: str = "claude-haiku-5-5"
     temperature: float = Field(0.1, ge=0, le=1)
     max_tokens: int = Field(400, gt=0)
     timeout_s: int = Field(30, gt=0)
-    api_key: str = ""  # from ANTHROPIC_API_KEY only
+    gemini_api_key: str = ""     # from GEMINI_API_KEY only (free tier: aistudio.google.com)
+    anthropic_api_key: str = ""  # from ANTHROPIC_API_KEY only
+
+    @property
+    def active(self) -> str | None:
+        """The provider that will actually be used, or None (free mode: facts + verified quotes)."""
+        if self.provider == "none":
+            return None
+        if self.provider in ("auto", "gemini") and self.gemini_api_key:
+            return "gemini"
+        if self.provider in ("auto", "anthropic") and self.anthropic_api_key:
+            return "anthropic"
+        return None
 
     @property
     def enabled(self) -> bool:
-        return bool(self.api_key)
+        return self.active is not None
+
+    @property
+    def model(self) -> str | None:
+        return {"gemini": self.gemini_model, "anthropic": self.anthropic_model}.get(self.active or "")
 
 
 class Answer(BaseModel):
@@ -107,8 +125,11 @@ ENV_OVERRIDES = {
     "VECTOR_DB": ("vector_db", "backend"),
     "TOP_K": ("retrieval", "top_k"),
     "MIN_SIMILARITY": ("retrieval", "min_similarity"),
-    "CLAUDE_MODEL": ("llm", "model"),
-    "ANTHROPIC_API_KEY": ("llm", "api_key"),
+    "LLM_PROVIDER": ("llm", "provider"),
+    "GEMINI_MODEL": ("llm", "gemini_model"),
+    "GEMINI_API_KEY": ("llm", "gemini_api_key"),
+    "CLAUDE_MODEL": ("llm", "anthropic_model"),
+    "ANTHROPIC_API_KEY": ("llm", "anthropic_api_key"),
 }
 
 
@@ -134,5 +155,7 @@ settings = get_settings()
 
 if __name__ == "__main__":
     dump = settings.model_dump(mode="json")
-    dump["llm"]["api_key"] = "set" if settings.llm.api_key else "not set"
+    for k in ("gemini_api_key", "anthropic_api_key"):
+        dump["llm"][k] = "set" if getattr(settings.llm, k) else "not set"
+    dump["llm"]["active_provider"] = settings.llm.active or "none (free mode: exact facts + verified quotes)"
     print(yaml.safe_dump(dump, sort_keys=False))

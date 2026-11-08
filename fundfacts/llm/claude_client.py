@@ -1,4 +1,4 @@
-"""Step 4 - Claude (Anthropic Messages API) over httpx. The only LLM provider."""
+"""Anthropic Claude (Messages API) over httpx - optional, paid. Set ANTHROPIC_API_KEY."""
 from __future__ import annotations
 
 import re
@@ -6,33 +6,27 @@ import re
 import httpx
 
 from fundfacts.config import settings
+from fundfacts.llm.base import LLMUnavailable
 
 API_URL = "https://api.anthropic.com/v1/messages"
 
 
-class LLMUnavailable(RuntimeError):
-    """No API key, or the API call failed - the caller falls back to an extractive answer."""
-
-
-def enabled() -> bool:
-    return settings.llm.enabled
-
-
 def generate(system: str, user: str) -> str:
-    if not settings.llm.api_key:
+    cfg = settings.llm
+    if not cfg.anthropic_api_key:
         raise LLMUnavailable("ANTHROPIC_API_KEY is not set")
     try:
         r = httpx.post(
             API_URL,
-            headers={"x-api-key": settings.llm.api_key, "anthropic-version": "2023-06-01", "content-type": "application/json"},
+            headers={"x-api-key": cfg.anthropic_api_key, "anthropic-version": "2023-06-01", "content-type": "application/json"},
             json={
-                "model": settings.llm.model,
-                "max_tokens": settings.llm.max_tokens,
-                "temperature": settings.llm.temperature,
+                "model": cfg.anthropic_model,
+                "max_tokens": cfg.max_tokens,
+                "temperature": cfg.temperature,
                 "system": system,
                 "messages": [{"role": "user", "content": user}],
             },
-            timeout=settings.llm.timeout_s,
+            timeout=cfg.timeout_s,
         )
         r.raise_for_status()
     except httpx.HTTPError as exc:

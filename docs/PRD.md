@@ -81,7 +81,7 @@ Answer factual questions about five HDFC Mutual Fund schemes in **three sentence
 | **FR9** | Handle unknown or off-topic questions | Must | "Not in my sources" message + AMC/AMFI link |
 | **FR10** | Explainable retrieval | Should | Each response includes evidence (passage ids, scores, short quote), shown in a "Why this answer" panel |
 | **FR11** | Minimal UI | Must | Welcome line, 3 example questions, note "Facts-only. No investment advice." |
-| **FR12** | Claude as the LLM, model configurable | Must | Claude model name set via config/env without code changes |
+| **FR12** | Configurable LLM, free by default | Must | Google Gemini free tier by default, Claude optional, no-LLM mode with no key; provider and model set via config/env without code changes |
 | **FR13** | Works without an LLM key | Should | Structured-fact answers and extractive fallback still return cited answers |
 | **FR14** | Re-runnable ingestion, each stage saved | Must | Raw → parsed → facts → chunks → embeddings → ChromaDB, all persisted with a build report |
 

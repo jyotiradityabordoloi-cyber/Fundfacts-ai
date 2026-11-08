@@ -37,7 +37,7 @@ RAG pipeline in which every stage writes its output to disk, so each step can be
 2. **Intent.** Rules work out which scheme and which fact are being asked about.
 3. **Exact fact lookup.** If the fact is in the fact table, the answer comes from that quoted line, with no AI writing.
 4. **Retrieval.** ChromaDB search with the same embedding model, with an explained re-rank.
-5. **Writing the answer.** **Claude** writes it from the retrieved passages only. Without an API key, the best sentences are quoted verbatim instead.
+5. **Writing the answer.** An LLM writes it from the retrieved passages only: **Google Gemini (free tier)** by default, or Claude if you configure it. Without any key, the best sentences are quoted verbatim instead, also free.
 6. **Verifier.**
    - The cited passage must have been retrieved.
    - The URL must be in the source registry.
@@ -67,7 +67,7 @@ pip install -r requirements-ingest.txt
 copy .env.example .env
 ```
 
-Optionally, put your `ANTHROPIC_API_KEY` in `.env`. Without a key, the app quotes its sources verbatim instead of letting Claude write the answer.
+Optionally, add a **free Gemini key** to `.env` as `GEMINI_API_KEY=...`. Create one at https://aistudio.google.com/app/apikey (no credit card needed). Without a key, the app quotes its sources verbatim instead of letting an LLM write the answer.
 
 ```bash
 uvicorn api.index:app --port 8000
@@ -91,13 +91,14 @@ python scripts/make_docs.py
 python -m pytest -q
 ```
 
-There are 145 tests covering:
+There are 158 tests covering:
 - configuration and the source registry
 - scraping, loading and the removal of performance text
 - every hand-checked fact value
 - chunking, and that ChromaDB matches the Vercel export
 - ONNX vs sentence-transformers parity
 - guardrails, the verifier, edge cases and the API
+- LLM provider selection, the Gemini request format and quota fallback
 
 The evaluation set in [eval/questions.yaml](eval/questions.yaml) has **40 questions**, run without an LLM:
 
@@ -116,24 +117,24 @@ The web page is static (`public/index.html`) and the API is a Python function (`
 Steps:
 1. Push this repository to GitHub.
 2. In Vercel, choose **Add New… → Project** and import the repository. Set **Framework Preset: Other**, with no build command.
-3. Optional: under **Settings → Environment Variables**, add `ANTHROPIC_API_KEY` (and `CLAUDE_MODEL` to override the default `claude-haiku-5-5`).
+3. Optional: under **Settings → Environment Variables**, add `GEMINI_API_KEY` (free, from Google AI Studio) so Gemini writes general-concept answers. Without it the app still works, for free.
 4. Click **Deploy**. The first question after the app has been idle downloads the ONNX model (about 90 MB) into `/tmp`, so it takes a few seconds.
 
 After that, every push to `main` redeploys automatically.
 
 ## Configuration
-Everything is in [`config.yaml`](config.yaml), with environment overrides: `CLAUDE_MODEL`, `ANTHROPIC_API_KEY`, `EMBEDDING_BACKEND`, `VECTOR_DB`, `TOP_K`, `MIN_SIMILARITY`. Secrets live only in `.env` and in Vercel's environment variables, never in the repository.
+Everything is in [`config.yaml`](config.yaml), with environment overrides: `LLM_PROVIDER` (auto | gemini | anthropic | none), `GEMINI_API_KEY`, `GEMINI_MODEL` (default `gemini-2.5-flash`), `ANTHROPIC_API_KEY`, `CLAUDE_MODEL`, `EMBEDDING_BACKEND`, `VECTOR_DB`, `TOP_K`, `MIN_SIMILARITY`. In `auto` mode, Gemini is used if its key is set, then Claude, otherwise the free no-LLM mode. Secrets live only in `.env` and in Vercel's environment variables, never in the repository.
 
 ## Privacy and safety
 - **Personal data:** PAN, Aadhaar, phone numbers, emails, OTPs and account/folio numbers are refused before any processing, and never echoed back.
-- **Nothing is stored:** questions are not logged, stored or sent anywhere except, after the guardrails pass, to Claude.
+- **Nothing is stored:** questions are not logged or stored. They're only sent to the configured LLM, and only after the guardrails pass. On Gemini's free tier, Google may use prompts to improve its products. Only the question and public document passages are ever sent.
 - **No performance figures:** returns tables are removed from documents during loading. Return questions are refused with a link to the official document.
 
 ## Known limits
 - **Seven facts are missing.** Minimum SIP is missing for 4 schemes and the riskometer for 3, because they're only stated in the schemes' Scheme Summary Documents, which sit behind the blocked `www.hdfcfund.com`. The assistant says "not found" instead of guessing. Saving those PDFs into `data/manual/` and re-running the pipeline fills the gaps.
 - **Snapshot data.** Facts come from documents dated 21 Nov 2025 (SIDs), 28 Nov 2025 (KIM) and 30 Sep 2026 (factsheet). Re-run the pipeline when new documents are published.
 - **Regex guardrails.** Guardrails and intent detection are rule-based. Unusual phrasing may be refused unnecessarily, or routed to search instead of the exact fact table.
-- **Quoted answers without Claude.** Without an API key, general questions get correct but verbatim answers. The "how to download a statement" pages need the two manual downloads.
+- **Quoted answers without an LLM key.** Without a key, general questions get correct but verbatim answers. If the free Gemini quota runs out, the app falls back to verified quotes automatically. The "how to download a statement" pages need the two manual downloads.
 - **Five schemes only.** Other HDFC schemes and other fund houses are politely declined.
 
 ## Project structure
@@ -142,7 +143,7 @@ api/index.py              FastAPI app (Vercel function)
 public/index.html         web UI
 fundfacts/ingest/         fetch, load, extract_facts, chunk, embed, store
 fundfacts/query/          guardrails, intent, fact_lookup, retriever, verifier, answer
-fundfacts/llm/            Claude client
+fundfacts/llm/            Gemini (free) and Claude clients + provider router
 config.yaml  sources.yaml configuration and source registry
 data/  vector_store/      every pipeline stage's output
 tests/  eval/             tests and the gold evaluation set

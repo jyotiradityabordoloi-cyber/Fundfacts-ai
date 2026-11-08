@@ -11,7 +11,7 @@ pytestmark = pytest.mark.skipif(not settings.paths.index_export.exists(), reason
 
 @pytest.fixture(autouse=True)
 def no_llm(monkeypatch):
-    monkeypatch.setattr(settings.llm, "api_key", "")
+    monkeypatch.setattr(settings.llm, "provider", "none")
 
 
 def test_empty_and_whitespace():

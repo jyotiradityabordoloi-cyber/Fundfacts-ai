@@ -18,12 +18,15 @@ def test_config_loads_and_resolves_paths():
 def test_env_override(monkeypatch):
     monkeypatch.setenv("TOP_K", "6")
     monkeypatch.setenv("CLAUDE_MODEL", "claude-sonnet-5-5")
+    monkeypatch.setenv("GEMINI_MODEL", "gemini-2.0-flash")
     s = load_settings()
-    assert s.retrieval.top_k == 6 and s.llm.model == "claude-sonnet-5-5"
+    assert s.retrieval.top_k == 6 and s.llm.anthropic_model == "claude-sonnet-5-5" and s.llm.gemini_model == "gemini-2.0-flash"
 
 
-def test_api_key_never_printed_in_defaults():
-    assert settings.llm.api_key in ("", settings.llm.api_key)  # loaded only from env
+def test_api_keys_come_only_from_env():
+    import yaml
+    raw = yaml.safe_load((settings.paths.sources.parent / "config.yaml").read_text(encoding="utf-8"))
+    assert not any("api_key" in k for k in raw["llm"])  # keys are never in config.yaml
 
 
 def test_five_schemes():

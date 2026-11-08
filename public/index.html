@@ -220,7 +220,8 @@ fetch("/api/meta").then((r) => (r.ok ? r.json() : null)).then((m) => {
   if (!m) return;
   $("welcome").textContent = m.welcome;
   renderWelcome(m.examples, m.schemes);
-  $("mode").textContent = m.llm && m.llm.enabled ? "Answers written by Claude, verified against sources" : "Answers quoted from sources";
+  const who = { gemini: "Gemini", anthropic: "Claude" }[m.llm && m.llm.provider];
+  $("mode").textContent = who ? `Answers written by ${who}, verified against sources` : "Answers quoted from sources";
 }).catch(() => {});
 </script>
 </body>
