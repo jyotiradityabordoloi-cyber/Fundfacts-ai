@@ -4,7 +4,7 @@ FundFacts AI is a facts-only mutual fund FAQ assistant for five HDFC Mutual Fund
 
 > **Facts-only. No investment advice.** This is an independent student project inspired by the Groww product experience. It is not affiliated with Groww or HDFC Mutual Fund.
 
-**Status:** Phases 1-4 of 10 are complete: config, scraping (`python -m fundfacts.ingest.fetch`), loading (`python -m fundfacts.ingest.load`, performance sections removed) and fact extraction (`python -m fundfacts.ingest.extract_facts` → `data/facts/facts.json`, 43/50 facts found with page + quote).
+**Status:** Phases 1-5 of 10 are complete: config, scraping (`python -m fundfacts.ingest.fetch`), loading (`python -m fundfacts.ingest.load`, performance sections removed) and fact extraction (`python -m fundfacts.ingest.extract_facts` → `data/facts/facts.json`, 43/50 facts found with page + quote), and chunking (`python -m fundfacts.ingest.chunk` → `data/chunks/chunks.json`, 2,029 chunks incl. 43 fact cards).
 
 ## Docs
 - [Problem statement](docs/ProblemStatement.txt)
