@@ -1,0 +1,10 @@
+{
+  "rewrites": [{ "source": "/api/(.*)", "destination": "/api/index" }],
+  "functions": {
+    "api/index.py": {
+      "maxDuration": 60,
+      "memory": 1024,
+      "includeFiles": "{fundfacts/**,config.yaml,sources.yaml,vector_store/index.json,data/facts/facts.json}"
+    }
+  }
+}

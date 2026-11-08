@@ -161,8 +161,8 @@ def _rag_answer(question: str, it: intent_mod.Intent) -> Answer | None:
         check = verifier.verify(text, hit.chunk_id, hit.meta["url"], set(by_id), hit.text)
         if check.ok and text:
             return Answer(type=AnswerType.ANSWER, text=text, source_url=hit.meta["url"],
-                          source_title=f"{hit.meta['title']}, page {hit.meta['page']}" if str(hit.meta.get("doc_type")) != "article"
-                          else hit.meta["title"], last_updated=_ist(hit.meta["fetched_at"]), path="rag",
+                          source_title=hit.meta["title"] if hit.meta.get("kind") == "prose"  # web pages have no page numbers
+                          else f"{hit.meta['title']}, page {hit.meta['page']}", last_updated=_ist(hit.meta["fetched_at"]), path="rag",
                           evidence=_evidence(hits))
     return None
 

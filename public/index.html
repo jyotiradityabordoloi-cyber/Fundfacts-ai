@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FundFacts AI</title>
+<meta name="description" content="Facts-only answers about five HDFC Mutual Fund schemes, each with one official source. No investment advice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2300b386'/%3E%3Cpath d='M9 22V10h10M9 16h7' stroke='white' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --brand: #00b386; --brand-strong: #008f6b; --brand-soft: #e6f7f2;
+    --ink: #1f2130; --text: #44475b; --muted: #7c7e8c;
+    --bg: #f5f6f8; --card: #ffffff; --line: #e6e7eb; --chip: #f5f6f8;
+    --warn-bg: #fff7e8; --warn-line: #f2c46b; --warn-ink: #8a5a00;
+    --user: #00b386; --user-ink: #ffffff; --code: #f0f1f4;
+    --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 4px 16px rgba(16, 24, 40, .05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --brand: #18c79b; --brand-strong: #3fdcb2; --brand-soft: #10352c;
+      --ink: #f3f4f7; --text: #c9cbd6; --muted: #9597a6;
+      --bg: #111216; --card: #1a1c22; --line: #2b2e37; --chip: #22252d;
+      --warn-bg: #2b2313; --warn-line: #7a5c1c; --warn-ink: #f0c66b;
+      --user: #13a882; --user-ink: #ffffff; --code: #22252d;
+      --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    --brand: #18c79b; --brand-strong: #3fdcb2; --brand-soft: #10352c;
+    --ink: #f3f4f7; --text: #c9cbd6; --muted: #9597a6;
+    --bg: #111216; --card: #1a1c22; --line: #2b2e37; --chip: #22252d;
+    --warn-bg: #2b2313; --warn-line: #7a5c1c; --warn-ink: #f0c66b;
+    --user: #13a882; --user-ink: #ffffff; --code: #22252d;
+    --shadow: none;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body { background: var(--bg); color: var(--text); font: 15px/1.6 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color: var(--brand-strong); }
+  .app { max-width: 780px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; padding: 0 16px; }
+
+  header { display: flex; align-items: center; gap: 12px; padding: 18px 0 14px; }
+  .logo { width: 40px; height: 40px; border-radius: 11px; background: var(--brand); display: grid; place-items: center; flex: none; }
+  .logo svg { width: 22px; height: 22px; }
+  header h1 { margin: 0; font-size: 19px; line-height: 1.2; color: var(--ink); font-weight: 700; letter-spacing: -.01em; }
+  header p { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
+  .badge { margin-left: auto; font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 999px; background: var(--brand-soft); color: var(--brand-strong); white-space: nowrap; }
+
+  .notice { display: flex; gap: 10px; align-items: flex-start; padding: 11px 14px; border: 1px solid var(--warn-line); background: var(--warn-bg); color: var(--warn-ink); border-radius: 12px; font-size: 13.5px; }
+  .notice svg { flex: none; margin-top: 2px; }
+  .notice strong { font-weight: 600; }
+
+  main { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 16px 0 8px; }
+  .welcome { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); }
+  .welcome h2 { margin: 0 0 6px; font-size: 17px; line-height: 1.4; color: var(--ink); font-weight: 600; }
+  .welcome p { margin: 0 0 14px; font-size: 14px; color: var(--muted); }
+  .chips { display: flex; flex-direction: column; gap: 8px; }
+  .chip { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; border: 1px solid var(--line); background: var(--chip); color: var(--ink); border-radius: 12px; padding: 11px 14px; font: inherit; font-size: 14px; cursor: pointer; transition: border-color .15s, background .15s; }
+  .chip:hover, .chip:focus-visible { border-color: var(--brand); background: var(--brand-soft); outline: none; }
+  .chip svg { flex: none; color: var(--brand-strong); }
+  .scope { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12.5px; color: var(--muted); }
+  .scope span.pill { border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; color: var(--text); }
+
+  .msg { max-width: 90%; border-radius: 16px; padding: 12px 15px; animation: in .18s ease-out; }
+  @keyframes in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .msg.user { align-self: flex-end; background: var(--user); color: var(--user-ink); border-bottom-right-radius: 5px; }
+  .msg.bot { align-self: flex-start; background: var(--card); color: var(--ink); border: 1px solid var(--line); border-bottom-left-radius: 5px; box-shadow: var(--shadow); }
+  .msg.bot.refusal { border-left: 4px solid var(--warn-line); }
+  .msg.bot.notfound { border-left: 4px solid var(--muted); }
+  .tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--warn-ink); background: var(--warn-bg); border-radius: 6px; padding: 1px 7px; margin-bottom: 6px; }
+  .notfound .tag { color: var(--muted); background: var(--chip); }
+  .meta { margin-top: 10px; padding-top: 9px; border-top: 1px dashed var(--line); font-size: 12.5px; color: var(--muted); display: grid; gap: 3px; }
+  .meta a { font-weight: 500; text-decoration: none; word-break: break-word; }
+  .meta a:hover { text-decoration: underline; }
+  details { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
+  summary { cursor: pointer; width: fit-content; color: var(--text); font-weight: 500; }
+  summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 4px; }
+  .ev { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+  .ev li { background: var(--code); border-radius: 8px; padding: 7px 9px; }
+  .ev .id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; color: var(--text); word-break: break-all; }
+  .ev .q { display: block; margin-top: 3px; color: var(--muted); }
+  .typing { color: var(--muted); display: flex; gap: 5px; align-items: center; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: blink 1s infinite; }
+  .dot:nth-child(2) { animation-delay: .15s; } .dot:nth-child(3) { animation-delay: .3s; }
+  @keyframes blink { 50% { opacity: .25; } }
+
+  form { position: sticky; bottom: 0; background: linear-gradient(to top, var(--bg) 75%, transparent); padding: 14px 0 10px; }
+  .bar { display: flex; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 6px; box-shadow: var(--shadow); }
+  .bar:focus-within { border-color: var(--brand); }
+  input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--ink); font: inherit; padding: 8px 10px; outline: none; }
+  input::placeholder { color: var(--muted); }
+  button.send { border: 0; background: var(--brand); color: #fff; font: inherit; font-weight: 600; padding: 0 18px; border-radius: 10px; cursor: pointer; }
+  button.send:disabled { opacity: .55; cursor: default; }
+  .hint { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted); padding: 6px 4px 0; }
+  footer { font-size: 11.5px; color: var(--muted); text-align: center; padding: 4px 0 16px; line-height: 1.5; }
+  @media (max-width: 560px) { .badge { display: none; } .msg { max-width: 100%; } header h1 { font-size: 17px; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M6 19V5h11M6 12h8"/></svg>
+    </div>
+    <div>
+      <h1>FundFacts AI</h1>
+      <p>Facts about HDFC Mutual Fund schemes, from official documents</p>
+    </div>
+    <span class="badge">Facts-only</span>
+  </header>
+
+  <div class="notice" role="note">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+    <div><strong>Facts-only. No investment advice.</strong> Every answer cites one official source. Please don't enter PAN, Aadhaar, account or folio numbers, OTPs, emails or phone numbers.</div>
+  </div>
+
+  <main id="chat" aria-live="polite">
+    <section class="welcome" aria-labelledby="welcome">
+      <h2 id="welcome">Hi, I'm FundFacts AI. Ask me factual questions about five HDFC Mutual Fund schemes.</h2>
+      <p>Expense ratio, exit load, minimum investment, ELSS lock-in, riskometer, benchmark, fund manager, and statements. Try one:</p>
+      <div class="chips" id="chips"></div>
+      <div class="scope" id="scope"><span>Schemes:</span></div>
+    </section>
+  </main>
+
+  <form id="form" autocomplete="off">
+    <div class="bar">
+      <label for="q" class="sr-only" style="position:absolute;left:-9999px">Your question</label>
+      <input id="q" maxlength="500" placeholder="Ask a factual question, e.g. exit load of HDFC Mid Cap Fund">
+      <button class="send" id="send" type="submit">Ask</button>
+    </div>
+    <div class="hint"><span id="mode"></span><span id="count">0/500</span></div>
+  </form>
+  <footer id="disclaimer">Facts-only. No investment advice. Mutual fund investments are subject to market risks; read all scheme-related documents carefully. Independent student project, not affiliated with Groww or HDFC Mutual Fund.</footer>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const chat = $("chat"), form = $("form"), input = $("q"), send = $("send");
+const DEFAULT_EXAMPLES = [
+  "What is the expense ratio of HDFC Mid Cap Fund?",
+  "What is the lock-in period of HDFC ELSS Tax Saver?",
+  "What is the exit load of HDFC Small Cap Fund?",
+];
+const DEFAULT_SCHEMES = ["HDFC Large Cap Fund", "HDFC Flexi Cap Fund", "HDFC ELSS Tax Saver Fund", "HDFC Mid Cap Fund", "HDFC Small Cap Fund"];
+const TAGS = { refusal_advice: "Facts only", refusal_returns: "No performance claims", refusal_pii: "Privacy", not_found: "Not in my sources", error: "Error" };
+const ARROW = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function scrollDown() { window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }); }
+
+function renderWelcome(examples, schemes) {
+  const chips = $("chips"); chips.innerHTML = "";
+  examples.forEach((q) => { const b = el("button", "chip"); b.type = "button"; b.innerHTML = ARROW; b.append(q); b.onclick = () => ask(q); chips.appendChild(b); });
+  const scope = $("scope"); scope.querySelectorAll(".pill").forEach((p) => p.remove());
+  schemes.forEach((s) => scope.appendChild(el("span", "pill", s.replace("HDFC ", "").replace(" Fund", ""))));
+}
+
+function addUser(text) { chat.appendChild(el("div", "msg user", text)); scrollDown(); }
+
+function addBot(r) {
+  const kind = r.type === "answer" ? "" : r.type === "not_found" ? " notfound" : " refusal";
+  const box = el("div", "msg bot" + kind);
+  if (TAGS[r.type]) box.appendChild(el("span", "tag", TAGS[r.type]));
+  box.appendChild(el("div", "", r.text));
+  const meta = el("div", "meta");
+  if (r.source_url) {
+    const line = el("div", "", r.type === "answer" ? "Source: " : "Official link: ");
+    const a = el("a", "", r.source_title || r.source_url);
+    a.href = r.source_url; a.target = "_blank"; a.rel = "noopener noreferrer";
+    line.appendChild(a); meta.appendChild(line);
+  }
+  if (r.last_updated) meta.appendChild(el("div", "", "Last updated from sources: " + r.last_updated));
+  if (meta.childNodes.length) box.appendChild(meta);
+  if (r.evidence && r.evidence.length) {
+    const d = el("details"); d.appendChild(el("summary", "", "Why this answer"));
+    const how = r.path === "fact" ? "Exact fact lookup - answered from a quoted line of the source, no AI writing."
+             : "Retrieved passages, ranked by similarity (with explained adjustments); the answer was checked against the cited passage.";
+    d.appendChild(el("div", "", how));
+    const ul = el("ul", "ev");
+    r.evidence.forEach((e) => {
+      const li = el("li");
+      li.appendChild(el("span", "id", `${e.chunk_id}  ·  score ${e.score.toFixed(3)}` +
+        (e.adjustments && Object.keys(e.adjustments).length ? "  ·  " + Object.entries(e.adjustments).map(([k, v]) => `${k} ${v}`).join(", ") : "")));
+      li.appendChild(el("span", "q", "“" + e.quote + (e.quote.length >= 220 ? "…" : "") + "”"));
+      ul.appendChild(li);
+    });
+    d.appendChild(ul); box.appendChild(d);
+  }
+  chat.appendChild(box); scrollDown();
+}
+
+async function ask(q) {
+  q = (q || "").trim();
+  if (!q) return;
+  input.value = ""; $("count").textContent = "0/500"; send.disabled = true;
+  addUser(q);
+  const typing = el("div", "msg bot typing");
+  typing.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span><span>Checking official sources…</span>';
+  chat.appendChild(typing); scrollDown();
+  try {
+    const res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: q }) });
+    const r = await res.json();
+    typing.remove();
+    addBot(res.ok ? r : { type: "error", text: "Sorry, I couldn't process that. Please keep questions under 500 characters and try again." });
+  } catch (e) {
+    typing.remove();
+    addBot({ type: "error", text: "Sorry, something went wrong. Please try again in a moment." });
+  } finally { send.disabled = false; input.focus(); }
+}
+
+form.addEventListener("submit", (e) => { e.preventDefault(); ask(input.value); });
+input.addEventListener("input", () => { $("count").textContent = `${input.value.length}/500`; });
+
+renderWelcome(DEFAULT_EXAMPLES, DEFAULT_SCHEMES);
+fetch("/api/meta").then((r) => (r.ok ? r.json() : null)).then((m) => {
+  if (!m) return;
+  $("welcome").textContent = m.welcome;
+  renderWelcome(m.examples, m.schemes);
+  $("mode").textContent = m.llm && m.llm.enabled ? "Answers written by Claude, verified against sources" : "Answers quoted from sources";
+}).catch(() => {});
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+# Keep the serverless bundle small: only the runtime needs code, config, the exported index and facts.
+.venv
+.cache
+data/raw
+data/manual
+data/docs
+data/chunks
+data/embeddings
+vector_store/chroma
+tests
+eval
+scripts
+docs

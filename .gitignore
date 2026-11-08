@@ -8,3 +8,5 @@ __pycache__/
 
 # >50 MB raw file; re-download with: python -m fundfacts.ingest.fetch (sha256 in manifest)
 data/raw/hdfc_common_equity_kim.pdf
+
+.claude/
