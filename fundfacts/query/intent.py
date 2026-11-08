@@ -57,7 +57,7 @@ def detect_fields(query: str) -> list[FactField]:
 
 
 def detect(query: str) -> Intent:
-    from fundfacts.ingest.parse_pdf import DOC_NAME_PATTERNS
+    from fundfacts.schemes import DOC_NAME_PATTERNS
 
     fields = detect_fields(query)
     # A full HDFC scheme name decides first: "HDFC Large & Mid Cap Fund" must not be read as "Mid Cap".

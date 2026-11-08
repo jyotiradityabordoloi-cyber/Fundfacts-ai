@@ -22,7 +22,7 @@ from typing import Callable
 
 from fundfacts.config import settings
 from fundfacts.ingest.load import parse_date
-from fundfacts.ingest.parse_pdf import DOC_NAME_PATTERNS
+from fundfacts.schemes import DOC_NAME_PATTERNS
 from fundfacts.schemas import Document, Fact, FactField
 from fundfacts.schemes import SCHEMES
 

@@ -28,6 +28,17 @@ SCHEMES: dict[str, Scheme] = {s.scheme_id: s for s in [
 
 PLAN_LABEL = "Direct Plan - Growth Option"
 
+# Scheme names as printed in HDFC documents (incl. former names). Used by ingestion to tag pages
+# and by intent detection to recognise full scheme names - kept here so the serverless runtime
+# needs no PDF libraries.
+DOC_NAME_PATTERNS: dict[str, re.Pattern] = {
+    "hdfc_large_cap": re.compile(r"HDFC\s+Large\s+Cap\s+Fund|HDFC\s+Top\s+100", re.I),
+    "hdfc_flexi_cap": re.compile(r"HDFC\s+Flexi\s+Cap\s+Fund|HDFC\s+Equity\s+Fund", re.I),
+    "hdfc_elss": re.compile(r"HDFC\s+ELSS\s*-?\s*T\s?ax\s*saver|HDFC\s+TaxSaver", re.I),  # PDFs sometimes print "T ax"
+    "hdfc_mid_cap": re.compile(r"HDFC\s+Mid[\s-]*Cap\s+(Opportunities\s+)?Fund", re.I),
+    "hdfc_small_cap": re.compile(r"HDFC\s+Small\s+Cap\s+Fund", re.I),
+}
+
 
 def detect_scheme(text: str) -> str | None:
     """Return the scheme_id named in `text` (longest matching alias wins)."""

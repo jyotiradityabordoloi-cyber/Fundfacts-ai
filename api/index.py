@@ -14,6 +14,7 @@ import json
 import os
 import re
 import sys
+import traceback
 from urllib.parse import parse_qsl, urlencode
 from functools import lru_cache
 from pathlib import Path
@@ -107,7 +108,9 @@ def chat(body: ChatIn):
 
 
 @app.exception_handler(Exception)
-async def unexpected(request, exc):  # never leak internals (or the question) in an error
+async def unexpected(request, exc):  # never leak internals (or the question) to the client
+    # Server log only: the error type and stack trace - never the request body (the user's question).
+    traceback.print_exception(type(exc), exc, exc.__traceback__, file=sys.stderr)
     return JSONResponse(status_code=500, content={"type": "error", "text": "Something went wrong. Please try again."})
 
 

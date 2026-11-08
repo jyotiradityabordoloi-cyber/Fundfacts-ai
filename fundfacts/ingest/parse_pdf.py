@@ -119,14 +119,9 @@ def scheme_mentions(text: str, patterns: dict[str, re.Pattern]) -> list[str]:
     return [sid for sid, pat in patterns.items() if pat.search(text)]
 
 
-# Names as printed in HDFC documents (incl. former names).
-DOC_NAME_PATTERNS = {
-    "hdfc_large_cap": re.compile(r"HDFC\s+Large\s+Cap\s+Fund|HDFC\s+Top\s+100", re.I),
-    "hdfc_flexi_cap": re.compile(r"HDFC\s+Flexi\s+Cap\s+Fund|HDFC\s+Equity\s+Fund", re.I),
-    "hdfc_elss": re.compile(r"HDFC\s+ELSS\s*-?\s*T\s?ax\s*saver|HDFC\s+TaxSaver", re.I),  # PDFs sometimes print "T ax"
-    "hdfc_mid_cap": re.compile(r"HDFC\s+Mid[\s-]*Cap\s+(Opportunities\s+)?Fund", re.I),
-    "hdfc_small_cap": re.compile(r"HDFC\s+Small\s+Cap\s+Fund", re.I),
-}
+# Names as printed in HDFC documents live in fundfacts/schemes.py (no PDF dependency, so the
+# serverless runtime can use them); re-exported here for the ingestion code.
+from fundfacts.schemes import DOC_NAME_PATTERNS  # noqa: E402
 
 
 HDFC_SCHEME_HEADER = re.compile(r"^HDFC\s+\S", re.M)
