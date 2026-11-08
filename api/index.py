@@ -12,14 +12,16 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
+from urllib.parse import parse_qsl, urlencode
 from functools import lru_cache
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from fastapi import FastAPI, Request  # noqa: E402
+from fastapi import FastAPI  # noqa: E402
 from fastapi.responses import JSONResponse  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
 
@@ -39,6 +41,31 @@ DISCLAIMER = ("Facts-only. No investment advice. Answers come only from official
               "carefully. Independent student project, not affiliated with Groww or HDFC Mutual Fund.")
 
 app = FastAPI(title="FundFacts AI", version="1.0", docs_url="/api/docs", openapi_url="/api/openapi.json")
+
+
+class VercelRouteMiddleware:
+    """Restore the original route on Vercel.
+
+    vercel.json rewrites /api/<route> to /api/index?__route=<route>, and the function only sees
+    the rewrite target (/api/index). This puts /api/<route> back so FastAPI routing works.
+    Plain ASGI middleware: it touches only the path and the query string.
+    """
+
+    def __init__(self, inner):
+        self.inner = inner
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] == "http" and scope.get("path") == "/api/index":
+            params = parse_qsl((scope.get("query_string") or b"").decode(), keep_blank_values=True)
+            route = next((v for k, v in params if k == "__route"), None)
+            if route is not None and re.fullmatch(r"[A-Za-z0-9_./-]{0,64}", route) and ".." not in route:
+                rest = urlencode([(k, v) for k, v in params if k != "__route"])
+                scope = {**scope, "path": f"/api/{route}", "raw_path": f"/api/{route}".encode(),
+                         "query_string": rest.encode()}
+        await self.inner(scope, receive, send)
+
+
+app.add_middleware(VercelRouteMiddleware)
 
 
 class ChatIn(BaseModel):
@@ -77,16 +104,6 @@ def meta():
 @app.post("/api/chat", response_model=Answer)
 def chat(body: ChatIn):
     return answer(body.message)
-
-
-@app.api_route("/{full_path:path}", methods=["GET", "POST"], include_in_schema=False)
-def _route_debug(full_path: str, request: Request):  # TEMPORARY: shows how Vercel passes paths
-    keep = ("x-vercel", "x-forwarded", "x-matched", "x-now", "x-real")
-    return JSONResponse(status_code=404, content={
-        "detail": "Not Found", "path": request.url.path, "root_path": request.scope.get("root_path"),
-        "raw_path": (request.scope.get("raw_path") or b"").decode(errors="replace"),
-        "headers": {k: v for k, v in request.headers.items() if k.startswith(keep)},
-    })
 
 
 @app.exception_handler(Exception)

@@ -63,3 +63,20 @@ def test_vercel_bundle_includes_runtime_files():
         assert f in inc
     req = (ROOT / "requirements.txt").read_text()
     assert "torch" not in req and "sentence-transformers" not in req and "chromadb" not in req
+
+
+# ------------------------------------------------------------------ Vercel rewrite (/api/x -> /api/index?__route=x)
+def test_vercel_rewrite_restores_route(client):
+    assert client.get("/api/index?__route=health").json() == {"status": "ok"}
+    assert client.get("/api/index?__route=meta").json()["name"] == "FundFacts AI"
+    assert client.post("/api/index?__route=chat", json={"message": ""}).status_code == 422  # reached /api/chat
+
+
+@pytest.mark.parametrize("bad", ["../secret", "a b", "x" * 65])
+def test_vercel_rewrite_rejects_odd_routes(client, bad):
+    assert client.get(f"/api/index?__route={bad}").status_code == 404
+
+
+def test_no_debug_route_leaks_headers(client):
+    r = client.get("/api/does-not-exist", headers={"x-vercel-oidc-token": "secret"})
+    assert r.status_code == 404 and "secret" not in r.text
