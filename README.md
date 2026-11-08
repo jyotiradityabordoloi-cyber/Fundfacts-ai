@@ -4,7 +4,7 @@
 
 > **Facts-only. No investment advice.** An independent student project inspired by the Groww product experience. It is not affiliated with Groww or HDFC Mutual Fund.
 
-- **Live app:** _add your Vercel URL here after deployment_
+- **Live app:** https://fundfacts-ai-ten.vercel.app (the 40-question evaluation scores 40/40 against the live deployment)
 - **Deliverables:**
   - [SOURCES.md](SOURCES.md) and [sources.csv](sources.csv): the source list
   - [SAMPLE_QA.md](SAMPLE_QA.md): real answers and refusals
@@ -91,7 +91,7 @@ python scripts/make_docs.py
 python -m pytest -q
 ```
 
-There are 158 tests covering:
+There are 164 tests covering:
 - configuration and the source registry
 - scraping, loading and the removal of performance text
 - every hand-checked fact value
@@ -99,6 +99,7 @@ There are 158 tests covering:
 - ONNX vs sentence-transformers parity
 - guardrails, the verifier, edge cases and the API
 - LLM provider selection, the Gemini request format and quota fallback
+- running the API with only the Vercel runtime requirements installed
 
 The evaluation set in [eval/questions.yaml](eval/questions.yaml) has **40 questions**, run without an LLM:
 
