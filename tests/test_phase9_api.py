@@ -80,3 +80,52 @@ def test_vercel_rewrite_rejects_odd_routes(client, bad):
 def test_no_debug_route_leaks_headers(client):
     r = client.get("/api/does-not-exist", headers={"x-vercel-oidc-token": "secret"})
     assert r.status_code == 404 and "secret" not in r.text
+
+
+# ------------------------------------------------------------------ Explore schemes
+@built
+def test_schemes_endpoint_lists_five_fact_sheets(client):
+    s = client.get("/api/schemes").json()["schemes"]
+    assert [x["scheme_id"] for x in s] == ["hdfc_large_cap", "hdfc_flexi_cap", "hdfc_elss", "hdfc_mid_cap", "hdfc_small_cap"]
+    for x in s:
+        assert x["facts"] and x["questions"]
+        for f in x["facts"]:  # every shown fact is traceable to an official page
+            assert f["value"] and f["source_url"].startswith("https://") and "page" in f["source_title"]
+    mid = next(x for x in s if x["scheme_id"] == "hdfc_mid_cap")
+    assert "Minimum SIP" in mid["missing"]  # missing facts are listed, never filled
+    assert any(f["field"] == "expense_ratio" and "0.71%" in f["value"] for f in mid["facts"])
+
+
+@built
+def test_selected_scheme_applies_to_unnamed_fact_question(client, monkeypatch):
+    monkeypatch.setattr(settings.llm, "provider", "none")
+    r = client.post("/api/chat", json={"message": "What is the exit load?", "scheme_id": "hdfc_mid_cap"}).json()
+    assert r["type"] == "answer" and r["path"] == "fact" and "HDFC Mid Cap Fund" in r["text"]
+
+
+@built
+def test_scheme_named_in_question_beats_selection(client, monkeypatch):
+    monkeypatch.setattr(settings.llm, "provider", "none")
+    r = client.post("/api/chat", json={"message": "Exit load of HDFC Small Cap Fund?", "scheme_id": "hdfc_mid_cap"}).json()
+    assert "HDFC Small Cap Fund" in r["text"] and "Mid Cap" not in r["text"]
+
+
+@built
+def test_selection_does_not_hijack_concept_or_out_of_scope_questions(client, monkeypatch):
+    monkeypatch.setattr(settings.llm, "provider", "none")
+    nav = client.post("/api/chat", json={"message": "What is NAV?", "scheme_id": "hdfc_mid_cap"}).json()
+    assert "Mid Cap" not in nav["text"]
+    baf = client.post("/api/chat", json={"message": "Exit load of HDFC Balanced Advantage Fund?", "scheme_id": "hdfc_mid_cap"}).json()
+    assert baf["type"] == "not_found"
+
+
+@pytest.mark.parametrize("bad", ["HDFC MID", "x" * 41, "../etc"])
+def test_scheme_id_is_validated(client, bad):
+    assert client.post("/api/chat", json={"message": "exit load?", "scheme_id": bad}).status_code == 422
+
+
+def test_ui_has_explore_and_theme_toggle():
+    html = (ROOT / "public" / "index.html").read_text(encoding="utf-8")
+    for needle in ['id="exploreBtn"', 'aria-label="Explore schemes"', 'id="themeBtn"', "/api/schemes", "ff-theme",
+                   ':root[data-theme="dark"]', ':root[data-theme="light"]', "scheme_id"]:
+        assert needle in html, needle

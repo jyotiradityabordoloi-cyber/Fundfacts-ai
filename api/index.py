@@ -28,6 +28,7 @@ from pydantic import BaseModel, Field  # noqa: E402
 
 from fundfacts.config import settings  # noqa: E402
 from fundfacts.query.answer import answer  # noqa: E402
+from fundfacts.query.scheme_cards import scheme_cards  # noqa: E402
 from fundfacts.schemas import Answer  # noqa: E402
 from fundfacts.schemes import SCHEMES  # noqa: E402
 
@@ -71,6 +72,8 @@ app.add_middleware(VercelRouteMiddleware)
 
 class ChatIn(BaseModel):
     message: str = Field(..., min_length=1, max_length=settings.answer.max_question_chars)
+    # scheme picked in "Explore schemes"; used only when the question names no scheme itself
+    scheme_id: str | None = Field(None, max_length=40, pattern=r"^[a-z_]+$")
 
 
 @lru_cache(maxsize=1)
@@ -104,7 +107,13 @@ def meta():
 
 @app.post("/api/chat", response_model=Answer)
 def chat(body: ChatIn):
-    return answer(body.message)
+    return answer(body.message, scheme_hint=body.scheme_id)
+
+
+@app.get("/api/schemes")
+def schemes():
+    """Fact sheets for the five schemes (extracted facts with source, page and dates)."""
+    return {"schemes": scheme_cards()}
 
 
 @app.exception_handler(Exception)

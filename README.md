@@ -48,6 +48,11 @@ RAG pipeline in which every stage writes its output to disk, so each step can be
 
 Every response also lists its evidence (passage ids, scores, quote), shown in the UI as **"Why this answer"**.
 
+**In the UI:**
+- **Explore schemes** opens each scheme's fact sheet (every value with its source page and as-on date; missing facts listed, never guessed) with one-tap questions.
+- **Ask about this scheme** sets the scheme for follow-ups like "exit load?". A scheme named in the question still wins, and concept questions are unaffected.
+- **Theme toggle.** Black, green and white only: dark by default, with a light theme that is remembered per browser.
+
 ## Run it locally
 Requires Python 3.11+.
 
@@ -91,7 +96,7 @@ python scripts/make_docs.py
 python -m pytest -q
 ```
 
-There are 164 tests covering:
+There are 172 tests covering:
 - configuration and the source registry
 - scraping, loading and the removal of performance text
 - every hand-checked fact value

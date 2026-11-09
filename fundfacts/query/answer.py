@@ -168,13 +168,21 @@ def _rag_answer(question: str, it: intent_mod.Intent) -> Answer | None:
 
 
 # ------------------------------------------------------------------ entry point
-def answer(question: str) -> Answer:
+def answer(question: str, scheme_hint: str | None = None) -> Answer:
+    """Answer one question.
+
+    scheme_hint: the scheme selected in the UI ("Explore schemes"). It is used only when the
+    question asks for a scheme fact (e.g. "exit load?") without naming a scheme itself; a scheme
+    or fund house named in the question always wins.
+    """
     q = (question or "").strip()[: settings.answer.max_question_chars]
     if not q:
         return _not_found("Please type a question about one of the five HDFC schemes, for example its expense ratio "
                           "or exit load.", *FACTSHEET)
 
     it = intent_mod.detect(q)
+    if scheme_hint in SCHEMES and not it.scheme_id and not it.out_of_scope and it.fields:
+        it.scheme_id = scheme_hint
     url, title = _scheme_doc(it.scheme_id)
     verdict = guardrails.check(q, url if it.scheme_id else None, title if it.scheme_id else None)
     if not verdict.ok:

@@ -47,11 +47,16 @@ def source_of(fact: Fact):
     return _sources()[fact.source_id]
 
 
+def clean_value(value: str) -> str:
+    """Remove PDF bullet dashes at sentence starts ("... allotment. - No Exit Load ...")."""
+    return re.sub(r"(^|(?<=\.))\s*'?[-–]\s+(?=[A-Z])", " ", value).strip().rstrip(".")
+
+
 def render(fact: Fact) -> str:
     scheme = SCHEMES[fact.scheme_id].name
     as_of = f" (as on {fact.as_of.strftime('%d %b %Y')})" if fact.as_of and fact.field in (
         FactField.EXPENSE_RATIO, FactField.RISKOMETER, FactField.FUND_MANAGER) else ""
     tpl = ELSS_LOCK_IN if fact.field == FactField.LOCK_IN and fact.scheme_id == "hdfc_elss" else TEMPLATES[fact.field]
-    value = re.sub(r"(^|(?<=\.))\s*'?[-–]\s+(?=[A-Z])", " ", fact.value).strip().rstrip(".")  # bullet dashes at sentence start
+    value = clean_value(fact.value)
     text = tpl.format(scheme=scheme, value=value, as_of=as_of)
     return text if text.endswith((".", "?", "!")) else text + "."
