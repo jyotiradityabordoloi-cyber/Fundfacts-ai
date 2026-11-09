@@ -1,5 +1,6 @@
 """Phase 9: HTTP API contract (FastAPI TestClient - no server needed)."""
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -131,3 +132,16 @@ def test_ui_has_explore_and_theme_toggle():
     for needle in ['id="exploreBtn"', 'aria-label="Explore schemes"', 'id="themeBtn"', "/api/schemes", "ff-theme",
                    ':root[data-theme="dark"]', ':root[data-theme="light"]', "scheme_id"]:
         assert needle in html, needle
+
+
+def test_ui_scheme_scope_and_no_chat_persistence():
+    html = (ROOT / "public" / "index.html").read_text(encoding="utf-8")
+    assert "mid cap" not in html.lower() and "mid_cap" not in html
+    for name in ["HDFC Large Cap Fund", "HDFC Flexi Cap Fund", "HDFC ELSS Tax Saver Fund", "HDFC Small Cap Fund",
+                 "HDFC Balanced Advantage Fund"]:
+        assert name in html, name
+    # chats live in memory only: the theme is the only thing written to browser storage
+    assert html.count("localStorage.setItem") == 1 and 'localStorage.setItem("ff-theme"' in html
+    assert "sessionStorage" not in html and "indexedDB" not in html
+    # feedback is visual-only: no request other than the existing endpoints
+    assert set(re.findall(r'fetch\("([^"]+)"', html)) == {"/api/chat", "/api/meta", "/api/schemes"}
