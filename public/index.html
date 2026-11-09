@@ -246,7 +246,7 @@
     <nav class="history" id="history" aria-label="Conversation history"></nav>
     <div class="side-foot">
       <div><b>Facts-only. No investment advice.</b> Answers come from official HDFC Mutual Fund, SEBI and AMFI documents.</div>
-      <div>Chats stay in this browser tab only and are cleared when you close it.</div>
+      <div>Chats stay in this browser tab only: they survive a refresh and are deleted when you close the tab. Nothing is sent to a server.</div>
       <div>Independent student project, not affiliated with Groww or HDFC Mutual Fund.</div>
     </div>
   </aside>
@@ -435,7 +435,40 @@ $("sideScrim").onclick = () => setSidebar(false);
 window.matchMedia("(max-width: 860px)").addEventListener("change", () => { $("shell").classList.remove("mobile-open"); syncSidebar(); });
 syncSidebar();
 
-/* ---------------- conversations (memory only - never saved) ---------------- */
+/* ---------------- conversations ----------------
+   Kept in this tab's sessionStorage so a refresh doesn't lose them; the browser deletes it when the tab
+   closes. Never sent to the server, never in localStorage. Only completed exchanges are saved: a question
+   is written only after the server has answered it (so a PII question, which the server refuses and we
+   mask, is never written), and unanswered or failed questions are not saved at all. */
+const STORE_KEY = "ff-chats", MAX_SAVED = 20;
+const titleOf = (u) => u.masked ? "Personal information (hidden)" : (u.text.length > 48 ? u.text.slice(0, 46) + "…" : u.text);
+function snapshot(c) {
+  const items = [];
+  c.items.forEach((u, i) => {
+    const b = c.items[i + 1];
+    if (u.role !== "user" || !b || b.role !== "bot" || b.state !== "done") return;
+    items.push({ role: "user", text: u.masked ? "" : u.text, masked: !!u.masked, contextName: u.contextName || null, schemeId: u.schemeId || null, at: u.at },
+               { role: "bot", state: "done", answer: b.answer, followups: b.followups || [], topic: b.topic || {}, feedback: b.feedback || null, at: b.at });
+  });
+  return items.length ? { id: c.id, title: titleOf(items[0]), items, pinned: c.pinned || null, lastScheme: c.lastScheme || null } : null;
+}
+function save() {
+  try {
+    const data = { current: current && current.id, convs: convs.map(snapshot).filter(Boolean).slice(0, MAX_SAVED) };
+    if (data.convs.length) sessionStorage.setItem(STORE_KEY, JSON.stringify(data));
+    else sessionStorage.removeItem(STORE_KEY);
+  } catch (e) {}  // storage blocked or full: chats simply stay in memory
+}
+function restore() {
+  try {
+    const data = JSON.parse(sessionStorage.getItem(STORE_KEY) || "null");
+    if (!data || !Array.isArray(data.convs) || !data.convs.length) return false;
+    convs = data.convs.map((c) => ({ ...c, items: c.items.map((it) => ({ ...it, at: it.at ? new Date(it.at) : null })) }));
+    current = convs.find((c) => c.id === data.current) || null;
+    if (!current) newConv(); else render();   // last view was an empty "New chat": open a fresh one
+    return true;
+  } catch (e) { return false; }
+}
 function newConv() {
   const existing = convs.find((c) => c.items.length === 0);
   if (existing) { current = existing; render(); return; }
@@ -473,6 +506,7 @@ function render() {
   current.items.forEach((it, i) => chat.appendChild(it.role === "user" ? userRow(it) : botRow(it, i)));
   updateContext();
   if (current.items.length) scrollDown(); else $("thread").scrollTop = 0;  // welcome starts at the top
+  save();
 }
 function welcome() {
   const w = el("section", "welcome");
@@ -610,6 +644,7 @@ function actions(it) {
     b.setAttribute("aria-pressed", it.feedback === k ? "true" : "false");
     b.onclick = () => {
       it.feedback = it.feedback === k ? null : k;
+      save();
       bar.querySelectorAll(".act[data-fb]").forEach((x) => x.setAttribute("aria-pressed", it.feedback === x.dataset.fb ? "true" : "false"));
       msg.textContent = it.feedback ? "Thanks - noted in this tab only" : "";
     };
@@ -652,10 +687,11 @@ async function ask(q) {
   current.items.push(user);
   await fetchAnswer(user);
 }
-async function fetchAnswer(user) {
+async function fetchAnswer(user, at = current.items.length) {  // `at`: where the answer goes (retry keeps its place)
   pending = true; $("send").disabled = true;
+  const conv = current;                                       // the user may switch chats while waiting
   const bot = { role: "bot", state: "loading" };
-  current.items.push(bot); render();
+  conv.items.splice(at, 0, bot); render();
   try {
     const body = { message: user.text }; if (user.schemeId) body.scheme_id = user.schemeId;
     const res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
@@ -667,11 +703,11 @@ async function fetchAnswer(user) {
       bot.state = "done"; bot.answer = r;
       if (r.type === "refusal_pii") {                          // never keep personal data, even in this tab
         user.masked = true; user.text = "";
-        if (current.items[0] === user) current.title = "Personal information (hidden)";
+        if (conv.items[0] === user) conv.title = "Personal information (hidden)";
       }
       const topic = answerTopic(r, user.masked ? "" : user.text);
       bot.topic = topic;
-      if (r.type === "answer" && topic.scheme) current.lastScheme = topic.scheme;
+      if (r.type === "answer" && topic.scheme) conv.lastScheme = topic.scheme;
       bot.followups = followups(r, user.masked ? "" : user.text, topic);
     }
   } catch (e) {
@@ -685,7 +721,7 @@ function resend(index) {  // retry an errored answer without duplicating the que
   const user = current.items[index - 1];
   if (!user || pending) return;
   current.items.splice(index, 1);
-  fetchAnswer(user);
+  fetchAnswer(user, index);
 }
 
 /* ---------------- composer ---------------- */
@@ -782,7 +818,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 /* ---------------- start ---------------- */
-newConv();
+restore() || newConv();
 fetch("/api/meta").then((r) => (r.ok ? r.json() : null)).then((m) => {
   if (!m) return;
   if (Array.isArray(m.examples) && m.examples.length) examples = m.examples;

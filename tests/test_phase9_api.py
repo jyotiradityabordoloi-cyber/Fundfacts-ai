@@ -140,9 +140,12 @@ def test_ui_scheme_scope_and_no_chat_persistence():
     for name in ["HDFC Large Cap Fund", "HDFC Flexi Cap Fund", "HDFC ELSS Tax Saver Fund", "HDFC Small Cap Fund",
                  "HDFC Balanced Advantage Fund"]:
         assert name in html, name
-    # chats live in memory only: the theme is the only thing written to browser storage
+    # localStorage holds only the theme; chats go to tab-scoped sessionStorage (deleted when the tab closes)
     assert html.count("localStorage.setItem") == 1 and 'localStorage.setItem("ff-theme"' in html
-    assert "sessionStorage" not in html and "indexedDB" not in html
+    assert html.count("sessionStorage.setItem") == 1 and "sessionStorage.setItem(STORE_KEY" in html
+    assert 'STORE_KEY = "ff-chats"' in html and "indexedDB" not in html and "document.cookie" not in html
+    # only completed exchanges are saved, and a PII-refused question is saved with its text blanked
+    assert 'b.state !== "done"' in html and 'text: u.masked ? "" : u.text' in html
     # badges claim only the checks the backend runs (citation checks), never a blanket 'verified'
     assert "· verified" not in html and "Verified from source" not in html
     assert "grid-template-rows: minmax(0, 1fr)" in html  # composer pinned; thread scrolls above it
