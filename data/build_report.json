@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-11-08T22:10:37+00:00",
+  "built_at": "2026-11-09T09:01:09+00:00",
   "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
   "sources": {
     "registry": 22,
@@ -13,8 +13,8 @@
       "hdfc_large_cap_sid",
       "hdfc_flexi_cap_sid",
       "hdfc_elss_sid",
-      "hdfc_mid_cap_sid",
       "hdfc_small_cap_sid",
+      "hdfc_baf_sid",
       "hdfc_common_equity_kim",
       "hdfc_factsheet_sep_2026",
       "hdfc_small_cap_ssd",
@@ -76,18 +76,6 @@
         "category": "found",
         "objective": "found"
       },
-      "hdfc_mid_cap": {
-        "expense_ratio": "found",
-        "exit_load": "found",
-        "min_sip": "missing",
-        "min_lumpsum": "found",
-        "lock_in": "found",
-        "riskometer": "missing",
-        "benchmark": "found",
-        "fund_manager": "found",
-        "category": "found",
-        "objective": "found"
-      },
       "hdfc_small_cap": {
         "expense_ratio": "found",
         "exit_load": "found",
@@ -99,16 +87,28 @@
         "fund_manager": "found",
         "category": "found",
         "objective": "found"
+      },
+      "hdfc_baf": {
+        "expense_ratio": "found",
+        "exit_load": "found",
+        "min_sip": "missing",
+        "min_lumpsum": "found",
+        "lock_in": "found",
+        "riskometer": "missing",
+        "benchmark": "found",
+        "fund_manager": "found",
+        "category": "found",
+        "objective": "found"
       }
     }
   },
   "counts": {
-    "chunks": 2022,
-    "chroma": 2022,
+    "chunks": 2096,
+    "chroma": 2096,
     "missing_ids": [],
     "vector_spot_check": 26,
     "vector_max_abs_diff": 1.4901161193847656e-08,
-    "export": 2022,
-    "export_bytes": 6181843
+    "export": 2096,
+    "export_bytes": 6417941
   }
 }

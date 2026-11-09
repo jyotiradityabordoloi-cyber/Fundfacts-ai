@@ -5,7 +5,7 @@ FundFacts AI is a facts-only mutual fund FAQ assistant inspired by the Groww pro
 **Status:** plan for review. Each phase is implemented only after approval.
 
 ## Scope
-- **AMC:** HDFC Mutual Fund. **Schemes (Direct, Growth):** Large Cap, Flexi Cap, ELSS Tax Saver, Mid Cap, Small Cap.
+- **AMC:** HDFC Mutual Fund. **Schemes (Direct, Growth):** Large Cap, Flexi Cap, ELSS Tax Saver, Small Cap, Balanced Advantage.
 - **Sources:** 15–25 official public URLs from the AMC, SEBI or AMFI only.
 - **Stack:** Python, ChromaDB, Sentence Transformers (all-MiniLM-L6-v2), Claude (Anthropic) as the LLM.
 - **Hosting:** Vercel. Code and docs on GitHub.

@@ -34,19 +34,20 @@ sources:
     scheme_id: hdfc_elss
     notes: Source for the 3-year lock-in and Section 80C terms.
 
-  - source_id: hdfc_mid_cap_sid
-    url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20Mid%20Cap%20Fund%20dated%20November%2021,%202025_1.pdf
-    publisher: AMC
-    doc_type: SID
-    title: Scheme Information Document - HDFC Mid Cap Fund (21 Nov 2025)
-    scheme_id: hdfc_mid_cap
-
   - source_id: hdfc_small_cap_sid
     url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20Small%20Cap%20Fund%20dated%20November%2021,%202025.pdf
     publisher: AMC
     doc_type: SID
     title: Scheme Information Document - HDFC Small Cap Fund (21 Nov 2025)
     scheme_id: hdfc_small_cap
+
+  - source_id: hdfc_baf_sid
+    url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20Balanced%20Advantage%20Fund%20dated%20November%2021,%202025.pdf
+    publisher: AMC
+    doc_type: SID
+    title: Scheme Information Document - HDFC Balanced Advantage Fund (21 Nov 2025)
+    scheme_id: hdfc_baf
+    notes: Hybrid (dynamic asset allocation) scheme; benchmark NIFTY 50 Hybrid Composite Debt 50:50 Index (TRI).
 
   - source_id: hdfc_common_equity_kim
     url: https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf

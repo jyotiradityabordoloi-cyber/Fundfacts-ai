@@ -23,15 +23,18 @@ EXPECTED = {
     # factsheet Sep 2026, scheme pages 7/11/13/15/62
     ("hdfc_flexi_cap", "expense_ratio"): "Direct Plan 0.67%",
     ("hdfc_large_cap", "expense_ratio"): "Direct Plan 1.00%",
-    ("hdfc_mid_cap", "expense_ratio"): "Direct Plan 0.71%",
+    ("hdfc_baf", "expense_ratio"): "Direct Plan 0.75%",  # factsheet p43
     ("hdfc_small_cap", "expense_ratio"): "Direct Plan 0.76%",
     ("hdfc_elss", "expense_ratio"): "Direct Plan 1.13%",
     # SIDs dated 21 Nov 2025, p4-p5
     ("hdfc_large_cap", "benchmark"): "NIFTY 100 Total Returns Index (TRI)",
-    ("hdfc_mid_cap", "benchmark"): "NIFTY MIDCAP 150 (TRI)",
+    ("hdfc_baf", "benchmark"): "NIFTY 50 Hybrid Composite Debt 50:50 Index (TRI)",  # BAF SID p4
     ("hdfc_small_cap", "benchmark"): "BSE 250 SmallCap Index (TRI)",
     ("hdfc_elss", "exit_load"): "Nil",
-    ("hdfc_mid_cap", "exit_load"): "Exit Load of 1.00% is payable if Units are redeemed/ switched-out within 1 year",
+    ("hdfc_small_cap", "exit_load"): "Exit Load of 1.00% is payable if Units are redeemed/ switched-out within 1 year",
+    ("hdfc_baf", "exit_load"): "upto 15% of the units may be redeemed without any exit load",  # BAF SID p5
+    ("hdfc_baf", "min_lumpsum"): "Rs.100/- and any amount thereafter",
+    ("hdfc_baf", "objective"): "dynamic mix of equity and debt investments",
     ("hdfc_elss", "min_lumpsum"): "Rs. 500/- and in multiples of Rs. 500",
     ("hdfc_flexi_cap", "min_lumpsum"): "Rs.100/- and any amount thereafter",
     ("hdfc_elss", "lock_in"): "3 years from the date of allotment",
@@ -40,7 +43,8 @@ EXPECTED = {
     ("hdfc_small_cap", "min_sip"): "MSIP - Rs. 100",
     # factsheet annexure p107-108
     ("hdfc_elss", "fund_manager"): "Amar Kalkundrikar",
-    ("hdfc_mid_cap", "fund_manager"): "Chirag Setalvad",
+    ("hdfc_small_cap", "fund_manager"): "Chirag Setalvad",
+    ("hdfc_baf", "fund_manager"): "Anil Bamboli",  # factsheet p43 / annexure p107
 }
 
 
@@ -73,7 +77,7 @@ def test_values_are_grounded_in_quotes():
 @needs_facts
 def test_non_elss_have_no_lock_in_and_elss_has_three_years():
     fx = facts()
-    for sid in ["hdfc_large_cap", "hdfc_flexi_cap", "hdfc_mid_cap", "hdfc_small_cap"]:
+    for sid in ["hdfc_large_cap", "hdfc_flexi_cap", "hdfc_small_cap", "hdfc_baf"]:
         assert fx[(sid, "lock_in")]["value"].startswith("No lock-in")
     assert "3 years" in fx[("hdfc_elss", "lock_in")]["value"]
 
@@ -81,8 +85,10 @@ def test_non_elss_have_no_lock_in_and_elss_has_three_years():
 @needs_facts
 def test_fund_manager_role_is_kept_not_merged():
     fx = facts()
-    assert "Arun Agarwal" not in fx[("hdfc_mid_cap", "fund_manager")]["value"]
-    assert "Bhagyesh Kagalkar (Commodities related investments)" in fx[("hdfc_mid_cap", "fund_manager")]["value"]
+    assert "Arun Agarwal" not in fx[("hdfc_small_cap", "fund_manager")]["value"]
+    assert "Bhagyesh Kagalkar (Commodities related investments)" in fx[("hdfc_small_cap", "fund_manager")]["value"]
+    baf = fx[("hdfc_baf", "fund_manager")]["value"]  # all five on BAF's own factsheet page 43
+    assert all(n in baf for n in ["Gopal Agrawal", "Ihab Dalwai", "Arun Agarwal", "Nandita Menezes", "Anil Bamboli"])
 
 
 # ------------------------------------------------------------------ rules, independent of the corpus
@@ -93,14 +99,14 @@ def _fake_doc(source_id, text):
 
 def test_missing_source_gives_missing_not_default(monkeypatch):
     monkeypatch.setattr(ef, "doc", lambda sid: None)
-    f = ef.extract("hdfc_mid_cap", FactField.MIN_SIP)
+    f = ef.extract("hdfc_baf", FactField.MIN_SIP)
     assert f.status == "missing" and f.value is None and f.source_id is None
 
 
 def test_ssd_sip_split_across_lines(monkeypatch):
     text = "49 SIP SWP & STP Details: Minimum\namount\nFor SIP DSIP, WSIP, MSIP - Rs. 100; QSIP - Rs. 1500. For SWAP Fixed SWAP - Rs. 100"
     monkeypatch.setattr(ef, "doc", lambda sid: _fake_doc(sid, text) if sid.endswith("_ssd") else None)
-    f = ef.min_sip_ssd("hdfc_mid_cap")
+    f = ef.min_sip_ssd("hdfc_baf")
     assert f and "MSIP - Rs. 100; QSIP - Rs. 1500" in f.value
 
 
@@ -108,5 +114,5 @@ def test_exit_load_section_bounds(monkeypatch):
     text = "XI. Load Structure\nExit Load:\n- an Exit Load of 1.00% is payable if Units are redeemed within 1\nyear.\n" \
            "In respect of Systematic Transactions such as SIP\nXII. Minimum Application"
     monkeypatch.setattr(ef, "doc", lambda sid: _fake_doc(sid, text))
-    f = ef.exit_load_sid("hdfc_mid_cap")
+    f = ef.exit_load_sid("hdfc_baf")
     assert f.value == "an Exit Load of 1.00% is payable if Units are redeemed within 1 year."

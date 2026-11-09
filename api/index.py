@@ -34,7 +34,7 @@ from fundfacts.schemes import SCHEMES  # noqa: E402
 
 WELCOME = "Hi, I'm FundFacts AI. Ask me factual questions about five HDFC Mutual Fund schemes - every answer cites one official source."
 EXAMPLES = [
-    "What is the expense ratio of HDFC Mid Cap Fund?",
+    "What is the expense ratio of HDFC Balanced Advantage Fund?",
     "What is the lock-in period of HDFC ELSS Tax Saver?",
     "What is the exit load of HDFC Small Cap Fund?",
 ]

@@ -16,8 +16,8 @@ Scope
     1. HDFC Large Cap Fund
     2. HDFC Flexi Cap Fund
     3. HDFC ELSS Tax Saver Fund
-    4. HDFC Mid Cap Fund
-    5. HDFC Small Cap Fund
+    4. HDFC Small Cap Fund
+    5. HDFC Balanced Advantage Fund
   Sources: 15-25 official public URLs from HDFC Mutual Fund, SEBI or AMFI only.
   Only registered URLs are fetched - no link following. Where hdfcfund.com blocks
   automated access, the owner downloads the document manually; the original URL

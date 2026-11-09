@@ -44,14 +44,14 @@ Answer factual questions about five HDFC Mutual Fund schemes in **three sentence
 | 1 | HDFC Large Cap Fund | Large Cap |
 | 2 | HDFC Flexi Cap Fund | Flexi Cap |
 | 3 | HDFC ELSS Tax Saver Fund | ELSS |
-| 4 | HDFC Mid Cap Fund | Mid Cap |
-| 5 | HDFC Small Cap Fund | Small Cap |
+| 4 | HDFC Small Cap Fund | Small Cap |
+| 5 | HDFC Balanced Advantage Fund | Balanced Advantage (hybrid, dynamic asset allocation) |
 
 ### 4.2 Questions in scope
 | Fact type | Example |
 |---|---|
 | Expense ratio (TER) | "Expense ratio of HDFC Flexi Cap?" |
-| Exit load | "Exit load for HDFC Mid Cap Fund?" |
+| Exit load | "Exit load for HDFC Balanced Advantage Fund?" |
 | Minimum SIP / lumpsum | "Minimum SIP for HDFC Small Cap?" |
 | Lock-in | "ELSS lock-in?" |
 | Riskometer | "Risk level of HDFC Large Cap?" |

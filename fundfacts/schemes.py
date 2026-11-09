@@ -20,10 +20,10 @@ SCHEMES: dict[str, Scheme] = {s.scheme_id: s for s in [
            aliases=["hdfc flexi cap", "flexi cap", "flexicap", "flexi-cap", "hdfc equity fund"]),
     Scheme(scheme_id="hdfc_elss", name="HDFC ELSS Tax Saver Fund", category="ELSS",
            aliases=["hdfc elss", "elss", "tax saver", "taxsaver", "tax-saver", "tax saving fund", "hdfc taxsaver"]),
-    Scheme(scheme_id="hdfc_mid_cap", name="HDFC Mid Cap Fund", category="Mid Cap",
-           aliases=["hdfc mid cap", "mid cap", "midcap", "mid-cap", "mid cap opportunities", "mid-cap opportunities"]),
     Scheme(scheme_id="hdfc_small_cap", name="HDFC Small Cap Fund", category="Small Cap",
            aliases=["hdfc small cap", "small cap", "smallcap", "small-cap"]),
+    Scheme(scheme_id="hdfc_baf", name="HDFC Balanced Advantage Fund", category="Balanced Advantage",
+           aliases=["hdfc balanced advantage", "balanced advantage", "hdfc baf", "baf", "hdfc prudence"]),
 ]}
 
 PLAN_LABEL = "Direct Plan - Growth Option"
@@ -35,8 +35,8 @@ DOC_NAME_PATTERNS: dict[str, re.Pattern] = {
     "hdfc_large_cap": re.compile(r"HDFC\s+Large\s+Cap\s+Fund|HDFC\s+Top\s+100", re.I),
     "hdfc_flexi_cap": re.compile(r"HDFC\s+Flexi\s+Cap\s+Fund|HDFC\s+Equity\s+Fund", re.I),
     "hdfc_elss": re.compile(r"HDFC\s+ELSS\s*-?\s*T\s?ax\s*saver|HDFC\s+TaxSaver", re.I),  # PDFs sometimes print "T ax"
-    "hdfc_mid_cap": re.compile(r"HDFC\s+Mid[\s-]*Cap\s+(Opportunities\s+)?Fund", re.I),
     "hdfc_small_cap": re.compile(r"HDFC\s+Small\s+Cap\s+Fund", re.I),
+    "hdfc_baf": re.compile(r"HDFC\s+Balanced\s+Advantage\s+Fund|HDFC\s+Prudence\s+Fund", re.I),  # formerly HDFC Prudence Fund
 }
 
 

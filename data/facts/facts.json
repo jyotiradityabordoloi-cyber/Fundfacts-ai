@@ -300,106 +300,6 @@
   "quote": "Investment Objective To generate capital appreciation / income from a portfolio, comprising predominantly of equity & equity related instruments."
  },
  {
-  "scheme_id": "hdfc_mid_cap",
-  "field": "expense_ratio",
-  "status": "found",
-  "value": "Direct Plan 0.71%; Regular Plan 1.26% (base expense ratio incl. statutory levies, excl. brokerage and transaction costs)",
-  "as_of": "2026-09-30",
-  "source_id": "hdfc_factsheet_sep_2026",
-  "page": 13,
-  "quote": "Regular: 1.26% Direct: 0.71%"
- },
- {
-  "scheme_id": "hdfc_mid_cap",
-  "field": "exit_load",
-  "status": "found",
-  "value": "In respect of each purchase / switch-in of Units, an Exit Load of 1.00% is payable if Units are redeemed/ switched-out within 1 year from the date of allotment. No Exit Load is payable if Units are redeemed / switched-out after 1 year from the date of allotment.",
-  "as_of": "2025-11-21",
-  "source_id": "hdfc_mid_cap_sid",
-  "page": 5,
-  "quote": "Load Structure Exit Load: • In respect of each purchase / switch-in of Units, an Exit Load of 1.00% is payable if Units are redeemed/ switched -out within 1 year from the date of allotment. • No Exit Load is payable if Units are redeemed / switched-out after 1 year from the date of allotment."
- },
- {
-  "scheme_id": "hdfc_mid_cap",
-  "field": "min_sip",
-  "status": "missing",
-  "value": null,
-  "as_of": null,
-  "source_id": null,
-  "page": null,
-  "quote": null
- },
- {
-  "scheme_id": "hdfc_mid_cap",
-  "field": "min_lumpsum",
-  "status": "found",
-  "value": "Rs.100/- and any amount thereafter",
-  "as_of": "2025-11-21",
-  "source_id": "hdfc_mid_cap_sid",
-  "page": 5,
-  "quote": "XII. Minimum Application Amount/ Switch In Rs.100/- and any amount thereafter"
- },
- {
-  "scheme_id": "hdfc_mid_cap",
-  "field": "lock_in",
-  "status": "found",
-  "value": "No lock-in period; units can be redeemed or switched out on any business day at NAV-based prices",
-  "as_of": "2025-11-21",
-  "source_id": "hdfc_mid_cap_sid",
-  "page": 4,
-  "quote": "Units of the scheme can be redeemed/switched out on any Business day at NAV based prices"
- },
- {
-  "scheme_id": "hdfc_mid_cap",
-  "field": "riskometer",
-  "status": "missing",
-  "value": null,
-  "as_of": null,
-  "source_id": null,
-  "page": null,
-  "quote": null
- },
- {
-  "scheme_id": "hdfc_mid_cap",
-  "field": "benchmark",
-  "status": "found",
-  "value": "NIFTY MIDCAP 150 (TRI)",
-  "as_of": "2025-11-21",
-  "source_id": "hdfc_mid_cap_sid",
-  "page": 4,
-  "quote": "The benchmark of the scheme is NIFTY MIDCAP 150 (TRI)."
- },
- {
-  "scheme_id": "hdfc_mid_cap",
-  "field": "fund_manager",
-  "status": "found",
-  "value": "Chirag Setalvad, Bhagyesh Kagalkar (Commodities related investments)",
-  "as_of": "2026-09-30",
-  "source_id": "hdfc_factsheet_sep_2026",
-  "page": 107,
-  "quote": "Chirag Setalvad: HDFC Mid Cap Fund | Bhagyesh Kagalkar (Commodities related investments): HDFC Mid Cap Fund"
- },
- {
-  "scheme_id": "hdfc_mid_cap",
-  "field": "category",
-  "status": "found",
-  "value": "Mid Cap Fund",
-  "as_of": "2026-09-30",
-  "source_id": "hdfc_factsheet_sep_2026",
-  "page": 13,
-  "quote": "CATEGORY OF SCHEME MID CAP FUND"
- },
- {
-  "scheme_id": "hdfc_mid_cap",
-  "field": "objective",
-  "status": "found",
-  "value": "To provide long-term capital appreciation/income by investing predominantly in Mid-Cap companies.",
-  "as_of": "2025-11-21",
-  "source_id": "hdfc_mid_cap_sid",
-  "page": 4,
-  "quote": "Investment Objective To provide long -term capital appreciation/income by investing predominantly in Mid-Cap companies."
- },
- {
   "scheme_id": "hdfc_small_cap",
   "field": "expense_ratio",
   "status": "found",
@@ -498,5 +398,105 @@
   "source_id": "hdfc_small_cap_sid",
   "page": 4,
   "quote": "Investment Objective To provide long -term capital appreciation /income by investing predominantly in Small-Cap companies."
+ },
+ {
+  "scheme_id": "hdfc_baf",
+  "field": "expense_ratio",
+  "status": "found",
+  "value": "Direct Plan 0.75%; Regular Plan 1.28% (base expense ratio incl. statutory levies, excl. brokerage and transaction costs)",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 43,
+  "quote": "Regular: 1.28% Direct: 0.75%"
+ },
+ {
+  "scheme_id": "hdfc_baf",
+  "field": "exit_load",
+  "status": "found",
+  "value": "In respect of each purchase / switch-in of Units, upto 15% of the units may be redeemed without any exit load from the date of allotment. However, please note that the Units will be redeemed on First In First Out (FIFO) basis. Any redemption in excess of the above limit shall be subject to the following exit load: Exit load of 1.00% is payable if Units are redeemed / switched-out within 1 year from the date of allotment of units. No Exit Load is payable if Units are redeemed / switched-out after 1 year from the date of allotment.",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_baf_sid",
+  "page": 5,
+  "quote": "Load Structure Exit Load: In respect of each purchase / switch-in of Units, upto 15% of the units may be redeemed without any exit load from the date of allotment. However, please note that the Units will be redeemed on First In First Out (FIFO) basis. Any redemption in excess of the above limit shall be subject to the following exit load: • Exit load of 1.00% is payable if Units are redeemed / sw"
+ },
+ {
+  "scheme_id": "hdfc_baf",
+  "field": "min_sip",
+  "status": "missing",
+  "value": null,
+  "as_of": null,
+  "source_id": null,
+  "page": null,
+  "quote": null
+ },
+ {
+  "scheme_id": "hdfc_baf",
+  "field": "min_lumpsum",
+  "status": "found",
+  "value": "Rs.100/- and any amount thereafter",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_baf_sid",
+  "page": 5,
+  "quote": "XII. Minimum Application Amount/ Switch In Rs.100/- and any amount thereafter"
+ },
+ {
+  "scheme_id": "hdfc_baf",
+  "field": "lock_in",
+  "status": "found",
+  "value": "No lock-in period; units can be redeemed or switched out on any business day at NAV-based prices",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_baf_sid",
+  "page": 4,
+  "quote": "Units of the scheme can be redeemed/switched out on any Business day at NAV based prices"
+ },
+ {
+  "scheme_id": "hdfc_baf",
+  "field": "riskometer",
+  "status": "missing",
+  "value": null,
+  "as_of": null,
+  "source_id": null,
+  "page": null,
+  "quote": null
+ },
+ {
+  "scheme_id": "hdfc_baf",
+  "field": "benchmark",
+  "status": "found",
+  "value": "NIFTY 50 Hybrid Composite Debt 50:50 Index (TRI)",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_baf_sid",
+  "page": 4,
+  "quote": "The benchmark of the scheme is NIFTY 50 Hybrid Composite Debt 50:50 Index (TRI)."
+ },
+ {
+  "scheme_id": "hdfc_baf",
+  "field": "fund_manager",
+  "status": "found",
+  "value": "Anil Bamboli, Gopal Agrawal, Arun Agarwal, Nandita Menezes, Ihab Dalwai",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 107,
+  "quote": "Anil Bamboli: HDFC Balanced Advantage Fund | Gopal Agrawal: HDFC Balanced Advantage Fund | Arun Agarwal: HDFC Balanced Advantage Fund | Nandita Menezes: HDFC Balanced Advantage Fund | Ihab Dalwai: HDFC Balanced Advantage Fund"
+ },
+ {
+  "scheme_id": "hdfc_baf",
+  "field": "category",
+  "status": "found",
+  "value": "Balanced Advantage Fund",
+  "as_of": "2026-09-30",
+  "source_id": "hdfc_factsheet_sep_2026",
+  "page": 43,
+  "quote": "CATEGORY OF SCHEME BALANCED ADVANTAGE FUND"
+ },
+ {
+  "scheme_id": "hdfc_baf",
+  "field": "objective",
+  "status": "found",
+  "value": "To provide long term capital appreciation / income from a dynamic mix of equity and debt investments.",
+  "as_of": "2025-11-21",
+  "source_id": "hdfc_baf_sid",
+  "page": 4,
+  "quote": "Investment Objective To provide long term capital appreciation / income from a dynamic mix of equity and debt investments."
  }
 ]

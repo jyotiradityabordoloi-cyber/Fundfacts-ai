@@ -30,18 +30,22 @@ def test_api_keys_come_only_from_env():
 
 
 def test_five_schemes():
-    assert list(SCHEMES) == ["hdfc_large_cap", "hdfc_flexi_cap", "hdfc_elss", "hdfc_mid_cap", "hdfc_small_cap"]
+    assert list(SCHEMES) == ["hdfc_large_cap", "hdfc_flexi_cap", "hdfc_elss", "hdfc_small_cap", "hdfc_baf"]
+    assert [s.name for s in SCHEMES.values()] == ["HDFC Large Cap Fund", "HDFC Flexi Cap Fund", "HDFC ELSS Tax Saver Fund",
+                                                  "HDFC Small Cap Fund", "HDFC Balanced Advantage Fund"]
 
 
 @pytest.mark.parametrize("q,expected", [
     ("expense ratio of HDFC Flexi Cap?", "hdfc_flexi_cap"),
     ("tax saver lock-in", "hdfc_elss"),
     ("ELSS minimum SIP", "hdfc_elss"),
-    ("midcap exit load", "hdfc_mid_cap"),
+    ("balanced advantage exit load", "hdfc_baf"),
+    ("BAF benchmark", "hdfc_baf"),
+    ("midcap exit load", None),
     ("small-cap benchmark", "hdfc_small_cap"),
     ("HDFC Large Cap riskometer", "hdfc_large_cap"),
     ("what is NAV", None),
-    ("HDFC Balanced Advantage exit load", None),
+    ("HDFC Mid Cap exit load", None),
 ])
 def test_detect_scheme(q, expected):
     assert detect_scheme(q) == expected

@@ -5,7 +5,7 @@
  "publisher": "AMC",
  "doc_type": "SID",
  "scheme_id": "hdfc_small_cap",
- "fetched_at": "2026-11-08T21:35:33Z",
+ "fetched_at": "2026-11-09T08:55:13Z",
  "doc_date": "2025-11-21",
  "pages": [
   {
@@ -108,7 +108,6 @@
    "n": 13,
    "text": "13\nHDFC Small Cap Fund-SID\napplicable regulations. However, trading in derivatives by the Scheme shall be for restricted purposes as\npermitted by the regulations.\nFor detailed derivative strategies, please refer to SAI. For exposure limits to derivatives, refer section ‘Where\nwill the scheme invest' under Section II, Part II, Clause A\nThough every endeavour will be made to achieve the objective of the Scheme, the\nAMC/Sponsor/Trustee do not guarantee that the investment objective of the Scheme will be achieved.\nNo guaranteed returns are being offered under the Scheme.\nRisk Control\nInvestments made by the Scheme would be in accordance with the investment objectives of the scheme and\nprovisions of SEBI (MF) Regulations. Since investing requires disciplined risk management, the AMC would\nincorporate adequate safeguards for controlling risks in the portfolio c onstruction process. The risk control\nprocess involves identifying risks and taking proper measures for the same. The AMC believes that this\ndiversification would help achieve the desired level of consistency in returns. The Scheme may also use\nvarious derivatives products for the purpose of trading, hedging and portfolio balancing from time to time,\nwith an attempt to protect the value of the portfolio and enhance Unitholders' interest. While these measures\nare expected to mitigate the above risks to a large extent, there can be no assurance that these risks would\nbe completely eliminated.\nPORTFOLIO TURNOVER\nThe Scheme is an open -ended Scheme. The portfolio is managed from a long term perspective with an\nendeavour to keep portfolio turnover ratio low. However, it is expected that there would be a number of\nsubscriptions and redemptions on a daily basis. Consequently, it is difficult to estimate with any reasonable\nmeasure of accuracy, the likely turnover in the portfolio. A higher portfolio turnover results in higher brokerage\nand transaction cost.\nD. HOW WILL THE SCHEME BENCHMARK ITS PERFORMANCE?\nBSE 250 SmallCap Index (TRI)\nAs required under clause 1.9 of Master Circular, the benchmark has been selected from amongst those\nnotified by AMFI as the first tier benchmark to be adopted by mutual funds and which are reflective of the\ncategory of the scheme.\nThe BSE 250 SmallCap is designed to reflect the behaviour and performance of the small capitalised\nsegment of the financial market.\nThe Trustee reserves the right to change the benchmark for evaluation of performance of the Scheme from\ntime to time in conformity with the investment objectives and appropriateness of the benchmark subject to\nSEBI (MF) Regulations, and other prevailing guidelines, if any.\nE. WHO MANAGES THE SCHEME?\nThe details of Fund Manager of the Scheme are as follows:\nName, Age &\ntenure^\nEducational\nQualifications\nExperience (last 10 years) Other Fund(s)\nManaged*\nChirag\nSetalvad\n51 Years\nTenure for\n• B.Sc. in Business\nAdministration -\nUniversity of North\nCarolina, Chapel Hill.\nCollectively over 29 years\nexperience in experience, of which\n25 years in Fund Management and\n1. HDFC Children's\nFund (co -managed\nScheme)\n2. HDFC Mid Cap Fund",
    "scheme_ids": [
-    "hdfc_mid_cap",
     "hdfc_small_cap"
    ],
    "removed": []
@@ -119,7 +118,8 @@
    "scheme_ids": [
     "hdfc_flexi_cap",
     "hdfc_elss",
-    "hdfc_small_cap"
+    "hdfc_small_cap",
+    "hdfc_baf"
    ],
    "removed": []
   },
@@ -128,7 +128,6 @@
    "text": "15\nHDFC Small Cap Fund-SID\n25. HDFC Large and Mid Cap\nFund\n26. HDFC Large Cap Fund\n27. HDFC Liquid Fund (co managed Scheme)\n28. HDFC Long Duration Debt\nFund\n29. HDFC Low Duration Fund (comanaged Scheme)\n30. HDFC Manufacturing Fund\n31. HDFC Medium Term Debt\nFund (co-managed Scheme)\n32. HDFC Mid Cap Fund\n33. HDFC MNC Fund (co managed Scheme)\n34. HDFC Money Market Fund\n35. HDFC Multi Cap Fund\n36. HDFC Multi -Asset Fund (co managed Scheme)\n37. HDFC Non -Cyclical\nConsumer Fund (co-managed\nScheme)\n38. HDFC Pharma and Healthcare\nFund\n39. HDFC Retirement Savings\nFund - Equity Plan (co managed Scheme)\n40. HDFC Retirement Savings\nFund - Hybrid-Debt Plan (co managed Scheme)\n41. HDFC Retirement Savings\nFund - Hybrid-Equity Plan (comanaged Scheme)\n42. HDFC Short Term Debt Fund\n43. HDFC Technology Fund (co managed Scheme)\n44. HDFC Transportation and\nLogistics Fund (co -managed\nScheme)\n45. HDFC Ultra Short Term Fund\n(co-managed Scheme)\n46. HDFC Value Fund\n^Cut-off date considered for calculation of tenure is September 30, 2025.\nF. HOW IS THE SCHEME DIFFERENT FROM EXISTING SCHEMES OF THE MUTUAL FUND?\nThe following list consists of existing actively managed open ended equity schemes of HDFC Mutual Fund.",
    "scheme_ids": [
     "hdfc_large_cap",
-    "hdfc_mid_cap",
     "hdfc_small_cap"
    ],
    "removed": []
@@ -140,7 +139,6 @@
     "hdfc_large_cap",
     "hdfc_flexi_cap",
     "hdfc_elss",
-    "hdfc_mid_cap",
     "hdfc_small_cap"
    ],
    "removed": [

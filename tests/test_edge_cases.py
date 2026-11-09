@@ -30,8 +30,10 @@ def test_off_topic():
 
 
 def test_scheme_outside_scope_gets_no_borrowed_answer():
-    a = answer("Exit load of HDFC Balanced Advantage Fund?")
-    assert a.type == AnswerType.NOT_FOUND and "Balanced Advantage" in a.text and not a.evidence
+    for q, name in [("Exit load of HDFC Mid Cap Fund?", "Mid Cap"), ("Exit load of HDFC Mid Cap?", "Mid Cap"),
+                    ("HDFC Multi Cap expense ratio", "Multi Cap")]:
+        a = answer(q)
+        assert a.type == AnswerType.NOT_FOUND and name in a.text and not a.evidence, q
 
 
 def test_missing_fact_is_not_guessed():
@@ -53,7 +55,7 @@ def test_mixed_fact_and_advice_is_refused():
 
 
 def test_every_response_has_exactly_one_link_and_short_text():
-    for q in ["Exit load of HDFC Mid Cap?", "What is NAV?", "Should I sell?", "My email is a@b.com", "Hello"]:
+    for q in ["Exit load of HDFC Balanced Advantage?", "What is NAV?", "Should I sell?", "My email is a@b.com", "Hello"]:
         a = answer(q)
         assert a.source_url and a.source_url.startswith("https://")
         assert len(verifier.sentences(a.text)) <= settings.answer.max_sentences
@@ -64,5 +66,5 @@ def test_long_text_is_trimmed_to_three_sentences():
 
 
 def test_answers_carry_last_updated_date():
-    a = answer("Benchmark of HDFC Mid Cap Fund?")
+    a = answer("Benchmark of HDFC Balanced Advantage Fund?")
     assert a.type == AnswerType.ANSWER and a.last_updated and a.last_updated[-4:].isdigit()

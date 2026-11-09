@@ -5,7 +5,7 @@
  "publisher": "AMC",
  "doc_type": "SID",
  "scheme_id": "hdfc_elss",
- "fetched_at": "2026-11-08T21:35:32Z",
+ "fetched_at": "2026-11-09T08:55:12Z",
  "doc_date": "2025-11-21",
  "pages": [
   {
@@ -119,7 +119,8 @@
    "scheme_ids": [
     "hdfc_large_cap",
     "hdfc_flexi_cap",
-    "hdfc_elss"
+    "hdfc_elss",
+    "hdfc_baf"
    ],
    "removed": []
   },
@@ -129,7 +130,6 @@
    "scheme_ids": [
     "hdfc_flexi_cap",
     "hdfc_elss",
-    "hdfc_mid_cap",
     "hdfc_small_cap"
    ],
    "removed": []
@@ -140,7 +140,6 @@
    "scheme_ids": [
     "hdfc_large_cap",
     "hdfc_elss",
-    "hdfc_mid_cap",
     "hdfc_small_cap"
    ],
    "removed": [

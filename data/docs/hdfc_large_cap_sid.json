@@ -5,7 +5,7 @@
  "publisher": "AMC",
  "doc_type": "SID",
  "scheme_id": "hdfc_large_cap",
- "fetched_at": "2026-11-08T21:35:31Z",
+ "fetched_at": "2026-11-09T08:55:11Z",
  "doc_date": "2025-11-21",
  "pages": [
   {
@@ -134,7 +134,8 @@
    "scheme_ids": [
     "hdfc_large_cap",
     "hdfc_flexi_cap",
-    "hdfc_elss"
+    "hdfc_elss",
+    "hdfc_baf"
    ],
    "removed": []
   },
@@ -145,7 +146,6 @@
     "hdfc_large_cap",
     "hdfc_flexi_cap",
     "hdfc_elss",
-    "hdfc_mid_cap",
     "hdfc_small_cap"
    ],
    "removed": []
@@ -155,7 +155,6 @@
    "text": "18\nHDFC Large Cap Fund-SID\nSr. No. Scheme Name\n1. HDFC Banking & Financial Services Fund\n2. HDFC Business Cycle Fund\n3. HDFC Defence Fund\n10. HDFC Innovation Fund\n11. HDFC Large Cap Fund\n12. HDFC Large and Mid Cap Fund\n13. HDFC Manufacturing Fund\n14. HDFC Mid Cap Fund\n15. HDFC MNC Fund\n16. HDFC Multi Cap Fund\n17. HDFC Non-Cyclical Consumer Fund\n18. HDFC Pharma and Healthcare Fund\n19. HDFC Small Cap Fund\n20. HDFC Technology Fund\n21. HDFC Transportation and Logistics Fund\n22. HDFC Value Fund\nFor comparison between various schemes of HDFC Mutual Fund\nVisit: https://www.hdfcfund.com/statutory-disclosure/offer-document-disclosures\nG. HOW HAS THE SCHEME PERFORMED?",
    "scheme_ids": [
     "hdfc_large_cap",
-    "hdfc_mid_cap",
     "hdfc_small_cap"
    ],
    "removed": [

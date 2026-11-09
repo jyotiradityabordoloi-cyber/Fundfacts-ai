@@ -115,7 +115,7 @@ Pure functions with no I/O, run before anything else. Order: **PII → advice �
 | Returns | returns, CAGR, XIRR, performance, outperform, "how much will I earn" (excluding tax questions like "how are returns taxed") | `refusal_returns` + the scheme's official document |
 
 ### Step 2: Intent and scheme detection (`query/intent.py`)
-- **Scheme:** alias table (e.g. "tax saver", "ELSS" → `hdfc_elss`; "midcap", "mid cap" → `hdfc_mid_cap`). The longest alias match wins.
+- **Scheme:** alias table (e.g. "tax saver", "ELSS" → `hdfc_elss`; "balanced advantage", "BAF" → `hdfc_baf`). The longest alias match wins.
 - **Field:** keyword map to the fact enum (e.g. "TER", "expense ratio" → `expense_ratio`; "lock-in" → `lock_in`; "min SIP" → `min_sip`).
 - Deterministic rules keep this explainable and testable. No LLM is used for routing.
 

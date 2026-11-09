@@ -53,7 +53,8 @@ def test_wrapped_sentence_is_not_a_heading():
 
 
 @pytest.mark.parametrize("header,owners,other", [
-    ("13 | September 2026\nHDFC Mid Cap Fund\nAn open ended equity scheme", ["hdfc_mid_cap"], False),
+    ("43 | September 2026\nHDFC Balanced Advantage Fund\nAn open ended Balanced Advantage Fund", ["hdfc_baf"], False),
+    ("13 | September 2026\nHDFC Mid Cap Fund\nAn open ended equity scheme", [], True),
     ("For Product label and Riskometers, refer page no: 124-139\n58 | September 2026\nHDFC Multi-Asset Active FOF", [], True),
     ("FUND DETAILS ANNEXURE\n104 | September 2026\nHDFC Flexi Cap Fund", [], False),
 ])
@@ -111,6 +112,6 @@ def test_no_performance_text_in_amc_docs():
 
 @needs_docs
 def test_every_sid_loaded_with_date():
-    for sid in ["hdfc_large_cap", "hdfc_flexi_cap", "hdfc_elss", "hdfc_mid_cap", "hdfc_small_cap"]:
+    for sid in ["hdfc_large_cap", "hdfc_flexi_cap", "hdfc_elss", "hdfc_small_cap", "hdfc_baf"]:
         d = json.load(open(settings.paths.docs / f"{sid}_sid.json", encoding="utf-8"))
         assert d["doc_date"] == "2025-11-21" and len(d["pages"]) > 50

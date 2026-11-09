@@ -48,22 +48,6 @@
     "sections_removed": 4
   },
   {
-    "source_id": "hdfc_mid_cap_sid",
-    "pages": 73,
-    "chars": 196572,
-    "doc_date": "2025-11-21",
-    "empty": false,
-    "pdf_pages": 73,
-    "kept": 73,
-    "dropped": {
-      "no_scheme": 0,
-      "performance_page": 0,
-      "other_scheme": 0,
-      "empty": 0
-    },
-    "sections_removed": 4
-  },
-  {
     "source_id": "hdfc_small_cap_sid",
     "pages": 73,
     "chars": 195912,
@@ -80,36 +64,52 @@
     "sections_removed": 5
   },
   {
+    "source_id": "hdfc_baf_sid",
+    "pages": 81,
+    "chars": 208667,
+    "doc_date": "2025-11-21",
+    "empty": false,
+    "pdf_pages": 81,
+    "kept": 81,
+    "dropped": {
+      "no_scheme": 0,
+      "performance_page": 0,
+      "other_scheme": 0,
+      "empty": 0
+    },
+    "sections_removed": 5
+  },
+  {
     "source_id": "hdfc_common_equity_kim",
-    "pages": 25,
-    "chars": 155252,
+    "pages": 26,
+    "chars": 159673,
     "doc_date": "2025-11-28",
     "empty": false,
     "pdf_pages": 204,
-    "kept": 25,
+    "kept": 26,
     "dropped": {
-      "no_scheme": 174,
+      "no_scheme": 171,
       "performance_page": 0,
-      "other_scheme": 5,
+      "other_scheme": 7,
       "empty": 0
     },
     "sections_removed": 15
   },
   {
     "source_id": "hdfc_factsheet_sep_2026",
-    "pages": 18,
-    "chars": 39705,
+    "pages": 21,
+    "chars": 43305,
     "doc_date": "2026-09-30",
     "empty": false,
     "pdf_pages": 140,
-    "kept": 18,
+    "kept": 21,
     "dropped": {
-      "no_scheme": 105,
+      "no_scheme": 102,
       "performance_page": 15,
       "other_scheme": 2,
       "empty": 0
     },
-    "sections_removed": 48
+    "sections_removed": 52
   },
   {
     "source_id": "hdfc_small_cap_ssd",

@@ -24,17 +24,17 @@ from fundfacts.sources import load_sources  # noqa: E402
 
 IST = timezone(timedelta(minutes=330))
 SAMPLE_QUESTIONS = [
-    "What is the expense ratio of HDFC Mid Cap Fund?",
+    "What is the expense ratio of HDFC Balanced Advantage Fund?",
     "What is the lock-in period of HDFC ELSS Tax Saver?",
     "What is the exit load of HDFC Small Cap Fund?",
     "What is the minimum SIP amount for HDFC Small Cap Fund?",
     "What is the riskometer level of HDFC Flexi Cap Fund?",
     "What is the benchmark of HDFC Large Cap Fund?",
     "What is a consolidated account statement?",
-    "Should I buy HDFC Mid Cap Fund now?",
+    "Should I buy HDFC Balanced Advantage Fund now?",
     "What were the 3-year returns of HDFC Flexi Cap Fund?",
     "My PAN is ABCDE1234F, can you check my holdings?",
-    "Minimum SIP for HDFC Mid Cap Fund?",
+    "Minimum SIP for HDFC Balanced Advantage Fund?",
 ]
 
 

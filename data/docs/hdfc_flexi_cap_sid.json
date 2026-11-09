@@ -5,7 +5,7 @@
  "publisher": "AMC",
  "doc_type": "SID",
  "scheme_id": "hdfc_flexi_cap",
- "fetched_at": "2026-11-08T21:35:31Z",
+ "fetched_at": "2026-11-09T08:55:11Z",
  "doc_date": "2025-11-21",
  "pages": [
   {
@@ -125,7 +125,8 @@
    "text": "15\nHDFC Flexi Cap Fund-SID\nAs required under clause 1.9 of Master Circular, the benchmark has been selected from amongst those\nnotified by AMFI as the first tier benchmark to be adopted by mutual funds and which are reflective of the\ncategory of the scheme.\nThe NIFTY 500 index repre sents top 500 companies selected based on full market capitalization from the\neligible universe. The performance will be benchmarked to the Total Returns Variant of the Index.\nThe Trustee reserves the right to change the benchmark for evaluation of performance of the Scheme from\ntime to time in conformity with the investment objectives and appropriateness of the benchmark subject to\nSEBI (MF) Regulations, and other prevailing guidelines, if any.\nE. WHO MANAGES THE SCHEME?\nThe details of Fund Manager of the Scheme are as follows:\nName, Age &\ntenure^\nEducational\nQualifications\nExperience (last 10 years) Other Fund(s)\nManaged*\nRoshi Jain\n48 Years\nTenure for\nmanaging the\nScheme:\n3 years, 2 months\n• CA (ICAI, INDIA)\n• CFA (CFA\nInstitute, USA)\n• PGDM (IIM A)\nCollectively over 20 years experience in\nEquity Research and Fund\nManagement\n• December 20, 2021 till Date:\nHDFC Asset Management Company\nLimited\n• May 2, 2005 till October 31, 2021:\nFranklin Templeton Asset\nManagement (India) Pvt. Ltd.\nLast Position Held: Vice President &\nPortfolio Manager\n1. HDFC ELSS\nTax Saver\n2. HDFC\nFocused\nFund\n* excluding Overseas investments if any.\n^Cut-off date considered for calculation of tenure is September 30, 2025.\nDedicated Fund Manager for Overseas Investments:\nName, Age &\ntenure^\nEducational\nQualifications\nExperience (last 10 years) Other Fund(s) Managed*\nDhruv Muchhal\n37 Years\nTenure for\nmanaging the\nScheme:\n2 years, 3\nmonths\n• CFA (CFA\nInstitute)\n• Chartered\nAccountant\n• B Com. from\nUniversity of\nMumbai\nCollectively over 14 years\nexperience in equity\nresearch\n• October 3, 2019 till Date:\nHDFC Asset Management\nCompany Limited\n• August 27, 2014 till\nSeptember 27, 2019:\nMotilal Oswal Financial\nServices Limited\nLast Position Held-\nAssociate Vice President -\nResearch\n• August 12, 2013 till\nAugust 24, 2014:\n1. HDFC Arbitrage Fund (comanaged Scheme)\n2. HDFC Balanced Advantage\nFund (co-managed Scheme)\n3. HDFC Banking & Financial\nServices Fund\n4. HDFC Banking and PSU\nDebt Fund\n5. HDFC Business Cycle Fund\n6. HDFC Charity Fund for\nCancer Cure\n7. HDFC Children's Fund (comanaged Scheme)\n8. HDFC Corporate Bond Fund",
    "scheme_ids": [
     "hdfc_flexi_cap",
-    "hdfc_elss"
+    "hdfc_elss",
+    "hdfc_baf"
    ],
    "removed": []
   },
@@ -135,8 +136,7 @@
    "scheme_ids": [
     "hdfc_large_cap",
     "hdfc_flexi_cap",
-    "hdfc_elss",
-    "hdfc_mid_cap"
+    "hdfc_elss"
    ],
    "removed": []
   },
@@ -147,7 +147,6 @@
     "hdfc_large_cap",
     "hdfc_flexi_cap",
     "hdfc_elss",
-    "hdfc_mid_cap",
     "hdfc_small_cap"
    ],
    "removed": [

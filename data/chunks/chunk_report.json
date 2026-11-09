@@ -1,19 +1,19 @@
 {
-  "total": 2022,
+  "total": 2096,
   "by_kind": {
     "fact_card": 43,
-    "pdf": 1836,
+    "pdf": 1910,
     "prose": 143
   },
   "by_source": {
-    "hdfc_factsheet_sep_2026": 92,
+    "hdfc_factsheet_sep_2026": 98,
     "hdfc_large_cap_sid": 385,
     "hdfc_flexi_cap_sid": 254,
-    "hdfc_common_equity_kim": 276,
+    "hdfc_common_equity_kim": 286,
     "hdfc_elss_sid": 273,
-    "hdfc_mid_cap_sid": 252,
-    "hdfc_small_cap_sid": 179,
+    "hdfc_small_cap_sid": 230,
     "hdfc_small_cap_ssd": 18,
+    "hdfc_baf_sid": 259,
     "sebi_mf_faq": 88,
     "sebi_elss": 5,
     "sebi_investor_charter": 72,
@@ -25,14 +25,14 @@
     "amfi_risk": 14,
     "amfi_booklet": 62
   },
-  "duplicates_removed": 610,
-  "avg_chars": 534,
+  "duplicates_removed": 555,
+  "avg_chars": 536,
   "max_chars": 822,
   "fact_cards_per_scheme": {
     "hdfc_large_cap": 8,
     "hdfc_flexi_cap": 9,
     "hdfc_elss": 8,
-    "hdfc_mid_cap": 8,
-    "hdfc_small_cap": 10
+    "hdfc_small_cap": 10,
+    "hdfc_baf": 8
   }
 }

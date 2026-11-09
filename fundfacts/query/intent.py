@@ -32,6 +32,13 @@ OTHER_AMCS = re.compile(
     r"canara|edelweiss|invesco|bandhan|sundaram|hsbc|baroda|lic\s+mf|groww\s+mutual)\b", re.I)
 OTHER_HDFC = re.compile(r"\bHDFC\s+([A-Za-z0-9&\-]+(?:\s+[A-Za-z0-9&\-]+){0,5}?)\s+(Fund|FOF|ETF)\b", re.I)
 PLAN_WORDS = re.compile(r"\b(direct|regular|growth|idcw|plan|option)\b", re.I)
+# Other HDFC schemes named without the word "Fund" ("exit load of HDFC Mid Cap?") - out of scope.
+OTHER_HDFC_SHORT = re.compile(
+    r"\bHDFC\s+(mid[\s-]*cap(\s+opportunities)?|large\s*(&|and)\s*mid[\s-]*cap|multi[\s-]*cap|focused(\s+30)?|value|"
+    r"dividend\s+yield|infrastructure|defence|manufacturing|technology|pharma|housing|business\s+cycle|"
+    r"banking(\s+(&|and)\s+financial\s+services)?|consumption|mnc|transportation|aggressive\s+hybrid|"
+    r"conservative\s+hybrid|multi[\s-]*asset|equity\s+savings|arbitrage|liquid|overnight|gilt|money\s+market|"
+    r"retirement|children'?s?|nifty|sensex|index|gold|silver)\b", re.I)
 
 
 @dataclass
@@ -71,4 +78,9 @@ def detect(query: str) -> Intent:
             return Intent(scheme_id=None, fields=fields, out_of_scope=name)
     if OTHER_AMCS.search(query):
         return Intent(scheme_id=None, fields=fields, out_of_scope=OTHER_AMCS.search(query).group(0))
-    return Intent(scheme_id=detect_scheme(query), fields=fields)
+    scheme = detect_scheme(query)
+    short = OTHER_HDFC_SHORT.search(query)
+    if short and not scheme:
+        name = re.sub(r"\s+", " ", short.group(0)).strip()
+        return Intent(scheme_id=None, fields=fields, out_of_scope=f"{name} Fund" if not name.lower().endswith("fund") else name)
+    return Intent(scheme_id=scheme, fields=fields)

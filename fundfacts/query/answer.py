@@ -25,7 +25,7 @@ FIELD_NAMES = {
 }
 FACTSHEET = ("https://files.hdfcfund.com/s3fs-public/2026-10/HDFC%20MF%20Factsheet%20-%20September%202026.pdf",
              "HDFC MF Factsheet - September 2026")
-SCOPE = "HDFC Large Cap, Flexi Cap, ELSS Tax Saver, Mid Cap and Small Cap funds"
+SCOPE = "HDFC Large Cap, Flexi Cap, ELSS Tax Saver, Small Cap and Balanced Advantage funds"
 
 SYSTEM_PROMPT = f"""You are FundFacts AI, a facts-only assistant about the {SCOPE} (Direct Plan, Growth) and general \
 mutual fund concepts from SEBI and AMFI.
@@ -91,6 +91,9 @@ def _fact_answer(it: intent_mod.Intent) -> Answer | None:
     others = [FIELD_NAMES[f] for f in it.fields[1:] if f not in {x.field for x in same_src}]
     if others:
         text += f" Please ask separately about the {' and '.join(others)}, which is in a different source document."
+    # long official clauses (e.g. BAF's 4-sentence exit load) keep their first sentences verbatim, within the
+    # 3-sentence limit - the same rule the retrieval path applies; the full text is on the cited page
+    text = verifier.trim_sentences(text)
     meta = _source_meta()[primary.source_id]
     card_id = f"{primary.source_id}::p{primary.page}::fact_{primary.scheme_id}_{primary.field.value}"
     quotes = " ".join(f"{f.quote} {f.value}" for f in [primary, *same_src])

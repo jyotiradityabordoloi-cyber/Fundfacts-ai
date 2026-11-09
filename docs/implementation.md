@@ -281,5 +281,5 @@ Each chunk gets:
 | Fetch with manifest, PDF/HTML parsing, block-aware chunking, ChromaDB store + verification + export, ONNX embedder, guardrail regexes + tests, LLM adapters, static UI shell, Vercel config | Groww pages as sources (not AMC/SEBI/AMFI), Groww JSON loader, `answer.py` without a verifier or fact lookup |
 
 ## Before Phase 1 starts
-Schemes are fixed: HDFC Large Cap, Flexi Cap, ELSS Tax Saver, Mid Cap and Small Cap (Direct, Growth). These decisions from PRD §12 are still open:
+Schemes are fixed: HDFC Large Cap, Flexi Cap, ELSS Tax Saver, Small Cap and Balanced Advantage (Direct, Growth). These decisions from PRD §12 are still open:
 1. New `fundfacts-ai` repo, or replace the current project.
