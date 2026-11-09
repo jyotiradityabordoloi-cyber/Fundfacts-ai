@@ -5,8 +5,9 @@ GEMINI_API_KEY. Note: on Google's free tier, prompts may be used by Google to im
 products - FundFacts AI only ever sends the question (after the PII guardrail) and public
 document passages.
 
-Model choice: GEMINI_MODEL (default "gemini-flash-latest", Google's alias for the current Flash
-model). Google retires model names over time; if the configured model answers 404, the client
+Model choice: GEMINI_MODEL (default "gemini-flash-lite-latest", Google's alias for the current
+Flash-Lite model: fast and the least congested on the free tier, and enough for rewording a
+short verified passage). Google retires model names over time; if the configured model answers 404, the client
 asks the API which models this key may use, picks the best Flash model and remembers it.
 """
 from __future__ import annotations
@@ -23,7 +24,7 @@ _resolved_model: str | None = None   # last model that answered (per warm instan
 _discovered: list[str] | None = None  # this key's usable Flash models, best first (fetched once)
 EXCLUDE = re.compile(r"lite|image|tts|audio|live|embed|vision|learnlm|gemma|aqa|robotics|computer|thinking", re.I)
 EXCLUDE_ALT = re.compile(r"image|tts|audio|live|embed|vision|learnlm|gemma|aqa|robotics|computer|thinking", re.I)
-ATTEMPT_TIMEOUT_S = 12   # per model; keeps the worst case well under the function's time limit
+ATTEMPT_TIMEOUT_S = 10   # per model; keeps the worst case well under the function's time limit
 MAX_ATTEMPTS = 3
 
 
@@ -61,14 +62,14 @@ def pick_model(models: list[dict]) -> str | None:
 
 
 def rank_models(models: list[dict]) -> list[str]:
-    """All usable Flash models for failover: general Flash first (stable, newest), then Flash-Lite."""
+    """All usable Flash models for failover: Flash-Lite first (fast, least congested), then general Flash."""
     def version(name: str) -> tuple:
         return tuple(int(x) for x in re.findall(r"\d+", name.split("gemini-", 1)[-1])[:3])
 
     usable = [m["name"].split("/", 1)[-1] for m in models
               if "generateContent" in m.get("supportedGenerationMethods", [])]
     flash = [n for n in usable if "flash" in n and n.startswith("gemini") and not EXCLUDE_ALT.search(n)]
-    return sorted(flash, key=lambda n: ("lite" in n, "latest" not in n, "preview" in n or "exp" in n, [-v for v in version(n)]))
+    return sorted(flash, key=lambda n: ("lite" not in n, "latest" not in n, "preview" in n or "exp" in n, [-v for v in version(n)]))
 
 
 def discover_models() -> list[str]:

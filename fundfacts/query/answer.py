@@ -154,7 +154,7 @@ def _rag_answer(question: str, it: intent_mod.Intent) -> Answer | None:
             m = re.search(r"\{.*\}", raw, re.S)
             data = json.loads(m.group(0)) if m else {}
             if data.get("chunk_id") in by_id and data.get("answer"):
-                candidates.append((verifier.trim_sentences(data["answer"]), by_id[data["chunk_id"]], provider))
+                candidates.append((verifier.trim_sentences(data["answer"]), by_id[data["chunk_id"]], llm.writer_label()))
             else:
                 fallback_reason = f"{provider} reply had no valid citation"
         except llm.LLMUnavailable as exc:

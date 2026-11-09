@@ -8,7 +8,7 @@ from __future__ import annotations
 from fundfacts.config import settings
 from fundfacts.llm.base import LLMUnavailable
 
-__all__ = ["LLMUnavailable", "enabled", "provider", "generate"]
+__all__ = ["LLMUnavailable", "enabled", "provider", "generate", "writer_label"]
 
 
 def provider() -> str | None:
@@ -28,3 +28,14 @@ def generate(system: str, user: str) -> str:
         from fundfacts.llm import claude_client
         return claude_client.generate(system, user)
     raise LLMUnavailable("no LLM provider configured")
+
+
+def writer_label() -> str:
+    """e.g. "gemini/gemini-flash-lite-latest" - which provider and model wrote the last answer."""
+    p = provider()
+    if p == "gemini":
+        from fundfacts.llm import gemini_client
+        return f"gemini/{gemini_client.active_model()}"
+    if p == "anthropic":
+        return f"anthropic/{settings.llm.anthropic_model}"
+    return "none"

@@ -349,7 +349,12 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && $("drawe
 function addUser(text) { chat.appendChild(el("div", "msg user", text)); scrollDown(); }
 function addBot(r) {
   const box = el("div", "msg bot");
-  if (r.type === "answer") { const b = el("span", "badge ok"); b.innerHTML = ICON.check; b.append("Verified from source"); box.appendChild(b); }
+  if (r.type === "answer") {
+    const b = el("span", "badge ok"); b.innerHTML = ICON.check;
+    const llm = (r.writer || "").split("/")[0];
+    b.append(llm === "gemini" ? "Written by Gemini · verified" : llm === "anthropic" ? "Written by Claude · verified" : "Verified from source");
+    box.appendChild(b);
+  }
   else if (TAGS[r.type]) box.appendChild(el("span", "badge stop", TAGS[r.type]));
   box.appendChild(el("div", "", r.text));
   const meta = el("div", "meta");

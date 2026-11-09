@@ -153,5 +153,5 @@ def test_llm_path_is_verified(monkeypatch):
     holder["text"] = "NAV stands for Net Asset Value."
     good = ans.answer("What is NAV?")
     assert good.type == AnswerType.ANSWER and good.text == "NAV stands for Net Asset Value." and good.path == "rag"
-    assert good.writer == "gemini" and good.fallback_reason is None
+    assert good.writer.startswith("gemini/") and good.fallback_reason is None
     assert bad.writer == "quote" and "failed verification" in bad.fallback_reason

@@ -43,7 +43,7 @@ llm:
   # auto: Gemini if GEMINI_API_KEY is set, else Claude if ANTHROPIC_API_KEY is set, else no LLM
   # (free mode: exact facts + verified quotes). Options: auto | gemini | anthropic | none
   provider: auto
-  gemini_model: gemini-flash-latest  # free tier; Google's alias for the current Flash model
+  gemini_model: gemini-flash-lite-latest  # free tier; Google's alias for the current Flash-Lite model
   anthropic_model: claude-haiku-5-5
   temperature: 0.1
   max_tokens: 400

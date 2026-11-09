@@ -134,6 +134,7 @@ def test_retired_model_with_nothing_to_switch_to_is_reported(llm, monkeypatch):
 
 def test_overloaded_model_fails_over_to_another_free_model(llm, monkeypatch):
     monkeypatch.setattr(llm, "gemini_api_key", "g-key")
+    monkeypatch.setattr(llm, "gemini_model", "gemini-flash-latest")
     monkeypatch.setattr(gc, "_discovered", None)
     calls = []
 
@@ -149,21 +150,21 @@ def test_overloaded_model_fails_over_to_another_free_model(llm, monkeypatch):
         {"name": f"models/{n}", "supportedGenerationMethods": ["generateContent"]}
         for n in ["gemini-flash-latest", "gemini-3-flash", "gemini-flash-lite-latest"]]}))
     assert gc.generate("s", "u") == "ok"
-    assert calls == ["gemini-flash-latest", "gemini-3-flash", "gemini-flash-lite-latest"]  # at most 3 attempts
+    assert calls == ["gemini-flash-latest", "gemini-flash-lite-latest"]  # busy model -> fast Lite model
     assert gc.active_model() == "gemini-flash-lite-latest"
 
 
 def test_all_models_busy_reports_unavailable(llm, monkeypatch):
     monkeypatch.setattr(llm, "gemini_api_key", "g-key")
-    monkeypatch.setattr(gc, "_discovered", ["gemini-3-flash", "gemini-flash-lite-latest", "gemini-2.5-flash-lite"])
+    monkeypatch.setattr(gc, "_discovered", ["gemini-flash-lite-latest", "gemini-3-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash"])
     monkeypatch.setattr(httpx, "post", lambda *a, **k: FakeResp(503, {"error": {"message": "busy"}}))
     with pytest.raises(LLMUnavailable) as err:
         gc.generate("s", "u")
     msg = str(err.value)
-    assert msg.count("HTTP 503") == 3 and "gemini-2.5-flash-lite" not in msg  # stops after MAX_ATTEMPTS
+    assert msg.count("HTTP 503") == 3 and "gemini-2.0-flash:" not in msg  # 4th model never tried
 
 
-def test_rank_models_puts_lite_after_general_flash():
+def test_rank_models_puts_fast_lite_first():
     models = [{"name": f"models/{n}", "supportedGenerationMethods": ["generateContent"]}
               for n in ["gemini-flash-lite-latest", "gemini-3-flash", "gemini-2.5-flash-image", "gemini-flash-latest"]]
-    assert gc.rank_models(models) == ["gemini-flash-latest", "gemini-3-flash", "gemini-flash-lite-latest"]
+    assert gc.rank_models(models) == ["gemini-flash-lite-latest", "gemini-flash-latest", "gemini-3-flash"]
