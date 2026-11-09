@@ -143,5 +143,8 @@ def test_ui_scheme_scope_and_no_chat_persistence():
     # chats live in memory only: the theme is the only thing written to browser storage
     assert html.count("localStorage.setItem") == 1 and 'localStorage.setItem("ff-theme"' in html
     assert "sessionStorage" not in html and "indexedDB" not in html
+    # badges claim only the checks the backend runs (citation checks), never a blanket 'verified'
+    assert "· verified" not in html and "Verified from source" not in html
+    assert "grid-template-rows: minmax(0, 1fr)" in html  # composer pinned; thread scrolls above it
     # feedback is visual-only: no request other than the existing endpoints
     assert set(re.findall(r'fetch\("([^"]+)"', html)) == {"/api/chat", "/api/meta", "/api/schemes"}
