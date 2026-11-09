@@ -4,7 +4,7 @@
 
 > **Facts-only. No investment advice.** An independent student project inspired by the Groww product experience. It is not affiliated with Groww or HDFC Mutual Fund.
 
-- **Live app:** https://fundfacts-ai-ten.vercel.app (the 40-question evaluation scores 40/40 against the live deployment)
+- **Live app:** https://fundfacts-ai-ten.vercel.app. General questions there are written by **Google Gemini Flash-Lite (free tier)** and verified against the cited source; scheme facts come from the fact table. The 40-question evaluation scores 40/40 against the live deployment with Gemini on.
 - **Deliverables:**
   - [SOURCES.md](SOURCES.md) and [sources.csv](sources.csv): the source list
   - [SAMPLE_QA.md](SAMPLE_QA.md): real answers and refusals

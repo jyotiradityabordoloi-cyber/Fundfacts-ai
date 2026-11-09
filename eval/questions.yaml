@@ -1,7 +1,8 @@
 # Gold evaluation set for FundFacts AI (Phase 8).
 # type:    expected answer type
 # source:  expected cited source_id (prefix match), for answers and scheme-specific refusals
-# expect:  text that must appear in the answer (case-insensitive)
+# expect:  text that must appear in the answer (case-insensitive); a list means any one of them
+#          (LLM answers paraphrase, so concept questions accept several correct phrasings)
 # Values were hand-checked against the source PDFs (see tests/test_phase4_facts.py).
 
 # ---------------------------------------------------------------- scheme facts
@@ -31,9 +32,9 @@
 - {q: "Investment objective of HDFC Large Cap Fund?", type: answer, source: hdfc_large_cap_sid, expect: "Large-Cap companies"}
 
 # ---------------------------------------------------------------- general concepts (SEBI / AMFI)
-- {q: "What is a consolidated account statement?", type: answer, source: sebi_, expect: "CAS"}
+- {q: "What is a consolidated account statement?", type: answer, source: sebi_, expect: ["CAS", "Consolidated Account Statement"]}
 - {q: "What is NAV?", type: answer, source: amfi_nav, expect: "Net Asset Value"}
-- {q: "What is ELSS?", type: answer, source: sebi_elss, expect: "three years"}
+- {q: "What is ELSS?", type: answer, source: sebi_elss, expect: ["three years", "3 years", "80C", "Equity-Linked Savings Scheme", "Equity Linked Savings Scheme"]}
 
 # ---------------------------------------------------------------- refusals
 - {q: "Should I buy HDFC Mid Cap Fund now?", type: refusal_advice}

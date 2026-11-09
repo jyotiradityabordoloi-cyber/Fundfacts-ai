@@ -108,7 +108,9 @@ def test_eval_set_meets_targets():
         src_ok = "source" not in case or (a.source_url and a.evidence and a.evidence[0].chunk_id.startswith(case["source"])) \
             or (a.type != AnswerType.ANSWER and a.source_url and case["source"].replace("_sid", "").replace("hdfc_", "").replace("_", " ")
                 in a.source_url.lower().replace("%20", " "))
-        text_ok = "expect" not in case or case["expect"].lower() in a.text.lower()
+        expect = case.get("expect")
+        options = expect if isinstance(expect, list) else [expect] if expect else []
+        text_ok = not options or any(o.lower() in a.text.lower() for o in options)
         sentences_ok = len(verifier.sentences(a.text)) <= settings.answer.max_sentences
         link_ok = bool(a.source_url)
         rows.append(dict(q=case["q"], type=type_ok, source=src_ok, text=text_ok, sentences=sentences_ok, link=link_ok,
