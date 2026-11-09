@@ -8,11 +8,19 @@
 #                page/file into data/manual/<source_id>.<ext>. The URL below stays the citation.
 #   blocked    - not fetchable and not ingested (kept for transparency)
 #   historical - superseded; excluded from the corpus
+#   excluded   - reviewed and deliberately not ingested (hub/index page, PDF viewer shell, ...)
+#
+# inventory_ref: id in the original 24-entry source inventory (SRC-001 ... SRC-024)
+# replaces:      inventory ids this source stands in for. www.hdfcfund.com (SRC-001 ... SRC-010) blocks
+#                automated requests, so the same official HDFC documents are taken from HDFC's own
+#                document server files.hdfcfund.com instead.
+# checked_on:    date a non-ingested candidate was last re-checked
 
 sources:
   # ---------------------------------------------------------------- AMC: scheme documents
   - source_id: hdfc_large_cap_sid
     url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20Large%20Cap%20Fund%20dated%20November%2021,%202025.pdf
+    replaces: [SRC-001, SRC-007]
     publisher: AMC
     doc_type: SID
     title: Scheme Information Document - HDFC Large Cap Fund (21 Nov 2025)
@@ -21,6 +29,7 @@ sources:
 
   - source_id: hdfc_flexi_cap_sid
     url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20Flexi%20Cap%20Fund%20dated%20November%2021,%202025.pdf
+    replaces: [SRC-002, SRC-007]
     publisher: AMC
     doc_type: SID
     title: Scheme Information Document - HDFC Flexi Cap Fund (21 Nov 2025)
@@ -28,6 +37,7 @@ sources:
 
   - source_id: hdfc_elss_sid
     url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20ELSS%20Tax%20Saver%20Fund%20dated%20November%2021,%202025.pdf
+    replaces: [SRC-003, SRC-007]
     publisher: AMC
     doc_type: SID
     title: Scheme Information Document - HDFC ELSS Tax Saver Fund (21 Nov 2025)
@@ -36,6 +46,7 @@ sources:
 
   - source_id: hdfc_small_cap_sid
     url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20Small%20Cap%20Fund%20dated%20November%2021,%202025.pdf
+    replaces: [SRC-004, SRC-007]
     publisher: AMC
     doc_type: SID
     title: Scheme Information Document - HDFC Small Cap Fund (21 Nov 2025)
@@ -43,6 +54,7 @@ sources:
 
   - source_id: hdfc_baf_sid
     url: https://files.hdfcfund.com/s3fs-public/SID/2025-11/SID%20-%20HDFC%20Balanced%20Advantage%20Fund%20dated%20November%2021,%202025.pdf
+    replaces: [SRC-005, SRC-007]
     publisher: AMC
     doc_type: SID
     title: Scheme Information Document - HDFC Balanced Advantage Fund (21 Nov 2025)
@@ -51,6 +63,7 @@ sources:
 
   - source_id: hdfc_common_equity_kim
     url: https://files.hdfcfund.com/s3fs-public/2025-12/Common%20Equity%20KIM%20dated%20November%2028%2C%202025.pdf
+    replaces: [SRC-006]
     publisher: AMC
     doc_type: KIM
     title: Key Information Memorandum - HDFC equity schemes (28 Nov 2025)
@@ -58,6 +71,7 @@ sources:
 
   - source_id: hdfc_factsheet_sep_2026
     url: https://files.hdfcfund.com/s3fs-public/2026-10/HDFC%20MF%20Factsheet%20-%20September%202026.pdf
+    replaces: [SRC-008, SRC-009, SRC-010]
     publisher: AMC
     doc_type: factsheet
     title: HDFC MF Factsheet - September 2026
@@ -93,6 +107,7 @@ sources:
   # ---------------------------------------------------------------- SEBI
   - source_id: sebi_mf_faq
     url: https://www.sebi.gov.in/sebi_data/faqfiles/sep-2024/1727242783639.pdf
+    inventory_ref: SRC-011
     publisher: SEBI
     doc_type: FAQ
     title: SEBI - FAQs for Mutual Fund Investors (updated as on 31 Aug 2024)
@@ -107,6 +122,7 @@ sources:
 
   - source_id: sebi_investor_charter
     url: https://investor.sebi.gov.in/Investor-charter.html
+    inventory_ref: SRC-012
     publisher: SEBI
     doc_type: guide
     title: SEBI - Investor Charter
@@ -115,30 +131,35 @@ sources:
   # ---------------------------------------------------------------- AMFI
   - source_id: amfi_intro_mf
     url: https://www.amfiindia.com/investor/knowledge-center-info?zoneName=IntroductionMutualFunds
+    inventory_ref: SRC-018
     publisher: AMFI
     doc_type: article
     title: AMFI - Introduction to Mutual Funds
 
   - source_id: amfi_types
     url: https://www.amfiindia.com/investor/knowledge-center-info?zoneName=TypesOfMutualFundSchemes
+    inventory_ref: SRC-019
     publisher: AMFI
     doc_type: article
     title: AMFI - Types of Mutual Fund Schemes
 
   - source_id: amfi_expense_ratio
     url: https://www.amfiindia.com/investor/knowledge-center-info?zoneName=expenseRatio
+    inventory_ref: SRC-020
     publisher: AMFI
     doc_type: article
     title: AMFI - Expense Ratio
 
   - source_id: amfi_nav
     url: https://www.amfiindia.com/investor/knowledge-center-info?zoneName=NetAssetValueNAV
+    inventory_ref: SRC-021
     publisher: AMFI
     doc_type: article
     title: AMFI - Net Asset Value (NAV)
 
   - source_id: amfi_categorization
     url: https://www.amfiindia.com/investor/knowledge-center-info?zoneName=CategorizationOfMutualFundSchemes
+    inventory_ref: SRC-022
     publisher: AMFI
     doc_type: article
     title: AMFI - Categorization of Mutual Fund Schemes
@@ -146,6 +167,7 @@ sources:
 
   - source_id: amfi_risk
     url: https://www.amfiindia.com/investor/knowledge-center-info?zoneName=riskInMutualFunds
+    inventory_ref: SRC-023
     publisher: AMFI
     doc_type: article
     title: AMFI - Risks in Mutual Funds
@@ -153,21 +175,169 @@ sources:
 
   - source_id: amfi_booklet
     url: https://www.amfiindia.com/uploads/AMFI_Understanding_Mutual_Funds_IAP_Booklet_Final_Website_version_860a5b77aa.pdf
+    inventory_ref: SRC-024
     publisher: AMFI
     doc_type: guide
     title: AMFI - Understanding Mutual Funds (investor awareness booklet)
 
   # ---------------------------------------------------------------- reviewed, not ingested
-  - source_id: hdfc_scheme_pages_www
+  - source_id: hdfc_www_large_cap
+    url: https://www.hdfcfund.com/explore/mutual-funds/hdfc-large-cap-fund/direct
+    publisher: AMC
+    doc_type: article
+    title: HDFC Large Cap Fund - Direct Plan (www.hdfcfund.com)
+    scheme_id: hdfc_large_cap
+    status: blocked
+    inventory_ref: SRC-001
+    checked_on: '2026-11-09'
+    notes: HTTP 403 to automated requests (re-checked 09 Nov 2026). Replaced by hdfc_large_cap_sid + factsheet.
+
+  - source_id: hdfc_www_flexi_cap
     url: https://www.hdfcfund.com/explore/mutual-funds/hdfc-flexi-cap-fund/direct
     publisher: AMC
     doc_type: article
-    title: HDFC MF scheme pages on www.hdfcfund.com (all five schemes)
+    title: HDFC Flexi Cap Fund - Direct Plan (www.hdfcfund.com)
+    scheme_id: hdfc_flexi_cap
     status: blocked
-    notes: HTTP 403 to automated requests; the same facts come from the SIDs, KIM and factsheet above.
+    inventory_ref: SRC-002
+    checked_on: '2026-11-09'
+    notes: HTTP 403 to automated requests (re-checked 09 Nov 2026). Replaced by hdfc_flexi_cap_sid + factsheet.
+
+  - source_id: hdfc_www_elss
+    url: https://www.hdfcfund.com/explore/mutual-funds/hdfc-elss-tax-saver/direct
+    publisher: AMC
+    doc_type: article
+    title: HDFC ELSS Tax Saver Fund - Direct Plan (www.hdfcfund.com)
+    scheme_id: hdfc_elss
+    status: blocked
+    inventory_ref: SRC-003
+    checked_on: '2026-11-09'
+    notes: HTTP 403 to automated requests (re-checked 09 Nov 2026). Replaced by hdfc_elss_sid + factsheet.
+
+  - source_id: hdfc_www_small_cap
+    url: https://www.hdfcfund.com/explore/mutual-funds/hdfc-small-cap-fund/direct
+    publisher: AMC
+    doc_type: article
+    title: HDFC Small Cap Fund - Direct Plan (www.hdfcfund.com)
+    scheme_id: hdfc_small_cap
+    status: blocked
+    inventory_ref: SRC-004
+    checked_on: '2026-11-09'
+    notes: HTTP 403 to automated requests (re-checked 09 Nov 2026). Replaced by hdfc_small_cap_sid + factsheet + AMFI SSD.
+
+  - source_id: hdfc_www_baf
+    url: https://www.hdfcfund.com/explore/mutual-funds/hdfc-balanced-advantage-fund/direct
+    publisher: AMC
+    doc_type: article
+    title: HDFC Balanced Advantage Fund - Direct Plan (www.hdfcfund.com)
+    scheme_id: hdfc_baf
+    status: blocked
+    inventory_ref: SRC-005
+    checked_on: '2026-11-09'
+    notes: HTTP 403 to automated requests (re-checked 09 Nov 2026). Replaced by hdfc_baf_sid + factsheet.
+
+  - source_id: hdfc_www_kim_hub
+    url: https://www.hdfcfund.com/mutual-funds/fund-documents/kim
+    publisher: AMC
+    doc_type: article
+    title: KIM fund documents hub (www.hdfcfund.com)
+    status: blocked
+    inventory_ref: SRC-006
+    checked_on: '2026-11-09'
+    notes: HTTP 403 to automated requests (re-checked 09 Nov 2026). Hub page only. Replaced by hdfc_common_equity_kim.
+
+  - source_id: hdfc_www_sid_hub
+    url: https://www.hdfcfund.com/mutual-funds/fund-documents/sid
+    publisher: AMC
+    doc_type: article
+    title: SID fund documents hub (www.hdfcfund.com)
+    status: blocked
+    inventory_ref: SRC-007
+    checked_on: '2026-11-09'
+    notes: HTTP 403 to automated requests (re-checked 09 Nov 2026). Hub page only. Replaced by the five SIDs on files.hdfcfund.com.
+
+  - source_id: hdfc_www_statutory
+    url: https://www.hdfcfund.com/statutory-disclosure
+    publisher: AMC
+    doc_type: article
+    title: Statutory disclosures (www.hdfcfund.com)
+    status: blocked
+    inventory_ref: SRC-008
+    checked_on: '2026-11-09'
+    notes: HTTP 403 to automated requests (re-checked 09 Nov 2026). Riskometer and TER disclosures are taken from the KIM and factsheet.
+
+  - source_id: hdfc_www_ter_reports
+    url: https://www.hdfcfund.com/statutory-disclosure/total-expense-ratio-of-mutual-fund-schemes/reports
+    publisher: AMC
+    doc_type: article
+    title: TER of schemes - reports (www.hdfcfund.com)
+    status: blocked
+    inventory_ref: SRC-009
+    checked_on: '2026-11-09'
+    notes: HTTP 403 to automated requests (re-checked 09 Nov 2026). Expense ratios are taken from the factsheet (as on 30 Sep 2026).
+
+  - source_id: hdfc_www_ter_notices
+    url: https://www.hdfcfund.com/statutory-disclosure/total-expense-ratio-of-mutual-fund-schemes/notices
+    publisher: AMC
+    doc_type: article
+    title: TER of schemes - notices (www.hdfcfund.com)
+    status: blocked
+    inventory_ref: SRC-010
+    checked_on: '2026-11-09'
+    notes: HTTP 403 to automated requests (re-checked 09 Nov 2026). Current expense ratios are taken from the factsheet; change notices are not ingested.
+
+  - source_id: sebi_circular_investor_charter_2021
+    url: https://www.sebi.gov.in/legal/circulars/dec-2021/circular-on-investor-charter-and-disclosure-of-investor-complaints-by-mutual-funds-on-their-websites-and-amfi-website-_54545.html
+    publisher: SEBI
+    doc_type: circular
+    title: SEBI circular - Investor Charter and disclosure of investor complaints by MFs (10 Dec 2021)
+    status: excluded
+    inventory_ref: SRC-013
+    checked_on: '2026-11-09'
+    notes: >-
+      PDF viewer shell - the page itself has ~440 characters; the circular text is an embedded PDF at a
+      different URL (/sebi_data/attachdocs/dec-2021/1639140643172.pdf), which the no-link-following policy
+      does not fetch. Investor-charter content is covered by sebi_investor_charter.
+
+  - source_id: sebi_circular_categorisation_2026
+    url: https://www.sebi.gov.in/legal/circulars/feb-2026/categorization-and-rationalization-of-mutual-fund-schemes_99983.html
+    publisher: SEBI
+    doc_type: circular
+    title: SEBI circular - Categorization and Rationalization of MF Schemes (26 Feb 2026)
+    status: excluded
+    inventory_ref: SRC-014
+    checked_on: '2026-11-09'
+    notes: >-
+      PDF viewer shell - the page itself has ~250 characters; the circular text is an embedded PDF at a
+      different URL (/sebi_data/attachdocs/feb-2026/1772079826878.pdf). Candidate for a future addition:
+      register that PDF URL directly (current SEBI categorisation). Until then, category answers come from
+      the HDFC factsheet and AMFI's categorisation article.
+
+  - source_id: sebi_iematerial
+    url: https://investor.sebi.gov.in/iematerial.html
+    publisher: SEBI
+    doc_type: guide
+    title: SEBI Investor - Investor Education Reading Material (index)
+    status: excluded
+    inventory_ref: SRC-016
+    checked_on: '2026-11-09'
+    notes: Index page of links to booklets (embedded PDF viewers); no facts on the page itself.
+
+  - source_id: amfi_investor_corner
+    url: https://www.amfiindia.com/investor
+    publisher: AMFI
+    doc_type: article
+    title: AMFI - Investor Corner (hub)
+    status: excluded
+    inventory_ref: SRC-017
+    checked_on: '2026-11-09'
+    notes: >-
+      Hub page describing AMFI's investor sections; no scheme or regulatory facts. Its knowledge-centre
+      articles (SRC-018 ... SRC-023) are ingested individually.
 
   - source_id: sebi_categorisation_2017
     url: https://www.sebi.gov.in/sebi_data/attachdocs/oct-2017/1509103633344.pdf
+    inventory_ref: SRC-015
     publisher: SEBI
     doc_type: circular
     title: SEBI - Categorization and Rationalization of MF Schemes (Oct 2017)

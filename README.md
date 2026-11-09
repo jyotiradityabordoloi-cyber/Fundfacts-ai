@@ -17,7 +17,7 @@
 |---|---|
 | AMC | HDFC Mutual Fund |
 | Schemes (Direct, Growth) | HDFC Large Cap Fund, HDFC Flexi Cap Fund, HDFC ELSS Tax Saver Fund, HDFC Small Cap Fund, HDFC Balanced Advantage Fund |
-| Sources | 20 registered official URLs (HDFC Mutual Fund, SEBI, AMFI); 18 ingested automatically, 2 via manual download ([SOURCES.md](SOURCES.md)) |
+| Sources | 20 registered official URLs (HDFC Mutual Fund, SEBI, AMFI); 18 ingested automatically, 2 via manual download. [SOURCES.md](SOURCES.md) also reconciles all 24 entries of the original source inventory (9 ingested, 10 replaced by the same documents on files.hdfcfund.com, 4 excluded after review, 1 historical) |
 | Facts | Expense ratio, exit load, minimum SIP, minimum lumpsum, lock-in, riskometer, benchmark, fund managers, category, objective; plus SEBI/AMFI concepts (NAV, CAS, ELSS, TER) |
 
 ## How it works

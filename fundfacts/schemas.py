@@ -31,6 +31,7 @@ class SourceStatus(str, Enum):
     MANUAL = "manual"          # owner downloads into data/manual/; URL stays the citation
     BLOCKED = "blocked"        # not fetchable, not ingested
     HISTORICAL = "historical"  # superseded, excluded from the corpus
+    EXCLUDED = "excluded"      # reviewed and deliberately not ingested (e.g. hub page, viewer shell)
 
 
 class Source(BaseModel):
@@ -42,6 +43,9 @@ class Source(BaseModel):
     scheme_id: str | None = None
     status: SourceStatus = SourceStatus.ACTIVE
     notes: str = ""
+    inventory_ref: str | None = Field(None, pattern=r"^SRC-\d{3}$")  # id in the original source inventory
+    replaces: list[str] = []         # inventory ids this source stands in for (e.g. blocked www.hdfcfund.com pages)
+    checked_on: str | None = None    # date a non-ingested candidate was last re-checked
 
 
 # ------------------------------------------------------------------ ingestion

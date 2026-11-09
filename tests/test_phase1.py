@@ -71,3 +71,49 @@ def test_fact_and_answer_models():
     assert f.field == FactField.LOCK_IN
     a = Answer(type=AnswerType.NOT_FOUND, text="Not in my sources.")
     assert a.evidence == [] and a.source_url is None
+
+
+# ------------------------------------------------------------------ inventory reconciliation
+INVENTORY = [f"SRC-{i:03d}" for i in range(1, 25)]
+EXPECTED_CORPUS = {
+    "hdfc_large_cap_sid", "hdfc_flexi_cap_sid", "hdfc_elss_sid", "hdfc_small_cap_sid", "hdfc_baf_sid",
+    "hdfc_common_equity_kim", "hdfc_factsheet_sep_2026", "hdfc_small_cap_ssd", "hdfc_request_statement", "hdfc_cas",
+    "sebi_mf_faq", "sebi_elss", "sebi_investor_charter", "amfi_intro_mf", "amfi_types", "amfi_expense_ratio",
+    "amfi_nav", "amfi_categorization", "amfi_risk", "amfi_booklet",
+}
+
+
+def test_every_inventory_entry_has_exactly_one_decision():
+    refs = [s.inventory_ref for s in load_sources() if s.inventory_ref]
+    assert sorted(refs) == INVENTORY, sorted(set(INVENTORY) - set(refs))
+
+
+def test_blocked_inventory_entries_name_their_replacement():
+    sources = load_sources()
+    ingested = {s.source_id for s in corpus(sources)}
+    for s in sources:
+        if s.status.value == "blocked":
+            stand_ins = [x for x in sources if s.inventory_ref in x.replaces]
+            assert stand_ins and all(x.source_id in ingested for x in stand_ins), s.source_id
+
+
+def test_non_ingested_entries_explain_why_and_when_checked():
+    for s in load_sources():
+        if s.status.value in ("blocked", "excluded"):
+            assert s.notes and s.checked_on, s.source_id
+
+
+def test_corpus_is_exactly_the_agreed_twenty_official_sources():
+    c = corpus()
+    assert {s.source_id for s in c} == EXPECTED_CORPUS
+    hosts = {str(s.url).split("/")[2] for s in c}
+    assert hosts <= {"files.hdfcfund.com", "www.hdfcfund.com", "portal.amfiindia.com", "www.amfiindia.com",
+                     "www.sebi.gov.in", "investor.sebi.gov.in"}
+    assert not any("groww" in str(s.url) for s in load_sources())
+
+
+def test_sources_md_matches_registry():
+    md = (settings.paths.sources.parent / "SOURCES.md").read_text(encoding="utf-8")
+    for s in load_sources():
+        assert str(s.url) in md, s.source_id
+    assert "UNACCOUNTED" not in md and "groww.in" not in md and "Mid Cap" not in md

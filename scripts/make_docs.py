@@ -38,38 +38,94 @@ SAMPLE_QUESTIONS = [
 ]
 
 
+INVENTORY_IDS = [f"SRC-{i:03d}" for i in range(1, 25)]
+STATE = {"active": "ingested", "manual": "manual download pending", "blocked": "not ingested - blocked",
+         "excluded": "not ingested - excluded", "historical": "not ingested - historical"}
+
+
+def first_sentence(text: str) -> str:
+    text = " ".join(text.split())
+    return text.split(". ")[0].rstrip(".") + "." if text else ""
+
+
 def sources_docs() -> int:
     manifest = {m["source_id"]: m for m in json.loads((settings.paths.raw / "manifest.json").read_text(encoding="utf-8"))}
+    sources = load_sources()
     rows = []
-    for s in load_sources():
+    for s in sources:
         m = manifest.get(s.source_id, {})
         fetched = m.get("fetched_at") if m.get("path") else None
-        state = {"active": "ingested", "manual": "ingested (manual download)" if fetched else "manual download pending",
-                 "blocked": "not ingested (blocked)", "historical": "not ingested (historical)"}[s.status.value]
+        state = STATE[s.status.value]
+        if s.status.value == "manual" and fetched:
+            state = "ingested (manual download)"
         if s.status.value == "active" and not fetched:
             state = "fetch failed"
         rows.append({
             "source_id": s.source_id, "publisher": s.publisher.value, "doc_type": s.doc_type.value, "title": s.title,
             "scheme": SCHEMES[s.scheme_id].name if s.scheme_id else "", "status": state,
+            "inventory_ref": s.inventory_ref or "", "replaces": " ".join(s.replaces), "checked_on": s.checked_on or "",
             "retrieved": datetime.fromisoformat(fetched).astimezone(IST).strftime("%d %b %Y") if fetched else "",
-            "url": str(s.url), "notes": s.notes.replace("\n", " "),
+            "url": str(s.url), "notes": " ".join(s.notes.split()),
         })
     with open(ROOT / "sources.csv", "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)
 
+    corpus = [r for r in rows if r["status"].startswith(("ingested", "manual", "fetch"))]
     ingested = [r for r in rows if r["status"].startswith("ingested")]
+    reviewed = [r for r in rows if r["status"].startswith("not ingested")]
     lines = ["# Sources", "",
-             f"FundFacts AI uses only official public sources from **HDFC Mutual Fund (AMC), SEBI and AMFI**. "
-             f"**{len(ingested)} sources are ingested**, and each URL below is fetched exactly once per build; links inside "
-             "pages are never followed. The machine-readable list is [`sources.csv`](sources.csv) and the registry is "
-             "[`sources.yaml`](sources.yaml).", "",
-             "| # | Publisher | Type | Title | Scheme | Status | Retrieved (IST) |", "|---|---|---|---|---|---|---|"]
-    for i, r in enumerate(rows, 1):
+             "FundFacts AI uses only official public sources from **HDFC Mutual Fund (AMC), SEBI and AMFI**. "
+             f"The corpus has **{len(corpus)} registered sources** ({len(ingested)} ingested, "
+             f"{len(corpus) - len(ingested)} awaiting a manual download). Each URL is fetched exactly once per build "
+             "and links inside pages are never followed. The registry is [`sources.yaml`](sources.yaml) and the "
+             "machine-readable list is [`sources.csv`](sources.csv); this page is generated from them by "
+             "`python scripts/make_docs.py`.", "",
+             "## Corpus", "",
+             "| # | Publisher | Type | Title | Scheme | Inventory | Status | Retrieved (IST) |",
+             "|---|---|---|---|---|---|---|---|"]
+    for i, r in enumerate(corpus, 1):
+        inv = r["inventory_ref"] or (f"replaces {r['replaces'].replace(' ', ', ')}" if r["replaces"] else "added")
         lines.append(f"| {i} | {r['publisher']} | {r['doc_type']} | [{r['title']}]({r['url']}) | {r['scheme'] or '-'} | "
-                     f"{r['status']} | {r['retrieved'] or '-'} |")
-    lines += ["", "## Notes",
+                     f"{inv} | {r['status']} | {r['retrieved'] or '-'} |")
+    lines += ["", "## Reviewed, not ingested", "",
+              "| Inventory | Publisher | Title | Decision | Reason | Re-checked |", "|---|---|---|---|---|---|"]
+    for r in reviewed:
+        lines.append(f"| {r['inventory_ref'] or '-'} | {r['publisher']} | [{r['title']}]({r['url']}) | "
+                     f"{r['status'].replace('not ingested - ', '')} | {first_sentence(r['notes'])} | {r['checked_on'] or '-'} |")
+
+    # ---- reconciliation against the original 24-entry inventory
+    by_ref = {s.inventory_ref: s for s in sources if s.inventory_ref}
+    lines += ["", "## Inventory reconciliation (SRC-001 ... SRC-024)", "",
+              "Every candidate from the original source inventory and what happened to it.", "",
+              "| Inventory | Candidate | Decision | In the corpus as |", "|---|---|---|---|"]
+    counts = {"ingested": 0, "replaced": 0, "excluded": 0, "historical": 0}
+    for ref in INVENTORY_IDS:
+        s = by_ref.get(ref)
+        stand_ins = [x.source_id for x in sources if ref in x.replaces]
+        if s is None:
+            lines.append(f"| {ref} | - | **UNACCOUNTED** | - |")
+            continue
+        if s.status.value in ("active", "manual"):
+            decision, used = "ingested", f"`{s.source_id}`"
+            counts["ingested"] += 1
+        elif s.status.value == "blocked":
+            decision, used = "blocked (HTTP 403) - replaced", ", ".join(f"`{x}`" for x in stand_ins) or "-"
+            counts["replaced"] += 1
+        elif s.status.value == "historical":
+            decision, used = "historical - excluded", "-"
+            counts["historical"] += 1
+        else:
+            decision, used = "excluded", "-"
+            counts["excluded"] += 1
+        lines.append(f"| {ref} | [{s.title}]({s.url}) | {decision} | {used} |")
+    added = [r for r in corpus if not r["inventory_ref"] and not r["replaces"]]
+    lines += ["", f"Of the 24 inventory entries: **{counts['ingested']} ingested**, **{counts['replaced']} replaced** by the same "
+              f"official documents on `files.hdfcfund.com`, **{counts['excluded']} excluded** after review and "
+              f"**{counts['historical']} historical**. {len(added)} official sources were added beyond the inventory: "
+              + ", ".join(f"`{r['source_id']}`" for r in added) + ".",
+              "", "## Notes",
               "- `www.hdfcfund.com` returns HTTP 403 to automated requests. HDFC's own document server `files.hdfcfund.com` "
               "does not, so scheme facts come from the official SIDs, the Common Equity KIM and the monthly factsheet there.",
               "- Pages from `www.hdfcfund.com` marked *manual* are saved by hand into `data/manual/`; their original URL stays the citation.",
