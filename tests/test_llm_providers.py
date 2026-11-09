@@ -11,6 +11,8 @@ from fundfacts.llm.base import LLMUnavailable
 def llm(monkeypatch):
     for k, v in {"provider": "auto", "gemini_api_key": "", "anthropic_api_key": ""}.items():
         monkeypatch.setattr(settings.llm, k, v)
+    monkeypatch.setattr(gemini_client, "_resolved_model", None)
+    monkeypatch.setattr(gemini_client, "_discovered", [])  # no network: no alternative models unless a test says so
     return settings.llm
 
 
@@ -103,7 +105,7 @@ def test_pick_model_prefers_stable_general_flash():
 def test_retired_model_switches_to_discovered_one(llm, monkeypatch):
     monkeypatch.setattr(llm, "gemini_api_key", "g-key")
     monkeypatch.setattr(llm, "gemini_model", "gemini-2.5-flash")
-    monkeypatch.setattr(gc, "_resolved_model", None)
+    monkeypatch.setattr(gc, "_discovered", None)
     calls = []
 
     def fake_post(url, headers, json, timeout):
@@ -128,3 +130,40 @@ def test_retired_model_with_nothing_to_switch_to_is_reported(llm, monkeypatch):
     monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResp(200, {"models": []}))
     with pytest.raises(LLMUnavailable, match="no other Flash model"):
         gc.generate("s", "u")
+
+
+def test_overloaded_model_fails_over_to_another_free_model(llm, monkeypatch):
+    monkeypatch.setattr(llm, "gemini_api_key", "g-key")
+    monkeypatch.setattr(gc, "_discovered", None)
+    calls = []
+
+    def fake_post(url, headers, json, timeout):
+        calls.append(url.split("/models/")[1].split(":")[0])
+        assert timeout <= gc.ATTEMPT_TIMEOUT_S
+        if "lite" not in url:
+            return FakeResp(503, {"error": {"message": "This model is currently experiencing high demand."}})
+        return FakeResp(200, {"candidates": [{"content": {"parts": [{"text": "ok"}]}}]})
+
+    monkeypatch.setattr(httpx, "post", fake_post)
+    monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResp(200, {"models": [
+        {"name": f"models/{n}", "supportedGenerationMethods": ["generateContent"]}
+        for n in ["gemini-flash-latest", "gemini-3-flash", "gemini-flash-lite-latest"]]}))
+    assert gc.generate("s", "u") == "ok"
+    assert calls == ["gemini-flash-latest", "gemini-3-flash", "gemini-flash-lite-latest"]  # at most 3 attempts
+    assert gc.active_model() == "gemini-flash-lite-latest"
+
+
+def test_all_models_busy_reports_unavailable(llm, monkeypatch):
+    monkeypatch.setattr(llm, "gemini_api_key", "g-key")
+    monkeypatch.setattr(gc, "_discovered", ["gemini-3-flash", "gemini-flash-lite-latest", "gemini-2.5-flash-lite"])
+    monkeypatch.setattr(httpx, "post", lambda *a, **k: FakeResp(503, {"error": {"message": "busy"}}))
+    with pytest.raises(LLMUnavailable) as err:
+        gc.generate("s", "u")
+    msg = str(err.value)
+    assert msg.count("HTTP 503") == 3 and "gemini-2.5-flash-lite" not in msg  # stops after MAX_ATTEMPTS
+
+
+def test_rank_models_puts_lite_after_general_flash():
+    models = [{"name": f"models/{n}", "supportedGenerationMethods": ["generateContent"]}
+              for n in ["gemini-flash-lite-latest", "gemini-3-flash", "gemini-2.5-flash-image", "gemini-flash-latest"]]
+    assert gc.rank_models(models) == ["gemini-flash-latest", "gemini-3-flash", "gemini-flash-lite-latest"]
