@@ -80,3 +80,51 @@ def test_quota_exhausted_falls_back_to_verified_quote(llm, monkeypatch):
     monkeypatch.setattr(httpx, "post", lambda *a, **k: FakeResp(429, {}))
     a = answer("What is NAV?")
     assert a.type.value == "answer" and "Net Asset Value" in a.text  # still answered, from the source text
+
+
+# ------------------------------------------------------------------ model retirement (404) -> discovery
+from fundfacts.llm import gemini_client as gc  # noqa: E402
+
+
+def test_pick_model_prefers_stable_general_flash():
+    models = [
+        {"name": "models/gemini-2.0-flash-lite", "supportedGenerationMethods": ["generateContent"]},
+        {"name": "models/gemini-3-flash-preview", "supportedGenerationMethods": ["generateContent"]},
+        {"name": "models/gemini-3-flash", "supportedGenerationMethods": ["generateContent"]},
+        {"name": "models/gemini-2.5-flash-image", "supportedGenerationMethods": ["generateContent"]},
+        {"name": "models/gemini-3-pro", "supportedGenerationMethods": ["generateContent"]},
+        {"name": "models/text-embedding-004", "supportedGenerationMethods": ["embedContent"]},
+    ]
+    assert gc.pick_model(models) == "gemini-3-flash"
+    assert gc.pick_model([{"name": "models/gemini-flash-latest", "supportedGenerationMethods": ["generateContent"]}] + models) == "gemini-flash-latest"
+    assert gc.pick_model([models[-1]]) is None
+
+
+def test_retired_model_switches_to_discovered_one(llm, monkeypatch):
+    monkeypatch.setattr(llm, "gemini_api_key", "g-key")
+    monkeypatch.setattr(llm, "gemini_model", "gemini-2.5-flash")
+    monkeypatch.setattr(gc, "_resolved_model", None)
+    calls = []
+
+    def fake_post(url, headers, json, timeout):
+        calls.append(url)
+        if "gemini-2.5-flash" in url:
+            return FakeResp(404, {"error": {"message": "This model is no longer available to new users."}})
+        return FakeResp(200, {"candidates": [{"content": {"parts": [{"text": '{"answer": "ok", "chunk_id": "x"}'}]}}]})
+
+    monkeypatch.setattr(httpx, "post", fake_post)
+    monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResp(200, {"models": [
+        {"name": "models/gemini-3-flash", "supportedGenerationMethods": ["generateContent"]}]}))
+    assert gc.generate("s", "u") == '{"answer": "ok", "chunk_id": "x"}'
+    assert gc.active_model() == "gemini-3-flash" and calls[-1].endswith("gemini-3-flash:generateContent")
+    gc.generate("s", "u")  # second call goes straight to the remembered model
+    assert calls[-1].endswith("gemini-3-flash:generateContent") and len(calls) == 3
+
+
+def test_retired_model_with_nothing_to_switch_to_is_reported(llm, monkeypatch):
+    monkeypatch.setattr(llm, "gemini_api_key", "g-key")
+    monkeypatch.setattr(gc, "_resolved_model", None)
+    monkeypatch.setattr(httpx, "post", lambda *a, **k: FakeResp(404, {"error": {"message": "gone"}}))
+    monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResp(200, {"models": []}))
+    with pytest.raises(LLMUnavailable, match="no other Flash model"):
+        gc.generate("s", "u")

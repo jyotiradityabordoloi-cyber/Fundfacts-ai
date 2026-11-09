@@ -135,7 +135,7 @@ Questions that name a field but no scheme (e.g. "ELSS lock-in?") use the scheme 
 5. Every score adjustment is recorded in `evidence`, so a reviewer can see why a chunk won.
 
 ### Step 4: Generation (`llm/`)
-- **Clients:** `llm/router.py` picks the provider (`LLM_PROVIDER`, default `auto`): **Gemini** (`llm/gemini_client.py`, free tier, `GEMINI_API_KEY`, default `gemini-2.5-flash`), else **Claude** (`llm/claude_client.py`, `ANTHROPIC_API_KEY`), else no LLM. Both expose `generate(system, user) -> str`; a quota error or failure raises `LLMUnavailable` and the verified-quote fallback is used.
+- **Clients:** `llm/router.py` picks the provider (`LLM_PROVIDER`, default `auto`): **Gemini** (`llm/gemini_client.py`, free tier, `GEMINI_API_KEY`, default `gemini-flash-latest`; on a 404 it lists the key's models and switches to the best available Flash model), else **Claude** (`llm/claude_client.py`, `ANTHROPIC_API_KEY`), else no LLM. Both expose `generate(system, user) -> str`; a quota error or failure raises `LLMUnavailable` and the verified-quote fallback is used.
 - **Prompt contract:**
   - use only the numbered context
   - ≤ 3 sentences
@@ -216,7 +216,7 @@ flowchart LR
 | `retrieval.top_k` / `min_similarity` | `4` / `0.25` | Retrieval knobs |
 | `chunking.size` / `overlap` | `700` / `120` | Prose chunking |
 | `llm.provider` | `auto` | `auto` / `gemini` / `anthropic` / `none` |
-| `llm.gemini_model` / `llm.anthropic_model` | `gemini-2.5-flash` / `claude-haiku-5-5` | Model per provider |
+| `llm.gemini_model` / `llm.anthropic_model` | `gemini-flash-latest` / `claude-haiku-5-5` | Model per provider |
 | `llm.temperature` / `max_tokens` / `timeout_s` | `0.1` / `400` / `30` | Generation limits |
 | `answer.max_sentences` | `3` | PRD FR3 |
 

@@ -73,7 +73,7 @@ class Retrieval(BaseModel):
 
 class LLM(BaseModel):
     provider: Literal["auto", "gemini", "anthropic", "none"] = "auto"
-    gemini_model: str = "gemini-2.5-flash"
+    gemini_model: str = "gemini-flash-latest"
     anthropic_model: str = "claude-haiku-5-5"
     temperature: float = Field(0.1, ge=0, le=1)
     max_tokens: int = Field(400, gt=0)

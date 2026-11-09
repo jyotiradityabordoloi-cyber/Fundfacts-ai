@@ -129,7 +129,7 @@ Steps:
 After that, every push to `main` redeploys automatically.
 
 ## Configuration
-Everything is in [`config.yaml`](config.yaml), with environment overrides: `LLM_PROVIDER` (auto | gemini | anthropic | none), `GEMINI_API_KEY`, `GEMINI_MODEL` (default `gemini-2.5-flash`), `ANTHROPIC_API_KEY`, `CLAUDE_MODEL`, `EMBEDDING_BACKEND`, `VECTOR_DB`, `TOP_K`, `MIN_SIMILARITY`. In `auto` mode, Gemini is used if its key is set, then Claude, otherwise the free no-LLM mode. Secrets live only in `.env` and in Vercel's environment variables, never in the repository.
+Everything is in [`config.yaml`](config.yaml), with environment overrides: `LLM_PROVIDER` (auto | gemini | anthropic | none), `GEMINI_API_KEY`, `GEMINI_MODEL` (default `gemini-flash-latest`, Google's alias for the current Flash model; if Google retires a model, the app switches to an available Flash model automatically), `ANTHROPIC_API_KEY`, `CLAUDE_MODEL`, `EMBEDDING_BACKEND`, `VECTOR_DB`, `TOP_K`, `MIN_SIMILARITY`. In `auto` mode, Gemini is used if its key is set, then Claude, otherwise the free no-LLM mode. Secrets live only in `.env` and in Vercel's environment variables, never in the repository.
 
 ## Privacy and safety
 - **Personal data:** PAN, Aadhaar, phone numbers, emails, OTPs and account/folio numbers are refused before any processing, and never echoed back.
