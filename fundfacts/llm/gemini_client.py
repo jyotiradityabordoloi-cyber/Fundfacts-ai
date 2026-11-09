@@ -34,8 +34,14 @@ def generate(system: str, user: str) -> str:
             timeout=cfg.timeout_s,
         )
         r.raise_for_status()
-    except httpx.HTTPError as exc:  # includes 429 when the free quota is used up
-        raise LLMUnavailable(f"{type(exc).__name__}: {str(exc)[:120]}") from exc
+    except httpx.HTTPStatusError as exc:  # e.g. 429 when the free quota is used up, 404 for an unknown model
+        try:
+            detail = exc.response.json().get("error", {}).get("message", "")
+        except ValueError:
+            detail = ""
+        raise LLMUnavailable(f"HTTP {exc.response.status_code} {detail[:100]}".strip()) from exc
+    except httpx.HTTPError as exc:  # network errors, timeouts
+        raise LLMUnavailable(type(exc).__name__) from exc
     try:
         parts = r.json()["candidates"][0]["content"]["parts"]
     except (KeyError, IndexError, ValueError) as exc:  # e.g. blocked by safety filters

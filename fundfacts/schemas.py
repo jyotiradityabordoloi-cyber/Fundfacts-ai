@@ -134,3 +134,5 @@ class Answer(BaseModel):
     last_updated: str | None = None  # e.g. "09 Nov 2026" (IST)
     evidence: list[Evidence] = []
     path: Literal["fact", "rag", "guardrail", "none"] = "none"
+    writer: str | None = None            # "fact table", "gemini", "anthropic" or "quote" (verbatim sentence)
+    fallback_reason: str | None = None   # why an LLM answer was not used (no secrets, no question text)

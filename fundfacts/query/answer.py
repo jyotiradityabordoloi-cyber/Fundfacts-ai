@@ -99,7 +99,7 @@ def _fact_answer(it: intent_mod.Intent) -> Answer | None:
     if not check.ok:
         return None
     return Answer(type=AnswerType.ANSWER, text=verifier.trim_sentences(text), source_url=meta["url"],
-                  source_title=f"{meta['title']}, page {primary.page}", last_updated=_ist(meta["fetched_at"]), path="fact",
+                  source_title=f"{meta['title']}, page {primary.page}", last_updated=_ist(meta["fetched_at"]), path="fact", writer="fact table",
                   evidence=[Evidence(chunk_id=card_id, score=1.0, quote=primary.quote[:220], adjustments={"exact_fact": 1.0})])
 
 
@@ -142,28 +142,37 @@ def _rag_answer(question: str, it: intent_mod.Intent) -> Answer | None:
     if not hits or hits[0].final < settings.retrieval.min_similarity:
         return None
     by_id = {h.chunk_id: h for h in hits}
-    candidates: list[tuple[str, retriever.Hit]] = []
-    if llm.enabled():
+    candidates: list[tuple[str, retriever.Hit, str]] = []  # (text, cited hit, writer)
+    fallback_reason = None
+    provider = llm.provider()
+    if provider:
         context = "\n\n".join(f"[{h.chunk_id}] ({h.meta['title']}, page {h.meta['page']})\n{h.text}" for h in hits)
         try:
             raw = llm.generate(SYSTEM_PROMPT, f"CONTEXT:\n{context}\n\nQUESTION: {question}")
-            if raw.strip().startswith("NOT_FOUND"):
+            if raw.strip().strip('"').startswith("NOT_FOUND"):
                 return None
             m = re.search(r"\{.*\}", raw, re.S)
             data = json.loads(m.group(0)) if m else {}
             if data.get("chunk_id") in by_id and data.get("answer"):
-                candidates.append((verifier.trim_sentences(data["answer"]), by_id[data["chunk_id"]]))
-        except (llm.LLMUnavailable, json.JSONDecodeError):
-            pass
-    candidates += [(verifier.trim_sentences(t), h) for t, h in _extractive_candidates(question, hits, it.scheme_id)]
+                candidates.append((verifier.trim_sentences(data["answer"]), by_id[data["chunk_id"]], provider))
+            else:
+                fallback_reason = f"{provider} reply had no valid citation"
+        except llm.LLMUnavailable as exc:
+            fallback_reason = f"{provider} unavailable: {str(exc)[:80]}"
+        except json.JSONDecodeError:
+            fallback_reason = f"{provider} reply was not valid JSON"
+    candidates += [(verifier.trim_sentences(t), h, "quote") for t, h in _extractive_candidates(question, hits, it.scheme_id)]
 
-    for text, hit in candidates:
+    for text, hit, writer in candidates:
         check = verifier.verify(text, hit.chunk_id, hit.meta["url"], set(by_id), hit.text)
-        if check.ok and text:
-            return Answer(type=AnswerType.ANSWER, text=text, source_url=hit.meta["url"],
-                          source_title=hit.meta["title"] if hit.meta.get("kind") == "prose"  # web pages have no page numbers
-                          else f"{hit.meta['title']}, page {hit.meta['page']}", last_updated=_ist(hit.meta["fetched_at"]), path="rag",
-                          evidence=_evidence(hits))
+        if not (check.ok and text):
+            if writer != "quote":
+                fallback_reason = f"{writer} answer failed verification ({'; '.join(f[:2] for f in check.failures)})"
+            continue
+        return Answer(type=AnswerType.ANSWER, text=text, source_url=hit.meta["url"],
+                      source_title=hit.meta["title"] if hit.meta.get("kind") == "prose"  # web pages have no page numbers
+                      else f"{hit.meta['title']}, page {hit.meta['page']}", last_updated=_ist(hit.meta["fetched_at"]), path="rag",
+                      evidence=_evidence(hits), writer=writer, fallback_reason=fallback_reason if writer == "quote" else None)
     return None
 
 
