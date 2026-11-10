@@ -19,6 +19,8 @@ Scope
     4. HDFC Small Cap Fund
     5. HDFC Balanced Advantage Fund
   Sources: 15-25 official public URLs from HDFC Mutual Fund, SEBI or AMFI only.
+  Groww scheme pages may be shown as clearly labelled third-party reference links next to
+  the official citation, but are never fetched, ingested or cited.
   Only registered URLs are fetched - no link following. Where hdfcfund.com blocks
   automated access, the owner downloads the document manually; the original URL
   remains the citation.

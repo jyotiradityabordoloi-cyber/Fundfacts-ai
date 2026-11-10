@@ -133,7 +133,12 @@ Everything is in [`config.yaml`](config.yaml), with environment overrides: `LLM_
 
 ## Privacy and safety
 - **Personal data:** PAN, Aadhaar, phone numbers, emails, OTPs and account/folio numbers are refused before any processing, and never echoed back.
-- **Nothing is stored:** questions are not logged or stored. They're only sent to the configured LLM, and only after the guardrails pass. On Gemini's free tier, Google may use prompts to improve its products. Only the question and public document passages are ever sent.
+- **Nothing is stored on the server:** questions are not logged or stored. They're only sent to the configured LLM, and only after the guardrails pass. On Gemini's free tier, Google may use prompts to improve its products. Only the question and public document passages are ever sent.
+- **Chat history stays in the tab:** the browser keeps chats in `sessionStorage`, so they survive a refresh and are deleted when the tab closes. A question is saved only after it's answered, so personal details refused by the guardrails are never written. `localStorage` holds only the theme.
+
+## Citations and reference links
+- **One official citation per answer.** Every answer cites exactly one HDFC Mutual Fund, SEBI or AMFI document. When the citation is a PDF page, the link opens the PDF at that page (`#page=N`), and exact fact answers also show the verbatim line they were read from, so you rarely need to open the PDF at all.
+- **Groww reference links (not sources).** Answers about one of the five schemes also show a separate, dashed "Easy-to-read overview on Groww" link, and the Explore panel links Groww's HDFC page. These links are third-party pages for convenience only: Groww is never fetched, ingested, searched or cited, and no answer is based on it. The link is labelled as not the source and warns that the page shows returns and invest buttons, which are not advice. It's not shown on refusals or for schemes outside the five.
 - **No performance figures:** returns tables are removed from documents during loading. Return questions are refused with a link to the official document.
 
 ## Known limits

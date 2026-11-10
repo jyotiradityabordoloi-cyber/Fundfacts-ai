@@ -151,3 +151,22 @@ def test_ui_scheme_scope_and_no_chat_persistence():
     assert "grid-template-rows: minmax(0, 1fr)" in html  # composer pinned; thread scrolls above it
     # feedback is visual-only: no request other than the existing endpoints
     assert set(re.findall(r'fetch\("([^"]+)"', html)) == {"/api/chat", "/api/meta", "/api/schemes"}
+
+
+def test_ui_groww_links_are_reference_only():
+    html = (ROOT / "public" / "index.html").read_text(encoding="utf-8")
+    # Groww URLs live only in the labelled reference map - exactly the five schemes plus the AMC page
+    urls = re.findall(r'https://groww\.in/[^"\s]+', html)
+    assert len(urls) == 6 and len(set(urls)) == 6
+    groww_map = re.search(r"const GROWW = \{(.*?)\};", html, re.S).group(1)
+    assert set(re.findall(r"(hdfc_[a-z_]+):", groww_map)) == {"hdfc_large_cap", "hdfc_flexi_cap", "hdfc_elss", "hdfc_small_cap", "hdfc_baf"}
+    # the citation card only ever links the backend's official URL (opened at the cited page)
+    assert 'c.href = pageLink(r.source_url, r.source_title)' in html
+    assert "groww.in" not in "".join(sorted(OFFICIAL_HOSTS_IN(html)))
+    # the reference link is labelled as not the source and is never shown on refusals
+    assert "Third-party page, not the source of this answer" in html
+    assert '(r.type === "answer" || r.type === "not_found")' in html
+
+
+def OFFICIAL_HOSTS_IN(html):
+    return re.findall(r'"([a-z.]+\.(?:com|in))"', re.search(r"OFFICIAL_HOSTS = new Set\(\[(.*?)\]\)", html).group(1))
