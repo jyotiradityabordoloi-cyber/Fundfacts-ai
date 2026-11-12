@@ -170,3 +170,15 @@ def test_ui_groww_links_are_reference_only():
 
 def OFFICIAL_HOSTS_IN(html):
     return re.findall(r'"([a-z.]+\.(?:com|in))"', re.search(r"OFFICIAL_HOSTS = new Set\(\[(.*?)\]\)", html).group(1))
+
+
+def test_ui_clean_layout_rules():
+    html = (ROOT / "public" / "index.html").read_text(encoding="utf-8")
+    # follow-up suggestions only under the latest answer, starters only before the first question
+    assert "isLast && it.followups" in html
+    assert ".main.is-empty .starters { display: block; }" in html
+    # no duplicated quote block or answer heading; one source card per answer
+    assert "src-quote" not in html and "answer-head" not in html
+    assert html.count('el("a", "source")') == 1
+    # the send button is the only filled button in the chat view (New chat is outlined)
+    assert 'class="btn new-chat"' in html and 'class="btn primary send"' in html

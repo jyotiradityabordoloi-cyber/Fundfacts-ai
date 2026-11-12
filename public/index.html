@@ -15,260 +15,254 @@
   (function () { try { var t = localStorage.getItem("ff-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {} })();
 </script>
 <style>
-  /* FundFacts AI - one design system.
+  /* FundFacts AI - clean chat UI.
      Three colours only (black, green, white); every other shade is one of them at an opacity.
-     Tokens: radius 8 / 12 / 18, type 13 (labels, meta) / 14 (UI) / 16 (answers, text people read),
-     spacing on a 4px grid, one ease, hover 150ms in / 120ms out / 90ms press. */
+     The interface is neutral: green marks the brand, the send button, links and focus - nothing else.
+     Tokens: radius 8 / 12 / 18, type 13 (meta) / 14 (UI) / 16 (reading), 4px spacing, one ease. */
   :root {
-    --black: 10, 10, 10; --white: 255, 255, 255; --green: 0, 208, 156; --sidebar-w: 272px;
+    --black: 10, 10, 10; --white: 255, 255, 255; --green: 0, 208, 156; --sidebar-w: 264px;
     --r-sm: 8px; --r-md: 12px; --r-lg: 18px;
-    --t-label: 13px; --t-ui: 14px; --t-body: 16px;
-    --ease: cubic-bezier(.2, .8, .2, 1); --ease-enter: cubic-bezier(.22, 1, .36, 1);
-    --m-in: 150ms; --m-out: 120ms; --m-press: 90ms; --m-card: 180ms;
-    --tap: 40px;
+    --t-meta: 13px; --t-ui: 14px; --t-read: 16px;
+    --ease: cubic-bezier(.2, .8, .2, 1); --m-in: 150ms; --m-out: 120ms; --m-press: 90ms;
+    --tap: 36px; --col: 760px;
   }
   :root[data-theme="dark"] {
-    --bg: rgb(var(--black)); --fg: rgb(var(--white)); --card: rgba(var(--white), .045);
-    --surface: rgba(var(--white), .045); --surface-2: rgba(var(--white), .08);
-    --line: rgba(var(--white), .12); --line-strong: rgba(var(--white), .24);
+    --bg: rgb(var(--black)); --fg: rgb(var(--white)); --side: rgb(17, 17, 17); --card: rgb(var(--black));
+    --bubble: rgba(var(--white), .08); --hover: rgba(var(--white), .06);
+    --line: rgba(var(--white), .12); --line-strong: rgba(var(--white), .22);
     --muted: rgba(var(--white), .68); --faint: rgba(var(--white), .55);
-    --accent: rgb(var(--green)); --accent-soft: rgba(var(--green), .13); --accent-line: rgba(var(--green), .45);
+    --accent: rgb(var(--green)); --accent-soft: rgba(var(--green), .14); --accent-ink: rgb(var(--green));
     --accent-hover: color-mix(in srgb, rgb(var(--green)) 86%, white);
-    --link: rgb(var(--green)); --on-accent: rgb(var(--black)); --overlay: rgba(var(--black), .72);
-    --side: rgba(var(--white), .025); --focus: rgb(var(--green)); --lift: 0 10px 24px rgba(0, 0, 0, .35);
+    --on-accent: rgb(var(--black)); --overlay: rgba(var(--black), .7); --focus: rgb(var(--green));
+    --lift: 0 8px 24px rgba(0, 0, 0, .4);
     color-scheme: dark;
   }
   :root[data-theme="light"] {
-    /* an off-white page with white cards: separation comes from the ground and a clear hairline, not shadows */
-    --bg: rgb(249, 249, 249); --fg: rgb(var(--black)); --card: rgb(var(--white));
-    --surface: rgb(var(--white)); --surface-2: rgba(var(--black), .05);
-    --line: rgba(var(--black), .16); --line-strong: rgba(var(--black), .32);
+    --bg: rgb(var(--white)); --fg: rgb(var(--black)); --side: rgb(246, 246, 246); --card: rgb(var(--white));
+    --bubble: rgba(var(--black), .06); --hover: rgba(var(--black), .05);
+    --line: rgba(var(--black), .14); --line-strong: rgba(var(--black), .26);
     --muted: rgba(var(--black), .68); --faint: rgba(var(--black), .58);
-    --accent: rgb(var(--green)); --accent-soft: rgba(var(--green), .13); --accent-line: rgba(var(--green), .6);
+    --accent: rgb(var(--green)); --accent-soft: rgba(var(--green), .14); --accent-ink: rgb(var(--black));
     --accent-hover: color-mix(in srgb, rgb(var(--green)) 86%, black);
-    --link: rgb(var(--black)); --on-accent: rgb(var(--black)); --overlay: rgba(var(--black), .45);
-    --side: rgba(var(--black), .025); --focus: rgb(var(--black)); --lift: 0 10px 24px rgba(var(--black), .08);
+    --on-accent: rgb(var(--black)); --overlay: rgba(var(--black), .4); --focus: rgb(var(--black));
+    --lift: 0 8px 24px rgba(var(--black), .08);
     color-scheme: light;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
   body { background: var(--bg); color: var(--fg); font: var(--t-ui)/1.55 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; overflow: hidden; }
-  a { color: var(--link); text-decoration-color: var(--accent); text-underline-offset: 3px; }
+  a { color: inherit; }
   button, textarea { font: inherit; color: inherit; }
   [hidden] { display: none !important; }
-  /* focus shows at once, never animates: green on dark, ink on light (green on white is under 3:1) */
   :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  svg { flex: none; }
 
-  /* ---------- shell ---------- */
-  /* one row pinned to the viewport: the thread scrolls inside it and the composer always stays on screen */
+  /* ---------- shell: one row pinned to the viewport; only the thread scrolls ---------- */
   .shell { display: grid; grid-template-columns: var(--sidebar-w) 1fr; grid-template-rows: minmax(0, 1fr); height: 100vh; height: 100dvh; overflow: hidden; }
   .shell.collapsed { grid-template-columns: 0 1fr; }
   .shell.collapsed .sidebar { visibility: hidden; }
 
   /* ---------- sidebar ---------- */
-  .sidebar { border-right: 1px solid var(--line); background: var(--side); display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
-  .side-top { display: flex; align-items: center; gap: 10px; padding: 16px 16px 12px; }
-  .logo { width: 34px; height: 34px; border-radius: var(--r-sm); background: var(--accent); display: grid; place-items: center; flex: none; }
-  .brand { font-size: 17px; font-weight: 800; letter-spacing: -.02em; white-space: nowrap; }
+  .sidebar { background: var(--side); border-right: 1px solid var(--line); display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+  .side-top { display: flex; align-items: center; gap: 10px; padding: 14px 16px; }
+  .logo { width: 30px; height: 30px; border-radius: var(--r-sm); background: var(--accent); display: grid; place-items: center; flex: none; }
+  .brand { font-size: 16px; font-weight: 700; letter-spacing: -.02em; white-space: nowrap; }
   .brand span { color: var(--accent); }
-  .new-chat { margin: 4px 16px 12px; justify-content: center; }
-  .side-label { font-size: var(--t-label); font-weight: 500; color: var(--muted); padding: 8px 20px 6px; }
-  .history { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 0 12px 12px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; align-content: start; }
-  .conv { display: flex; align-items: center; gap: 8px; width: 100%; min-height: var(--tap); text-align: left; border: 1px solid transparent; background: none; border-radius: var(--r-sm); padding: 8px 10px; cursor: pointer; font-size: var(--t-ui); color: var(--muted); transition: background var(--m-out) var(--ease), color var(--m-out) var(--ease); }
-  .conv:hover { background: var(--surface-2); color: var(--fg); transition-duration: var(--m-in); }
-  .conv[aria-current="true"] { background: var(--accent-soft); border-color: var(--accent-line); color: var(--fg); }
-  .conv span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .conv svg { flex: none; opacity: .7; }
-  .side-empty { font-size: var(--t-label); color: var(--faint); padding: 4px 8px; }
-  .side-foot { border-top: 1px solid var(--line); padding: 12px 16px; font-size: var(--t-label); color: var(--faint); line-height: 1.5; display: grid; gap: 8px; }
-  .side-foot b { color: var(--muted); font-weight: 600; }
+  :root[data-theme="light"] .brand span { color: inherit; }
+  .new-chat { margin: 4px 12px 16px; justify-content: flex-start; }
+  .history { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 0 12px 12px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1px; align-content: start; }
+  .conv { display: block; width: 100%; min-height: var(--tap); text-align: left; border: 0; background: none; border-radius: var(--r-sm); padding: 8px 10px; cursor: pointer; font-size: var(--t-ui); color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: background var(--m-out) var(--ease), color var(--m-out) var(--ease); }
+  .conv:hover { background: var(--hover); color: var(--fg); transition-duration: var(--m-in); }
+  .conv[aria-current="true"] { background: var(--bubble); color: var(--fg); font-weight: 500; }
+  .side-empty { font-size: var(--t-meta); color: var(--faint); padding: 4px 10px; }
+  .side-foot { padding: 14px 16px; font-size: var(--t-meta); color: var(--faint); line-height: 1.5; display: grid; gap: 4px; }
 
   /* ---------- main column ---------- */
   .main { display: flex; flex-direction: column; min-width: 0; min-height: 0; height: 100%; }
   .topbar, .composer { flex: none; }
-  .topbar { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--bg); }
-  .topbar h1 { margin: 0; font-size: 15px; font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+  .topbar { display: flex; align-items: center; gap: 6px; height: 56px; padding: 0 12px; }
+  .topbar h1 { margin: 0 0 0 4px; font-size: var(--t-ui); font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
   .topbar .brand-mobile { display: none; }
 
-  /* ---------- buttons: one shape; the filled green one is the only primary ---------- */
-  .btn { display: inline-flex; align-items: center; gap: 8px; height: var(--tap); border-radius: var(--r-md); padding: 0 14px; font-size: var(--t-ui); font-weight: 600; cursor: pointer; border: 1px solid var(--line); background: var(--card); white-space: nowrap;
+  /* ---------- buttons: one shape; the green send button is the only filled one in the chat ---------- */
+  .btn { display: inline-flex; align-items: center; gap: 8px; height: var(--tap); border-radius: var(--r-md); padding: 0 12px; font-size: var(--t-ui); font-weight: 500; cursor: pointer; border: 1px solid var(--line); background: transparent; white-space: nowrap; color: var(--fg);
     transition: transform var(--m-out) var(--ease), background var(--m-out) var(--ease), border-color var(--m-out) var(--ease); }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-  .btn.ghost { background: none; border-color: transparent; }
-  .icon-btn { width: var(--tap); padding: 0; justify-content: center; flex: none; }
-  .btn:disabled { opacity: .45; cursor: default; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+  .btn.ghost { border-color: transparent; color: var(--muted); }
+  .icon-btn { width: var(--tap); padding: 0; justify-content: center; }
+  .btn:disabled { opacity: .4; cursor: default; }
   @media (hover: hover) and (pointer: fine) {
-    .btn:not(:disabled):hover { transform: translateY(-1px); border-color: var(--line-strong); background: var(--surface-2); transition-duration: var(--m-in); }
-    .btn.primary:not(:disabled):hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .btn:not(:disabled):hover { transform: translateY(-1px); background: var(--hover); border-color: var(--line-strong); color: var(--fg); transition-duration: var(--m-in); }
+    .btn.ghost:not(:disabled):hover { border-color: transparent; }
+    .btn.primary:not(:disabled):hover { background: var(--accent-hover); border-color: var(--accent-hover); color: var(--on-accent); }
   }
   .btn:not(:disabled):active { transform: translateY(1px) scale(.985); transition-duration: var(--m-press); }
 
-  /* ---------- linked cards: one recipe (hairline, card ground); they lift 2px under a fine pointer ---------- */
-  .chip, .scheme-card, .scheme-row, .cite, .ref, .fu {
-    border: 1px solid var(--line); background: var(--card); color: var(--fg); text-decoration: none; cursor: pointer;
-    transition: transform var(--m-out) var(--ease), border-color var(--m-out) var(--ease), box-shadow var(--m-out) var(--ease), background var(--m-out) var(--ease); }
-  @media (hover: hover) and (pointer: fine) {
-    .chip:hover, .scheme-card:hover, .scheme-row:hover, .cite:hover, .ref:hover, .fu:hover {
-      transform: translateY(-2px); border-color: var(--accent-line); box-shadow: var(--lift); transition-duration: var(--m-card); }
-  }
-  .chip:active, .scheme-card:active, .scheme-row:active, .fu:active { transform: scale(.99); transition-duration: var(--m-press); }
-
-  /* the thread is its own scroll area above the composer, so nothing can slide under the input */
+  /* ---------- thread ---------- */
   .thread { flex: 1; min-height: 0; overflow-y: auto; scroll-behavior: smooth; overscroll-behavior: contain; }
-  .thread-inner { max-width: 820px; margin: 0 auto; padding: 24px 16px 56px; display: flex; flex-direction: column; gap: 16px; }
+  .thread-inner { max-width: var(--col); margin: 0 auto; padding: 24px 20px 48px; display: flex; flex-direction: column; gap: 28px; }
 
-  /* ---------- welcome ---------- */
-  .welcome { padding: 24px 0 4px; }
-  .welcome h2 { margin: 0; font-size: 30px; line-height: 1.2; font-weight: 800; letter-spacing: -.03em; max-width: 640px; }
-  .welcome h2 em { font-style: normal; color: var(--accent); }
-  :root[data-theme="light"] .welcome h2 em { color: var(--muted); }
-  .welcome p.lead { margin: 12px 0 8px; color: var(--muted); font-size: var(--t-body); line-height: 1.6; max-width: 620px; }
-  .label { font-size: var(--t-label); font-weight: 500; color: var(--muted); margin: 24px 0 8px; }
-  .chips { display: grid; gap: 8px; }
-  .chip { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 48px; text-align: left; border-radius: var(--r-md); padding: 12px 16px; font-size: 15px; }
-  .chip svg { flex: none; color: var(--accent); }
-  .scheme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
-  .scheme-card { text-align: left; border-radius: var(--r-md); padding: 12px 14px; display: grid; gap: 2px; }
-  .scheme-card b { font-size: var(--t-ui); font-weight: 600; }
-  .scheme-card span { font-size: var(--t-label); color: var(--muted); }
-  .assure { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 24px; font-size: var(--t-label); color: var(--muted); }
-  .assure span { display: inline-flex; gap: 6px; align-items: center; }
-  .assure svg { color: var(--accent); }
+  /* empty state: the heading, the question box and the starters sit together in the middle of the screen */
+  .main.is-empty .thread { flex: 0 1 auto; margin-top: auto; }
+  .main.is-empty .thread-inner { padding-bottom: 8px; }
+  .main.is-empty .composer { margin-bottom: auto; padding-bottom: calc(24px + 6vh); }
+  .welcome { text-align: center; padding-top: 8px; }
+  .welcome .logo { width: 44px; height: 44px; border-radius: var(--r-md); margin: 0 auto 18px; }
+  .welcome h2 { margin: 0; font-size: 30px; line-height: 1.2; font-weight: 700; letter-spacing: -.03em; }
+  .welcome p { margin: 10px auto 0; max-width: 520px; color: var(--muted); font-size: var(--t-read); line-height: 1.6; }
 
   /* ---------- messages ---------- */
-  .row { display: flex; flex-direction: column; animation: rise .24s var(--ease-enter); }
-  .row.user { align-items: flex-end; }
-  .row.bot { align-items: flex-start; }
+  .msg { display: flex; flex-direction: column; animation: rise .22s var(--ease); }
   @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-  .bubble { max-width: min(88%, 680px); border-radius: var(--r-lg); padding: 12px 16px; overflow-wrap: anywhere; }
-  .row.user .bubble { background: var(--accent); color: var(--on-accent); border-bottom-right-radius: 6px; font-size: var(--t-body); font-weight: 500; white-space: pre-wrap; }
-  .row.user .bubble.masked { background: var(--surface-2); color: var(--muted); font-style: italic; font-weight: 400; }
-  .ctx-note { font-size: var(--t-label); color: var(--faint); display: inline-flex; gap: 6px; align-items: center; }
-  .row.bot .bubble { background: var(--card); border: 1px solid var(--line); border-bottom-left-radius: 6px; padding: 14px 18px; }
-  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: var(--t-label); font-weight: 500; border-radius: var(--r-sm); padding: 2px 8px; margin-bottom: 8px; }
-  .badge.ok { background: var(--accent-soft); border: 1px solid var(--accent-line); }
-  .badge.ok svg { color: var(--accent); }
-  .badge.stop { border: 1px solid var(--line); color: var(--muted); }
-  .answer-head { font-size: var(--t-ui); font-weight: 600; color: var(--muted); margin-bottom: 4px; }
-  .answer-text { font-size: var(--t-body); line-height: 1.65; }
-  .state-note { margin-top: 8px; font-size: var(--t-ui); color: var(--muted); }
-  .row.bot .bubble.is-missing { border-style: dashed; }
-  .row.bot .bubble.is-refusal { border-left: 3px solid var(--line-strong); }
-  .under { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
-  .row.bot .under { padding-left: 2px; }
-  .stamp { font-size: var(--t-label); color: var(--faint); font-variant-numeric: tabular-nums; }
-  .stamp.push { margin-left: auto; padding-left: 10px; }
-  .fu-label { margin-top: 12px; font-size: var(--t-label); font-weight: 500; color: var(--muted); }
-  .fu-label + .followups { margin-top: 8px; }
-  .cite { margin-top: 12px; display: flex; gap: 12px; align-items: flex-start; background: var(--bg); border-radius: var(--r-md); padding: 12px 14px; }
-  .cite .ic { width: 32px; height: 32px; border-radius: var(--r-sm); background: var(--accent-soft); display: grid; place-items: center; flex: none; color: var(--accent); }
-  :root[data-theme="light"] .cite .ic { color: var(--fg); }
-  .cite .t { font-size: var(--t-ui); font-weight: 600; line-height: 1.4; }
-  .cite .u { font-size: var(--t-label); color: var(--muted); word-break: break-all; margin-top: 2px; }
-  .cite .pg { display: inline-block; margin-left: 6px; font-size: var(--t-label); font-weight: 500; border: 1px solid var(--line); border-radius: var(--r-sm); padding: 0 6px; color: var(--muted); }
-  .cite .jump { margin-top: 4px; font-size: var(--t-label); font-weight: 600; color: var(--accent); }
-  :root[data-theme="light"] .cite .jump { color: var(--fg); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
-  .src-quote { margin: 8px 0 0; padding: 8px 12px; border-left: 3px solid var(--accent); background: var(--surface-2); border-radius: 0 var(--r-sm) var(--r-sm) 0; font-size: var(--t-ui); line-height: 1.55; color: var(--muted); font-style: italic; }
-  /* third-party reference link: visibly secondary to the official citation */
-  .ref { margin-top: 8px; display: flex; gap: 10px; align-items: flex-start; border-style: dashed; border-radius: var(--r-md); padding: 10px 14px; }
-  .ref svg { flex: none; margin-top: 3px; color: var(--muted); }
-  .ref .t { display: block; font-size: var(--t-ui); font-weight: 600; }
-  .ref .n { display: block; font-size: var(--t-label); color: var(--muted); margin-top: 2px; }
-  .meta-line { margin-top: 10px; font-size: var(--t-label); color: var(--faint); }
-  .actions { display: flex; align-items: center; gap: 2px; margin-top: 6px; width: min(88%, 680px); }
-  .act { border: 0; background: none; border-radius: var(--r-sm); width: 34px; height: 34px; display: grid; place-items: center; cursor: pointer; color: var(--faint); transition: background var(--m-out) var(--ease), color var(--m-out) var(--ease), transform var(--m-out) var(--ease); }
-  .act:hover { background: var(--surface-2); color: var(--fg); transition-duration: var(--m-in); }
-  .act:active { transform: scale(.94); transition-duration: var(--m-press); }
-  .act[aria-pressed="true"] { color: var(--accent); background: var(--accent-soft); }
-  :root[data-theme="light"] .act[aria-pressed="true"] { color: var(--fg); }
-  .act-msg { font-size: var(--t-label); color: var(--faint); margin-left: 6px; }
-  details { margin-top: 8px; font-size: var(--t-label); color: var(--muted); }
-  summary { cursor: pointer; width: fit-content; font-weight: 600; color: var(--fg); }
-  .ev { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; }
-  .ev li { background: var(--surface-2); border-radius: var(--r-sm); padding: 8px 10px; }
-  .ev .id { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: var(--t-label); word-break: break-all; color: var(--fg); }
-  .ev .q { display: block; margin-top: 4px; }
-  .followups { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; max-width: min(88%, 680px); }
-  .fu { border-radius: var(--r-md); padding: 8px 14px; min-height: var(--tap); font-size: var(--t-ui); text-align: left; }
-  /* loading: one small spinner and what is happening, no blinking dots */
-  .typing { display: flex; gap: 10px; align-items: center; color: var(--muted); font-size: var(--t-ui); }
+  .msg.user { align-items: flex-end; }
+  .msg.user .bubble { max-width: min(80%, 600px); background: var(--bubble); border-radius: var(--r-lg); border-bottom-right-radius: 6px; padding: 10px 16px; font-size: var(--t-read); line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .msg.user .bubble.masked { color: var(--muted); font-style: italic; }
+  .ctx-note { margin-top: 6px; font-size: var(--t-meta); color: var(--faint); }
+  .state-label { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: var(--t-meta); font-weight: 600; color: var(--muted); }
+  .answer-text { font-size: var(--t-read); line-height: 1.7; overflow-wrap: anywhere; }
+  .typing { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: var(--t-ui); min-height: 28px; }
   .spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--accent-soft); border-top-color: var(--accent); animation: spin 1s linear infinite; flex: none; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .error-box .retry { margin-top: 12px; }
+  .retry { margin-top: 12px; align-self: flex-start; }
+
+  /* the one official source: a compact card that opens the document at the cited page */
+  .source { margin-top: 14px; display: flex; align-items: center; gap: 12px; max-width: 560px; border: 1px solid var(--line); border-radius: var(--r-md); padding: 10px 14px; text-decoration: none; background: var(--card);
+    transition: transform var(--m-out) var(--ease), border-color var(--m-out) var(--ease), box-shadow var(--m-out) var(--ease); }
+  .source .ic { width: 32px; height: 32px; border-radius: var(--r-sm); background: var(--accent-soft); color: var(--accent-ink); display: grid; place-items: center; flex: none; }
+  .source .body { min-width: 0; flex: 1; }
+  .source .t { display: block; font-size: var(--t-ui); font-weight: 600; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .source .h { display: block; font-size: var(--t-meta); color: var(--muted); }
+  .source .go { color: var(--faint); }
+  .ref-line { margin-top: 8px; font-size: var(--t-meta); color: var(--faint); }
+  .ref { color: var(--muted); font-weight: 500; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+  .ref:hover { color: var(--fg); text-decoration-color: currentColor; }
+
+  /* one quiet line under each answer: actions, how it was written, freshness, why */
+  .meta { display: flex; align-items: center; flex-wrap: wrap; gap: 2px 12px; margin-top: 10px; font-size: var(--t-meta); color: var(--faint); }
+  .acts { display: flex; align-items: center; gap: 2px; margin-left: -6px; }
+  .info { line-height: 1.5; }
+  .act { border: 0; background: none; border-radius: var(--r-sm); width: 32px; height: 32px; display: grid; place-items: center; cursor: pointer; color: var(--faint); transition: background var(--m-out) var(--ease), color var(--m-out) var(--ease), transform var(--m-out) var(--ease); }
+  .act:hover { background: var(--hover); color: var(--fg); transition-duration: var(--m-in); }
+  .act:active { transform: scale(.94); transition-duration: var(--m-press); }
+  .act[aria-pressed="true"] { color: var(--accent-ink); background: var(--accent-soft); }
+  .why { border: 0; background: none; padding: 4px 6px; margin-left: 2px; border-radius: var(--r-sm); font-size: var(--t-meta); color: var(--muted); cursor: pointer; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+  .why:hover { color: var(--fg); }
+  .act-msg { margin-left: 4px; }
+  .why-panel { margin-top: 8px; padding: 2px 0 2px 14px; border-left: 2px solid var(--line); font-size: var(--t-meta); color: var(--muted); }
+  .ev { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+  .ev .id { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: var(--t-meta); word-break: break-all; color: var(--fg); }
+  .ev .q { display: block; margin-top: 2px; }
+
+  /* follow-ups: only under the latest answer */
+  .followups { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .fu { border: 1px solid var(--line); background: var(--card); border-radius: var(--r-md); padding: 7px 12px; min-height: var(--tap); font-size: var(--t-ui); text-align: left; cursor: pointer; color: var(--fg);
+    transition: transform var(--m-out) var(--ease), border-color var(--m-out) var(--ease), box-shadow var(--m-out) var(--ease); }
+  @media (hover: hover) and (pointer: fine) {
+    .source:hover, .fu:hover, .pill:hover { transform: translateY(-2px); border-color: var(--line-strong); box-shadow: var(--lift); transition-duration: 180ms; }
+  }
+  .fu:active, .pill:active { transform: scale(.98); transition-duration: var(--m-press); }
 
   /* ---------- composer ---------- */
-  .composer { border-top: 1px solid var(--line); background: var(--bg); padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); }
-  .composer-inner { max-width: 820px; margin: 0 auto; }
-  .context { display: none; align-items: center; gap: 8px; margin: 0 0 8px; font-size: var(--t-label); color: var(--muted); }
+  .composer { padding: 8px 20px calc(14px + env(safe-area-inset-bottom)); background: var(--bg); }
+  .composer-inner { max-width: var(--col); margin: 0 auto; padding: 0 0; }
+  .context { display: none; align-items: center; gap: 6px; width: fit-content; margin: 0 0 8px; padding: 2px 4px 2px 12px; border: 1px solid var(--line); border-radius: var(--r-md); font-size: var(--t-meta); color: var(--muted); }
   .context.on { display: flex; }
   .context b { color: var(--fg); font-weight: 600; }
-  .context button { border: 1px solid var(--line); background: var(--card); border-radius: var(--r-sm); width: 28px; height: 28px; padding: 0; cursor: pointer; line-height: 1; }
-  .bar { display: flex; gap: 8px; align-items: flex-end; background: var(--card); border: 1px solid var(--line-strong); border-radius: var(--r-lg); padding: 6px; transition: border-color var(--m-in) var(--ease), box-shadow var(--m-in) var(--ease); }
+  .context button { border: 0; background: none; border-radius: var(--r-sm); width: 28px; height: 28px; padding: 0; cursor: pointer; color: var(--muted); display: grid; place-items: center; }
+  .context button:hover { background: var(--hover); color: var(--fg); }
+  .bar { display: flex; gap: 8px; align-items: flex-end; background: var(--card); border: 1px solid var(--line-strong); border-radius: var(--r-lg); padding: 8px 8px 8px 6px; transition: border-color var(--m-in) var(--ease), box-shadow var(--m-in) var(--ease); }
   .bar:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-  /* 16px text so phones never zoom the page when the field takes focus */
-  .bar textarea { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--fg); padding: 9px 10px; outline: none; resize: none; max-height: 160px; font-size: var(--t-body); line-height: 1.5; }
+  /* 16px so phones never zoom the page when the field takes focus */
+  .bar textarea { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--fg); padding: 7px 10px; outline: none; resize: none; max-height: 168px; font-size: var(--t-read); line-height: 1.5; }
   .bar textarea::placeholder { color: var(--faint); }
-  .bar .btn.primary { padding: 0 18px; }
-  .hint { display: flex; justify-content: space-between; gap: 4px 12px; flex-wrap: wrap; font-size: var(--t-label); color: var(--faint); padding: 8px 4px 0; }
-  .hint strong { color: var(--muted); font-weight: 600; }
+  .count { align-self: center; font-size: var(--t-meta); color: var(--faint); font-variant-numeric: tabular-nums; }
+  .send { width: var(--tap); height: var(--tap); padding: 0; justify-content: center; border-radius: var(--r-md); }
+  .fine { display: flex; justify-content: center; gap: 4px 12px; flex-wrap: wrap; margin-top: 10px; font-size: var(--t-meta); color: var(--faint); text-align: center; }
+  .fine strong { color: var(--muted); font-weight: 600; }
+
+  /* starters: shown only before the first question */
+  .starters { display: none; margin-top: 16px; }
+  .main.is-empty .starters { display: block; }
+  .chips { display: grid; border-top: 1px solid var(--line); }
+  .chip { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 48px; padding: 10px 6px; border: 0; border-bottom: 1px solid var(--line); background: none; text-align: left; font-size: 15px; color: var(--muted); cursor: pointer; transition: color var(--m-out) var(--ease), background var(--m-out) var(--ease); }
+  .chip svg { color: var(--faint); transition: transform var(--m-out) var(--ease), color var(--m-out) var(--ease); }
+  .chip:hover { color: var(--fg); background: var(--hover); transition-duration: var(--m-in); }
+  .chip:hover svg { color: var(--accent-ink); transform: translateX(3px); }
+  .pills { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; margin-top: 18px; }
+  .pills-label { font-size: var(--t-meta); color: var(--faint); margin-right: 2px; }
+  .pill { border: 1px solid var(--line); background: var(--card); border-radius: var(--r-md); padding: 0 12px; height: 32px; font-size: var(--t-meta); color: var(--muted); cursor: pointer;
+    transition: transform var(--m-out) var(--ease), border-color var(--m-out) var(--ease), box-shadow var(--m-out) var(--ease), color var(--m-out) var(--ease); }
+  .pill:hover { color: var(--fg); }
 
   /* ---------- explore drawer ---------- */
   .scrim { position: fixed; inset: 0; background: var(--overlay); opacity: 0; pointer-events: none; transition: opacity .2s var(--ease); z-index: 20; }
   .scrim.open { opacity: 1; pointer-events: auto; }
-  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 100%); background: var(--bg); border-left: 1px solid var(--line); z-index: 21; transform: translateX(100%); transition: transform .24s var(--ease); display: flex; flex-direction: column; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100%); background: var(--bg); border-left: 1px solid var(--line); z-index: 21; transform: translateX(100%); transition: transform .24s var(--ease); display: flex; flex-direction: column; }
   .drawer.open { transform: none; }
-  .drawer-head { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
-  .drawer-head h3 { margin: 0; font-size: 17px; font-weight: 700; flex: 1; min-width: 0; }
-  .drawer-body { overflow-y: auto; padding: 16px; display: grid; gap: 12px; align-content: start; }
-  .scheme-row { display: flex; align-items: center; gap: 12px; text-align: left; width: 100%; border-radius: var(--r-md); padding: 14px; }
-  .scheme-row .mark { width: 40px; height: 40px; border-radius: var(--r-sm); background: var(--accent-soft); border: 1px solid var(--accent-line); display: grid; place-items: center; font-weight: 800; font-size: var(--t-label); flex: none; }
-  .scheme-row .t { font-size: 15px; font-weight: 600; }
-  .scheme-row .s { font-size: var(--t-label); color: var(--muted); }
-  .scheme-row svg { margin-left: auto; color: var(--faint); flex: none; }
-  .facts { display: grid; gap: 8px; }
-  .fact { border: 1px solid var(--line); background: var(--card); border-radius: var(--r-md); padding: 12px 14px; }
-  .fact .k { font-size: var(--t-label); font-weight: 500; color: var(--muted); }
+  .drawer-head { display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 12px 0 16px; border-bottom: 1px solid var(--line); }
+  .drawer-head h3 { margin: 0; font-size: 16px; font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .drawer-body { overflow-y: auto; padding: 16px 20px 32px; display: grid; gap: 12px; align-content: start; }
+  .drawer-note { margin: 0; font-size: var(--t-meta); color: var(--muted); }
+  .scheme-list { display: grid; border-top: 1px solid var(--line); }
+  .scheme-row { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 60px; padding: 10px 4px; border: 0; border-bottom: 1px solid var(--line); background: none; text-align: left; cursor: pointer; transition: background var(--m-out) var(--ease); }
+  .scheme-row:hover { background: var(--hover); transition-duration: var(--m-in); }
+  .scheme-row .t { display: block; font-size: 15px; font-weight: 600; }
+  .scheme-row .s { display: block; font-size: var(--t-meta); color: var(--muted); }
+  .scheme-row svg { margin-left: auto; color: var(--faint); }
+  .facts { display: grid; border-top: 1px solid var(--line); }
+  .fact { padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .fact .k { font-size: var(--t-meta); font-weight: 500; color: var(--muted); }
   .fact .v { margin-top: 2px; font-size: 15px; line-height: 1.55; }
   .fact .v.long { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .fact .v.long.open { display: block; }
-  .fact .more { margin-top: 4px; border: 0; background: none; padding: 0; color: var(--muted); font-size: var(--t-label); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-  .fact .src { margin-top: 8px; font-size: var(--t-label); color: var(--muted); }
-  .missing { border: 1px dashed var(--line); border-radius: var(--r-md); padding: 12px 14px; font-size: var(--t-ui); color: var(--muted); }
+  .fact .more { margin-top: 4px; border: 0; background: none; padding: 0; color: var(--muted); font-size: var(--t-meta); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .fact .src { margin-top: 6px; font-size: var(--t-meta); color: var(--faint); }
+  .fact .src a { color: var(--muted); text-underline-offset: 3px; }
+  .missing { font-size: var(--t-meta); color: var(--muted); }
+  .drawer .chips { margin-top: 4px; }
+  .drawer-label { margin: 8px 0 0; font-size: var(--t-meta); font-weight: 500; color: var(--muted); }
 
   /* ---------- touch screens: every control at least 44px ---------- */
   @media (pointer: coarse) {
     :root { --tap: 44px; }
     .act { width: 44px; height: 44px; }
     .context button { width: 44px; height: 44px; }
+    .pill { height: 44px; }
+    .why { min-height: 44px; }
+    .ref { display: inline-flex; align-items: center; min-height: 44px; }
+    .ref-note { margin-top: -6px; }
+    .ref-line { margin-top: 0; display: flex; flex-direction: column; align-items: flex-start; }
   }
 
-  /* ---------- responsive ---------- */
+  /* ---------- phones ---------- */
   .side-scrim { display: none; }
   @media (max-width: 860px) {
     .shell, .shell.collapsed { grid-template-columns: 1fr; }
-    .sidebar { position: fixed; top: 0; bottom: 0; left: 0; width: min(300px, 86vw); z-index: 31; transform: translateX(-100%); transition: transform .24s var(--ease); background: var(--bg); visibility: visible !important; }
+    .sidebar { position: fixed; top: 0; bottom: 0; left: 0; width: min(300px, 86vw); z-index: 31; transform: translateX(-100%); transition: transform .24s var(--ease); visibility: visible !important; }
     .shell.mobile-open .sidebar { transform: none; }
     .side-scrim { display: block; position: fixed; inset: 0; background: var(--overlay); z-index: 30; opacity: 0; pointer-events: none; transition: opacity .2s var(--ease); }
     .shell.mobile-open .side-scrim { opacity: 1; pointer-events: auto; }
-    .topbar { padding: 8px 12px; }
-    .topbar .brand-mobile { display: flex; align-items: center; gap: 8px; }
+    .topbar { padding: 0 8px; border-bottom: 1px solid var(--line); }
+    .topbar .brand-mobile { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
     .topbar h1 { display: none; }
-    .topbar .spacer { flex: 1; }
     .btn .txt { display: none; }
-    .btn.has-txt { width: var(--tap); padding: 0; justify-content: center; flex: none; }
-    .bubble, .followups { max-width: 100%; }
-    .actions { width: 100%; }
-    .welcome { padding-top: 8px; }
-    .welcome h2 { font-size: 25px; }
-    .hint.keys { display: none; }        /* keyboard tip is irrelevant on phones; keeps the input compact */
-    .composer { padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); }
-    .thread-inner { padding: 16px 12px 48px; }
+    .btn.has-txt { width: var(--tap); padding: 0; justify-content: center; }
+    .thread-inner { padding: 20px 16px 40px; gap: 24px; }
+    .composer { padding: 8px 12px calc(10px + env(safe-area-inset-bottom)); }
+    .main.is-empty .composer { padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+    .welcome { padding-top: 0; }
+    .welcome h2 { font-size: 24px; }
+    .welcome p { font-size: 15px; }
+    .welcome .logo { display: none; }          /* the top bar already carries the mark on phones */
+    .main.is-empty .thread-inner { padding-top: 12px; }
+    .starters { margin-top: 10px; }
+    .pills { margin-top: 12px; gap: 6px; }
+    .msg.user .bubble { max-width: 88%; }
   }
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition-property: color, background-color, border-color, opacity !important; scroll-behavior: auto !important; }
-    .btn:hover, .btn:active, .chip:hover, .chip:active, .scheme-card:hover, .scheme-row:hover, .cite:hover, .ref:hover,
-    .fu:hover, .fu:active, .act:active { transform: none !important; }
+    .btn:hover, .btn:active, .source:hover, .fu:hover, .fu:active, .pill:hover, .pill:active, .act:active, .chip:hover svg { transform: none !important; }
     .spin { border-color: var(--accent); }
   }
 </style>
@@ -277,40 +271,36 @@
 <div class="shell" id="shell">
   <aside class="sidebar" id="sidebar" aria-label="Conversations">
     <div class="side-top">
-      <div class="logo" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="3" stroke-linecap="round"><path d="M6 19V5h11M6 12h8"/></svg></div>
+      <div class="logo" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="3" stroke-linecap="round"><path d="M6 19V5h11M6 12h8"/></svg></div>
       <div class="brand">FundFacts <span>AI</span></div>
     </div>
-    <button class="btn primary new-chat" id="newChat" type="button">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    <button class="btn new-chat" id="newChat" type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
       New chat
     </button>
-    <div class="side-label">This session</div>
     <nav class="history" id="history" aria-label="Conversation history"></nav>
     <div class="side-foot">
-      <div><b>Facts-only. No investment advice.</b> Answers come from official HDFC Mutual Fund, SEBI and AMFI documents.</div>
-      <div>Chats stay in this browser tab only: they survive a refresh and are deleted when you close the tab. Nothing is sent to a server.</div>
+      <div>Chats stay in this tab and are deleted when you close it.</div>
       <div>Independent student project, not affiliated with Groww or HDFC Mutual Fund.</div>
     </div>
   </aside>
   <div class="side-scrim" id="sideScrim"></div>
 
-  <div class="main">
+  <div class="main" id="main">
     <div class="topbar">
       <button class="btn ghost icon-btn" id="sideToggle" type="button" aria-label="Hide conversation list" aria-controls="sidebar" aria-expanded="true">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>
       </button>
-      <div class="brand-mobile"><div class="logo" aria-hidden="true" style="width:28px;height:28px;border-radius:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="3" stroke-linecap="round"><path d="M6 19V5h11M6 12h8"/></svg></div><div class="brand">FundFacts <span>AI</span></div></div>
+      <div class="brand-mobile"><div class="logo" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="3" stroke-linecap="round"><path d="M6 19V5h11M6 12h8"/></svg></div><div class="brand">FundFacts <span>AI</span></div></div>
       <h1 id="convTitle">New chat</h1>
-      <span class="spacer"></span>
-      <button class="btn has-txt" id="exploreBtn" type="button" aria-haspopup="dialog" aria-controls="drawer" aria-label="Explore schemes" title="Explore schemes">
+      <button class="btn ghost has-txt" id="exploreBtn" type="button" aria-haspopup="dialog" aria-controls="drawer" aria-label="Explore schemes" title="Explore schemes">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-        <span class="txt">Explore schemes</span>
+        <span class="txt">Schemes</span>
       </button>
-      <button class="btn has-txt" id="clearChat" type="button" aria-label="Clear chat" title="Clear this chat">
+      <button class="btn ghost icon-btn" id="clearChat" type="button" aria-label="Clear chat" title="Clear chat" hidden>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>
-        <span class="txt">Clear chat</span>
       </button>
-      <button class="btn icon-btn" id="themeBtn" type="button" aria-label="Switch to light theme" title="Switch theme"></button>
+      <button class="btn ghost icon-btn" id="themeBtn" type="button" aria-label="Switch to light theme" title="Switch theme"></button>
     </div>
 
     <main class="thread" id="thread" aria-live="polite" aria-label="Conversation">
@@ -319,17 +309,20 @@
 
     <form class="composer" id="form" autocomplete="off">
       <div class="composer-inner">
-        <div class="context" id="context"><span>Asking about <b id="contextName"></b></span><button type="button" id="contextClear" aria-label="Stop asking about this scheme">×</button></div>
+        <div class="context" id="context"><span>Asking about <b id="contextName"></b></span><button type="button" id="contextClear" aria-label="Stop asking about this scheme"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
         <div class="bar">
           <label for="q" class="sr-only">Your question</label>
-          <textarea id="q" rows="1" maxlength="500" placeholder="Ask a factual question, e.g. exit load of HDFC Small Cap Fund"></textarea>
-          <button class="btn primary" id="send" type="submit" disabled>Ask</button>
+          <textarea id="q" rows="1" maxlength="500" placeholder="Ask a factual question…"></textarea>
+          <span id="count" class="count" hidden>0/500</span>
+          <button class="btn primary send" id="send" type="submit" aria-label="Ask" title="Ask" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          </button>
         </div>
-        <div class="hint">
-          <span><strong>Facts-only. No investment advice.</strong> Don't enter PAN, Aadhaar, account numbers, OTPs or other personal details.</span>
-          <span id="count" hidden>0/500</span>
+        <div class="starters">
+          <div class="chips" id="chips"></div>
+          <div class="pills" id="pills"></div>
         </div>
-        <div class="hint keys" style="padding-top:2px"><span id="mode">Answers quoted from sources</span><span>Enter to send · Shift+Enter for a new line</span></div>
+        <p class="fine"><span><strong>Facts-only. No investment advice.</strong> Don't share PAN, Aadhaar, OTPs or other personal details.</span></p>
       </div>
     </form>
   </div>
@@ -338,11 +331,11 @@
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
   <div class="drawer-head">
-    <button class="btn icon-btn" id="drawerBack" type="button" aria-label="Back to all schemes" hidden>
+    <button class="btn ghost icon-btn" id="drawerBack" type="button" aria-label="Back to all schemes" hidden>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <h3 id="drawerTitle">Explore schemes</h3>
-    <button class="btn icon-btn" id="drawerClose" type="button" aria-label="Close">
+    <h3 id="drawerTitle">Schemes</h3>
+    <button class="btn ghost icon-btn" id="drawerClose" type="button" aria-label="Close">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
   </div>
@@ -355,18 +348,16 @@ const $ = (id) => document.getElementById(id);
 const ICON = {
   arrow: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
   chev: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>',
-  check: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12l5 5 9-10"/></svg>',
-  doc: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>',
-  chat: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12z"/></svg>',
+  doc: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>',
+  ext: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
+  info: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',
   copy: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>',
   up: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 11v9H4v-9zM7 11l4-8a2 2 0 0 1 2 2v4h5.5a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.3 20H7"/></svg>',
   down: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 13V4h3v9zM17 13l-4 8a2 2 0 0 1-2-2v-4H5.5a2 2 0 0 1-2-2.3l1.2-7A2 2 0 0 1 6.7 4H17"/></svg>',
-  link: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>',
-  shield: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
-  ext: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
   sun: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
   moon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>',
 };
+const LOGO = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="3" stroke-linecap="round"><path d="M6 19V5h11M6 12h8"/></svg>';
 
 /* ---------------- static knowledge (no answers here - only UI hints) ---------------- */
 // Exactly the five schemes in the knowledge base. Replaced by /api/schemes when it loads.
@@ -409,16 +400,20 @@ const EXAMPLES_FALLBACK = ["What is the expense ratio of HDFC Balanced Advantage
 const OFFICIAL_HOSTS = new Set(["files.hdfcfund.com", "www.hdfcfund.com", "portal.amfiindia.com", "www.amfiindia.com", "www.sebi.gov.in", "investor.sebi.gov.in"]);
 // A follow-up carries the previous scheme only when it clearly refers back to it.
 const REFERS_BACK = /^(and|also|what about|how about|same for|then)\b|\b(it|its|it's|this fund|this scheme|that fund|that scheme|the fund|the scheme|same fund|same scheme)\b/i;
-const TAGS = { refusal_advice: "Facts only", refusal_returns: "No performance claims", refusal_pii: "Privacy", not_found: "Not in my sources", error: "Something went wrong" };
+// One short label for every answer that is not a plain fact.
+const STATE_LABEL = {
+  refusal_advice: "Facts only - no investment advice", refusal_returns: "Returns and performance aren't shared",
+  refusal_pii: "Personal information isn't accepted", not_found: "Not in my official sources", error: "Something went wrong",
+};
 
 let schemes = SCHEMES_FALLBACK, examples = EXAMPLES_FALLBACK;
 let convs = [], current = null, pending = false;
 
 function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 const short = (name) => name.replace(/^HDFC /, "").replace(/ Fund$/, "");
-const initials = (name) => short(name).split(/\s+/).filter((w) => /^[A-Z]/.test(w)).map((w) => w[0]).join("").slice(0, 3);
 const schemeById = (id) => schemes.find((s) => s.scheme_id === id);
 const scrollDown = () => { const t = $("thread"); t.scrollTop = t.scrollHeight; };
+const clock = (d) => d ? d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "";
 
 function detectScheme(text) {
   const t = " " + (text || "").toLowerCase().replace(/[^a-z0-9\- ]/g, " ") + " ";
@@ -433,7 +428,7 @@ function officialUrl(url) { try { const u = new URL(url); return u.protocol === 
 // Open a cited PDF at the cited page (browsers' PDF viewers honour #page=N) so nobody has to scroll a long document.
 function pageLink(url, title) { const { page } = splitTitle(title); return page && /\.pdf$/i.test(new URL(url).pathname) ? `${url}#page=${page}` : url; }
 // Third-party reference pages (Groww) for the five schemes. NOT sources: never fetched, never cited, never used to answer;
-// shown only as a clearly labelled "easy overview" link next to the official citation.
+// shown only as a clearly labelled "easier read" link under the official citation.
 const GROWW = {
   hdfc_large_cap: "https://groww.in/mutual-funds/hdfc-large-cap-fund-direct-growth",
   hdfc_flexi_cap: "https://groww.in/mutual-funds/hdfc-equity-fund-direct-growth",   // Groww keeps the fund's former name (HDFC Equity Fund) in the URL
@@ -443,11 +438,11 @@ const GROWW = {
 };
 const GROWW_AMC = "https://groww.in/mutual-funds/amc/hdfc-mutual-funds";
 function growwLink(url, label) {
-  const a = el("a", "ref"); a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer nofollow";
-  a.innerHTML = ICON.ext;
-  const body = el("span"); body.appendChild(el("span", "t", label));
-  body.appendChild(el("span", "n", "Third-party page, not the source of this answer. It also shows returns and invest buttons - nothing here is advice."));
-  a.appendChild(body); return a;
+  const line = el("div", "ref-line");
+  const a = el("a", "ref", label); a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer nofollow";
+  a.title = "Opens Groww. It also shows returns and invest buttons - nothing there is advice.";
+  line.append(a, el("span", "ref-note", " Third-party page, not the source of this answer."));
+  return line;
 }
 function splitTitle(title) { const m = /^(.*?),\s*page\s+(\d+)$/i.exec(title || ""); return m ? { title: m[1], page: m[2] } : { title: title || "", page: null }; }
 // scheme + field an answer was about (fact cards encode both in the evidence id)
@@ -540,13 +535,11 @@ function newConv() {
 }
 function renderHistory() {
   const h = $("history"); h.innerHTML = "";
-  const used = convs.filter((c) => c.items.length || c === current);
-  if (!used.some((c) => c.items.length)) h.appendChild(el("div", "side-empty", "Your questions in this tab will appear here."));
+  const used = convs.filter((c) => c.items.length);
+  if (!used.length) h.appendChild(el("div", "side-empty", "Your questions will appear here."));
   used.forEach((c) => {
-    if (!c.items.length && c !== current) return;
-    const b = el("button", "conv"); b.type = "button";
+    const b = el("button", "conv", c.title); b.type = "button";
     b.setAttribute("aria-current", c === current ? "true" : "false");
-    b.innerHTML = ICON.chat; b.appendChild(el("span", "", c.title));
     b.onclick = () => { current = c; render(); if (mobile()) setSidebar(false); };
     h.appendChild(b);
   });
@@ -560,167 +553,149 @@ $("clearChat").onclick = () => {
 
 /* ---------------- rendering ---------------- */
 function render() {
+  const empty = !current.items.length;
   renderHistory();
-  $("convTitle").textContent = current.items.length ? current.title : "New chat";
-  $("clearChat").disabled = !current.items.length;
+  $("main").classList.toggle("is-empty", empty);
+  $("convTitle").textContent = empty ? "" : current.title;
+  $("clearChat").hidden = empty;
   const chat = $("chat"); chat.innerHTML = "";
-  if (!current.items.length) chat.appendChild(welcome());
-  current.items.forEach((it, i) => chat.appendChild(it.role === "user" ? userRow(it) : botRow(it, i)));
+  if (empty) { chat.appendChild(welcome()); renderStarters(); }
+  const last = current.items.length - 1;
+  current.items.forEach((it, i) => chat.appendChild(it.role === "user" ? userRow(it) : botRow(it, i, i === last)));
   updateContext();
-  if (current.items.length) scrollDown(); else $("thread").scrollTop = 0;  // welcome starts at the top
+  if (!empty) scrollDown(); else $("thread").scrollTop = 0;
   save();
 }
 function welcome() {
   const w = el("section", "welcome");
-  w.innerHTML = '<h2>Facts about 5 HDFC funds. <em>Every answer cited.</em></h2>';
-  w.appendChild(el("p", "lead", "Ask about expense ratio, exit load, minimum investment, ELSS lock-in, riskometer, benchmark or fund manager. Answers come only from official HDFC Mutual Fund, SEBI and AMFI documents, with one source for each answer."));
-  w.appendChild(el("p", "label", "Try asking"));
-  w.insertAdjacentHTML("beforeend", '<div class="chips" id="chips"></div>');
-  const chips = w.querySelector("#chips");
-  examples.forEach((q) => { const b = el("button", "chip"); b.type = "button"; b.innerHTML = ICON.arrow; b.append(q); b.onclick = () => ask(q); chips.appendChild(b); });
-  w.appendChild(el("p", "label", "Schemes covered"));
-  const grid = el("div", "scheme-grid");
-  schemes.forEach((s) => {
-    const c = el("button", "scheme-card"); c.type = "button";
-    c.appendChild(el("b", "", short(s.name))); c.appendChild(el("span", "", s.facts ? `${s.facts.length} facts · Direct Growth` : "Direct Plan · Growth"));
-    c.onclick = () => openDrawer(s.scheme_id);
-    grid.appendChild(c);
-  });
-  w.appendChild(grid);
-  const a = el("div", "assure");
-  [["One official source per answer"], ["No advice or return figures"], ["Nothing you type is stored"]].forEach(([t]) => { const s = el("span"); s.innerHTML = ICON.shield; s.append(t); a.appendChild(s); });
-  w.appendChild(a);
+  w.innerHTML = `<div class="logo" aria-hidden="true">${LOGO}</div>`;
+  w.appendChild(el("h2", "", "Facts about 5 HDFC mutual funds"));
+  w.appendChild(el("p", "", "Every answer comes from an official HDFC, SEBI or AMFI document and links to the exact page."));
   return w;
 }
-const clock = (d) => d ? d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "";
-function stamp(d) { const t = el("time", "stamp", clock(d)); if (d) t.dateTime = d.toISOString(); return t; }
+function renderStarters() {
+  const chips = $("chips"); chips.innerHTML = "";
+  examples.forEach((q) => { const b = el("button", "chip"); b.type = "button"; b.append(q); b.insertAdjacentHTML("afterbegin", ICON.arrow); b.onclick = () => ask(q); chips.appendChild(b); });
+  const pills = $("pills"); pills.innerHTML = "";
+  pills.appendChild(el("span", "pills-label", "Covers"));
+  schemes.forEach((s) => { const p = el("button", "pill", short(s.name)); p.type = "button"; p.title = `${s.name}: see its facts`; p.onclick = () => openDrawer(s.scheme_id); pills.appendChild(p); });
+}
 function userRow(it) {
-  const row = el("div", "row user");
-  row.appendChild(el("div", "bubble" + (it.masked ? " masked" : ""), it.masked ? "Message hidden - it contained personal information" : it.text));
-  const meta = el("div", "under");
-  if (it.contextName) { const n = el("span", "ctx-note"); n.innerHTML = ICON.link; n.append(`Asked about ${it.contextName}`); meta.appendChild(n); }
-  meta.appendChild(stamp(it.at));
-  row.appendChild(meta);
+  const row = el("div", "msg user");
+  const b = el("div", "bubble" + (it.masked ? " masked" : ""), it.masked ? "Message hidden - it contained personal information" : it.text);
+  if (it.at) b.title = clock(it.at);
+  row.appendChild(b);
+  if (it.contextName) row.appendChild(el("div", "ctx-note", `About ${it.contextName}`));
   return row;
 }
-const FIELD_LABEL = { expense_ratio: "Expense ratio", exit_load: "Exit load", min_sip: "Minimum SIP", min_lumpsum: "Minimum investment",
-  lock_in: "Lock-in period", riskometer: "Riskometer", benchmark: "Benchmark", fund_manager: "Fund manager", category: "Category", objective: "Investment objective" };
-const HEADS = {  // heading + one-line explanation for every non-answer state
-  refusal_advice: ["Facts only - no investment advice", "I can share documented facts, not recommendations."],
-  refusal_returns: ["Returns and performance aren't shared", "I don't quote, calculate or compare returns."],
-  refusal_pii: ["Personal information isn't accepted", "Your message was not stored and is hidden in this chat."],
-  not_found: ["Not in my official sources", "I won't guess when the documents don't state it."],
-};
-function answerHeading(r, topic) {
-  const s = topic.scheme && schemeById(topic.scheme);
-  if (s && topic.field && FIELD_LABEL[topic.field]) return `${s.name} · ${FIELD_LABEL[topic.field]}`;
-  if (s) return s.name;
-  return "General mutual fund information";
+function writerLabel(r) {  // says only what the backend did: who wrote the text, and that its citation checks passed
+  const who = { gemini: "Gemini", anthropic: "Claude" }[(r.writer || "").split("/")[0]];
+  if (who) return [`Written by ${who} · citation checked`, `Written by ${who} using only the cited passage. `];
+  return [r.writer === "fact table" || r.writer === "quote" ? "Quoted from source" : "Cited answer", "Text taken from the cited source. "];
 }
-function botRow(it, index) {
-  const row = el("div", "row bot");
+function botRow(it, index, isLast) {
+  const row = el("div", "msg bot");
   if (it.state === "loading") {
-    const b = el("div", "bubble typing"); b.setAttribute("role", "status");
-    b.innerHTML = '<span class="spin" aria-hidden="true"></span><span>Checking official sources…</span>';
-    row.appendChild(b); return row;
+    const t = el("div", "typing"); t.setAttribute("role", "status");
+    t.innerHTML = '<span class="spin" aria-hidden="true"></span><span>Checking official sources…</span>';
+    row.appendChild(t); return row;
   }
   if (it.state === "error") {
-    const b = el("div", "bubble error-box");
-    b.appendChild(el("span", "badge stop", TAGS.error));
-    b.appendChild(el("div", "answer-text", it.errorText));
+    const l = el("div", "state-label"); l.innerHTML = ICON.info; l.append(STATE_LABEL.error); row.appendChild(l);
+    row.appendChild(el("div", "answer-text", it.errorText));
     const retry = el("button", "btn retry", "Try again"); retry.type = "button";
     retry.onclick = () => resend(index);
-    b.appendChild(retry);
-    row.appendChild(b);
-    const u = el("div", "under"); u.appendChild(stamp(it.at)); row.appendChild(u);
+    row.appendChild(retry);
     return row;
   }
-  const r = it.answer, b = el("div", "bubble " + (r.type === "answer" ? "is-answer" : r.type === "not_found" ? "is-missing" : "is-refusal"));
-  if (r.type === "answer") {
-    b.appendChild(el("div", "answer-head", answerHeading(r, it.topic || {})));
-    // Label says only what the backend did: who wrote the text (from `writer`) and that its citation checks passed.
-    const badge = el("span", "badge ok"); badge.innerHTML = ICON.check;
-    const llm = (r.writer || "").split("/")[0];
-    const who = { gemini: "Gemini", anthropic: "Claude" }[llm];
-    badge.append(who ? `Written by ${who} · citation checked` : r.writer === "fact table" || r.writer === "quote" ? "Quoted from source" : "Cited answer");
-    badge.title = (who ? `Written by ${who} using only the cited passage. ` : "Text taken from the cited source. ")
-      + "Before it was shown, the server checked that the citation is one of the retrieved passages, the link is a registered "
-      + "official source, every number appears in that passage, and the answer is at most 3 sentences with no advice wording.";
-    b.appendChild(badge);
-  } else if (HEADS[r.type]) {
-    b.appendChild(el("div", "answer-head", HEADS[r.type][0]));
-  }
-  b.appendChild(el("div", "answer-text", r.text));
-  if (HEADS[r.type]) b.appendChild(el("div", "state-note", HEADS[r.type][1]));
+  const r = it.answer;
+  if (STATE_LABEL[r.type]) { const l = el("div", "state-label"); l.innerHTML = ICON.info; l.append(STATE_LABEL[r.type]); row.appendChild(l); }
+  row.appendChild(el("div", "answer-text", r.text));
 
   if (r.source_url && officialUrl(r.source_url)) {  // exactly one official link, as returned by the backend
     const { title, page } = splitTitle(r.source_title);
-    const c = el("a", "cite"); c.href = pageLink(r.source_url, r.source_title); c.target = "_blank"; c.rel = "noopener noreferrer";
+    const c = el("a", "source"); c.href = pageLink(r.source_url, r.source_title); c.target = "_blank"; c.rel = "noopener noreferrer";
+    c.title = r.source_url;
     const ic = el("span", "ic"); ic.innerHTML = ICON.doc; c.appendChild(ic);
-    const body = el("span");
-    const t = el("div", "t", (r.type === "answer" ? "" : "Official resource: ") + (title || r.source_url));
-    if (page) t.appendChild(el("span", "pg", "p. " + page));
-    body.appendChild(t); body.appendChild(el("div", "u", r.source_url));
-    if (page) body.appendChild(el("div", "jump", `Opens at page ${page}`));
-    c.appendChild(body); b.appendChild(c);
-    // exact fact answers carry the verbatim line they were read from; show it so the PDF needn't be opened at all
-    const ev = r.path === "fact" && r.evidence && r.evidence[0];
-    if (ev && ev.quote) b.appendChild(el("blockquote", "src-quote", `“${ev.quote}${ev.quote.length >= 220 ? "…" : ""}”`));
+    const body = el("span", "body");
+    body.appendChild(el("span", "t", (r.type === "answer" ? "" : "Official resource: ") + (title || r.source_url)));
+    body.appendChild(el("span", "h", new URL(r.source_url).hostname + (page ? ` · opens at page ${page}` : "")));
+    c.appendChild(body); c.insertAdjacentHTML("beforeend", `<span class="go">${ICON.ext}</span>`);
+    row.appendChild(c);
   }
   const gw = it.topic && GROWW[it.topic.scheme];
-  if (gw && (r.type === "answer" || r.type === "not_found")) b.appendChild(growwLink(gw, `Easy-to-read overview of ${schemeById(it.topic.scheme)?.name || "this fund"} on Groww`));
-  if (r.last_updated) b.appendChild(el("div", "meta-line", "Last updated from sources: " + r.last_updated));
+  if (gw && (r.type === "answer" || r.type === "not_found")) row.appendChild(growwLink(gw, "Easier read on Groww"));
+
+  // one quiet line: the actions, then a single sentence on how it was written, freshness and time
+  const meta = el("div", "meta"), acts = el("div", "acts"), msg = el("span", "act-msg");
+  acts.appendChild(copyButton(r, msg));
+  feedbackButtons(it, msg).forEach((b) => acts.appendChild(b));
+  let panel = null;
   if (r.evidence && r.evidence.length) {
-    const d = el("details"); d.appendChild(el("summary", "", "Why this answer"));
-    d.appendChild(el("div", "", r.path === "fact" ? "Exact fact lookup - taken from a quoted line of the source, no AI writing."
-      : "Retrieved passages ranked by similarity (adjustments shown); the answer was checked against the cited passage."));
-    const ul = el("ul", "ev");
-    r.evidence.forEach((e) => {
-      const li = el("li");
-      const adj = e.adjustments && Object.keys(e.adjustments).length ? "  ·  " + Object.entries(e.adjustments).map(([k, v]) => `${k} ${v}`).join(", ") : "";
-      li.appendChild(el("span", "id", `${e.chunk_id}  ·  score ${e.score.toFixed(3)}${adj}`));
-      li.appendChild(el("span", "q", "“" + e.quote + (e.quote.length >= 220 ? "…" : "") + "”"));
-      ul.appendChild(li);
-    });
-    d.appendChild(ul); b.appendChild(d);
+    const why = el("button", "why", "Why this answer"); why.type = "button"; why.setAttribute("aria-expanded", "false");
+    panel = whyPanel(r); panel.hidden = true; panel.id = "why-" + index; why.setAttribute("aria-controls", panel.id);
+    why.onclick = () => { panel.hidden = !panel.hidden; why.setAttribute("aria-expanded", String(!panel.hidden)); };
+    acts.appendChild(why);
   }
-  row.appendChild(b);
-  row.appendChild(actions(it));
-  if (it.followups && it.followups.length) {
-    row.appendChild(el("div", "fu-label", r.type === "answer" ? "Related questions" : "You could ask instead"));
+  acts.appendChild(msg);
+  meta.appendChild(acts);
+  const parts = [], info = el("span", "info");
+  if (r.type === "answer") { const [label, tip] = writerLabel(r); parts.push(label);
+    info.title = tip + "Before it was shown, the server checked that the citation is one of the retrieved passages, the link is a registered "
+      + "official source, every number appears in that passage, and the answer is at most 3 sentences with no advice wording."; }
+  if (r.last_updated) parts.push("Last updated from sources " + r.last_updated);
+  if (it.at) parts.push(clock(it.at));
+  info.textContent = parts.join(" · ");
+  meta.appendChild(info);
+  row.appendChild(meta);
+  if (panel) row.appendChild(panel);
+  if (isLast && it.followups && it.followups.length) {   // suggestions only under the latest answer
     const f = el("div", "followups"); f.setAttribute("aria-label", "Suggested follow-up questions");
     it.followups.forEach((q) => { const x = el("button", "fu", q); x.type = "button"; x.onclick = () => ask(q); f.appendChild(x); });
     row.appendChild(f);
   }
   return row;
 }
-function actions(it) {
-  const bar = el("div", "actions"), msg = el("span", "act-msg");
+function whyPanel(r) {
+  const d = el("div", "why-panel");
+  d.appendChild(el("div", "", r.path === "fact" ? "Exact fact lookup - taken from a quoted line of the source, no AI writing."
+    : "Retrieved passages ranked by similarity (adjustments shown); the answer was checked against the cited passage."));
+  const ul = el("ul", "ev");
+  r.evidence.forEach((e) => {
+    const li = el("li");
+    const adj = e.adjustments && Object.keys(e.adjustments).length ? "  ·  " + Object.entries(e.adjustments).map(([k, v]) => `${k} ${v}`).join(", ") : "";
+    li.appendChild(el("span", "id", `${e.chunk_id}  ·  score ${e.score.toFixed(3)}${adj}`));
+    li.appendChild(el("span", "q", "“" + e.quote + (e.quote.length >= 220 ? "…" : "") + "”"));
+    ul.appendChild(li);
+  });
+  d.appendChild(ul);
+  return d;
+}
+function copyButton(r, msg) {
   const copy = el("button", "act"); copy.type = "button"; copy.innerHTML = ICON.copy; copy.title = "Copy answer"; copy.setAttribute("aria-label", "Copy answer");
   copy.onclick = async () => {
-    const r = it.answer;
     const txt = r.text + (r.source_url && officialUrl(r.source_url) ? `\nSource: ${r.source_title || ""} - ${pageLink(r.source_url, r.source_title)}` : "");
     try { await navigator.clipboard.writeText(txt); msg.textContent = "Copied"; }
     catch (e) { msg.textContent = "Copy not available"; }
     setTimeout(() => { msg.textContent = ""; }, 1800);
   };
-  bar.appendChild(copy);
-  // Visual-only feedback: kept in this tab's memory, not sent anywhere (no feedback endpoint yet).
-  [["up", "Helpful"], ["down", "Not helpful"]].forEach(([k, label]) => {
-    const b = el("button", "act"); b.type = "button"; b.innerHTML = ICON[k];
+  return copy;
+}
+// Visual-only feedback: kept in this tab, not sent anywhere (no feedback endpoint yet).
+function feedbackButtons(it, msg) {
+  const btns = [["up", "Helpful"], ["down", "Not helpful"]].map(([k, label]) => {
+    const b = el("button", "act"); b.type = "button"; b.innerHTML = ICON[k]; b.dataset.fb = k;
     b.title = `${label} (feedback isn't sent anywhere yet)`; b.setAttribute("aria-label", label);
     b.setAttribute("aria-pressed", it.feedback === k ? "true" : "false");
-    b.onclick = () => {
-      it.feedback = it.feedback === k ? null : k;
-      save();
-      bar.querySelectorAll(".act[data-fb]").forEach((x) => x.setAttribute("aria-pressed", it.feedback === x.dataset.fb ? "true" : "false"));
-      msg.textContent = it.feedback ? "Thanks - noted in this tab only" : "";
-    };
-    b.dataset.fb = k; bar.appendChild(b);
+    return b;
   });
-  bar.appendChild(msg);
-  const t = stamp(it.at); t.classList.add("push"); bar.appendChild(t);
-  return bar;
+  btns.forEach((b) => { b.onclick = () => {
+    it.feedback = it.feedback === b.dataset.fb ? null : b.dataset.fb;
+    save();
+    btns.forEach((x) => x.setAttribute("aria-pressed", it.feedback === x.dataset.fb ? "true" : "false"));
+    msg.textContent = it.feedback ? "Thanks - noted in this tab only" : "";
+  }; });
+  return btns;
 }
 
 /* ---------------- follow-up suggestions (derived from the backend response) ---------------- */
@@ -741,7 +716,7 @@ function followups(r, question, topic) {
 /* ---------------- asking ---------------- */
 function contextFor(question) {
   if (detectScheme(question)) return null;                    // the question names its own scheme
-  if (current.pinned) return current.pinned;                  // explicit choice from "Explore schemes"
+  if (current.pinned) return current.pinned;                  // explicit choice from the schemes panel
   if (current.lastScheme && REFERS_BACK.test(question)) return current.lastScheme;  // clear reference back
   return null;
 }
@@ -794,7 +769,7 @@ function resend(index) {  // retry an errored answer without duplicating the que
 
 /* ---------------- composer ---------------- */
 const input = $("q");
-function autoSize() { input.style.height = "auto"; input.style.height = Math.min(input.scrollHeight, 160) + "px"; }
+function autoSize() { input.style.height = "auto"; input.style.height = Math.min(input.scrollHeight, 168) + "px"; }
 // the counter only appears near the limit, so the composer stays compact
 function updateCount() { $("count").textContent = `${input.value.length}/500`; $("count").hidden = input.value.length < 400; updateSend(); }
 function updateSend() { $("send").disabled = pending || !input.value.trim(); }
@@ -808,12 +783,11 @@ function updateContext() {
   const s = current.pinned && schemeById(current.pinned);
   $("context").classList.toggle("on", !!s);
   $("contextName").textContent = s ? s.name : "";
-  input.placeholder = mobile() ? (s ? `Ask about ${short(s.name)}…` : "Ask a factual question…")   // one line on phones
-    : s ? `Ask about ${short(s.name)}, e.g. What is the exit load?` : "Ask a factual question, e.g. exit load of HDFC Small Cap Fund";
+  input.placeholder = s ? `Ask about ${short(s.name)}…` : current.items.length ? "Ask another question…" : "Ask a factual question…";
 }
 $("contextClear").onclick = () => { current.pinned = null; updateContext(); input.focus(); };
 
-/* ---------------- explore drawer ---------------- */
+/* ---------------- schemes panel ---------------- */
 let lastFocus = null;
 function openDrawer(id) {
   lastFocus = document.activeElement;
@@ -828,19 +802,20 @@ function closeDrawer() {
   if (lastFocus) lastFocus.focus();
 }
 function showList() {
-  $("drawerTitle").textContent = "Explore schemes"; $("drawerBack").hidden = true;
+  $("drawerTitle").textContent = "Schemes"; $("drawerBack").hidden = true;
   const body = $("drawerBody"); body.innerHTML = "";
-  body.appendChild(el("p", "label", "Five HDFC schemes · Direct Plan - Growth"));
-  body.appendChild(growwLink(GROWW_AMC, "All HDFC Mutual Fund schemes on Groww"));
+  body.appendChild(el("p", "drawer-note", "Five HDFC Mutual Fund schemes, Direct Plan - Growth. Pick one to see its facts or ask about it."));
+  const list = el("div", "scheme-list");
   schemes.forEach((s) => {
     const b = el("button", "scheme-row"); b.type = "button";
-    b.appendChild(el("span", "mark", initials(s.name)));
-    const t = el("span"); t.appendChild(el("div", "t", s.name));
-    t.appendChild(el("div", "s", s.facts ? `${s.category} · ${s.facts.length} facts from official documents` : s.category));
+    const t = el("span"); t.appendChild(el("span", "t", s.name));
+    t.appendChild(el("span", "s", s.facts ? `${s.category} · ${s.facts.length} facts from official documents` : s.category));
     b.appendChild(t); b.insertAdjacentHTML("beforeend", ICON.chev);
     b.onclick = () => showScheme(s.scheme_id);
-    body.appendChild(b);
+    list.appendChild(b);
   });
+  body.appendChild(list);
+  body.appendChild(growwLink(GROWW_AMC, "All HDFC schemes on Groww"));
 }
 function showScheme(id) {
   const s = schemeById(id);
@@ -850,9 +825,7 @@ function showScheme(id) {
   const askBtn = el("button", "btn primary", `Ask about ${short(s.name)}`); askBtn.type = "button";
   askBtn.onclick = () => { current.pinned = s.scheme_id; updateContext(); closeDrawer(); input.focus(); };
   body.appendChild(askBtn);
-  if (GROWW[s.scheme_id]) body.appendChild(growwLink(GROWW[s.scheme_id], `Easy-to-read overview of ${s.name} on Groww`));
-  if (!s.facts) { body.appendChild(el("div", "missing", "The fact sheet couldn't be loaded. You can still ask questions about this scheme.")); return; }
-  body.appendChild(el("p", "label", `Fact sheet · ${s.plan || "Direct Plan - Growth"}`));
+  if (!s.facts) { body.appendChild(el("p", "missing", "The fact sheet couldn't be loaded. You can still ask questions about this scheme.")); return; }
   const list = el("div", "facts");
   s.facts.forEach((f) => {
     const card = el("div", "fact");
@@ -873,11 +846,14 @@ function showScheme(id) {
     list.appendChild(card);
   });
   body.appendChild(list);
-  if (s.missing && s.missing.length) body.appendChild(el("div", "missing", `Not stated in my sources: ${s.missing.join(", ")}. I won't guess these.`));
-  body.appendChild(el("p", "label", "Quick questions"));
-  const qs = el("div", "chips");
-  (s.questions || []).forEach((q) => { const b = el("button", "chip"); b.type = "button"; b.innerHTML = ICON.arrow; b.append(q); b.onclick = () => { closeDrawer(); ask(q); }; qs.appendChild(b); });
-  body.appendChild(qs);
+  if (s.missing && s.missing.length) body.appendChild(el("p", "missing", `Not stated in my sources: ${s.missing.join(", ")}. I won't guess these.`));
+  if (GROWW[s.scheme_id]) body.appendChild(growwLink(GROWW[s.scheme_id], `${short(s.name)} on Groww`));
+  if (s.questions && s.questions.length) {
+    body.appendChild(el("p", "drawer-label", "Quick questions"));
+    const qs = el("div", "chips");
+    s.questions.forEach((q) => { const b = el("button", "chip"); b.type = "button"; b.append(q); b.insertAdjacentHTML("afterbegin", ICON.arrow); b.onclick = () => { closeDrawer(); ask(q); }; qs.appendChild(b); });
+    body.appendChild(qs);
+  }
 }
 $("exploreBtn").onclick = () => openDrawer(null);
 $("drawerClose").onclick = closeDrawer;
@@ -892,12 +868,7 @@ document.addEventListener("keydown", (e) => {
 /* ---------------- start ---------------- */
 restore() || newConv();
 fetch("/api/meta").then((r) => (r.ok ? r.json() : null)).then((m) => {
-  if (!m) return;
-  if (Array.isArray(m.examples) && m.examples.length) examples = m.examples;
-  const who = m.llm && m.llm.enabled ? { gemini: "Gemini", anthropic: "Claude" }[m.llm.provider] : null;
-  $("mode").textContent = who ? `Fund facts are quoted from sources; other answers may be written by ${who} and citation-checked`
-    : "Answers are quoted from official sources";
-  if (!current.items.length) render();
+  if (m && Array.isArray(m.examples) && m.examples.length) { examples = m.examples; if (!current.items.length) render(); }
 }).catch(() => {});
 fetch("/api/schemes").then((r) => (r.ok ? r.json() : null)).then((d) => {
   if (d && Array.isArray(d.schemes) && d.schemes.length) { schemes = d.schemes; if (!current.items.length) render(); }
