@@ -1,3 +1,5 @@
+<img src="public/logo.svg" alt="FundFacts AI logo" width="72">
+
 # FundFacts AI
 
 **FundFacts AI is a facts-only mutual fund FAQ assistant for five HDFC Mutual Fund schemes.** It answers questions like "What is the expense ratio?", "Is there an exit load?", "What is the ELSS lock-in?" and "What is the benchmark?". Answers come only from official HDFC Mutual Fund, SEBI and AMFI documents. Each answer is **at most three sentences** and cites **one verified source**, with **"Last updated from sources"**. It never gives advice and never quotes returns.
