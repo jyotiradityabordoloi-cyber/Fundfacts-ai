@@ -104,9 +104,19 @@
   .thread-inner { max-width: var(--col); margin: 0 auto; padding: 24px 20px 48px; display: flex; flex-direction: column; gap: 28px; }
 
   /* empty state: the heading, the question box and the starters sit together in the middle of the screen */
-  .main.is-empty .thread { flex: 0 1 auto; margin-top: auto; }
+  /* If the window is too short for the group (a small laptop, browser zoom), the whole column scrolls with the
+     top bar pinned - the heading never shrinks into its own clipped box. */
+  .main.is-empty { overflow-y: auto; }
+  .main.is-empty .topbar { position: sticky; top: 0; z-index: 2; background: var(--bg); }
+  .main.is-empty .thread { flex: none; overflow: visible; margin-top: auto; }
   .main.is-empty .thread-inner { padding-bottom: 8px; }
-  .main.is-empty .composer { margin-bottom: auto; padding-bottom: calc(24px + 6vh); }
+  .main.is-empty .composer { margin-bottom: auto; padding-bottom: 40px; }
+  /* short screens: drop the large mark (the sidebar and tab already show it) and tighten the gaps */
+  @media (max-height: 760px) {
+    .welcome .logo { display: none; }
+    .main.is-empty .thread-inner { padding-top: 8px; }
+    .main.is-empty .composer { padding-bottom: 24px; }
+  }
   .welcome { text-align: center; padding-top: 8px; }
   .welcome .logo { width: 56px; height: 56px; margin: 0 auto 16px; }
   .welcome h2 { margin: 0; font-size: 30px; line-height: 1.2; font-weight: 700; letter-spacing: -.03em; }

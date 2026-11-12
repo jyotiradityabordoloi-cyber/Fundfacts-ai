@@ -177,6 +177,8 @@ def test_ui_clean_layout_rules():
     # follow-up suggestions only under the latest answer, starters only before the first question
     assert "isLast && it.followups" in html
     assert ".main.is-empty .starters { display: block; }" in html
+    # a short window scrolls the whole start screen; the heading never shrinks into a clipped box
+    assert ".main.is-empty { overflow-y: auto; }" in html and ".main.is-empty .thread { flex: none;" in html
     # no duplicated quote block or answer heading; one source card per answer
     assert "src-quote" not in html and "answer-head" not in html
     assert html.count('el("a", "source")') == 1
