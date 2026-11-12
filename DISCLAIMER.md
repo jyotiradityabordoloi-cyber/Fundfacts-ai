@@ -1,7 +1,7 @@
 # Disclaimer (as used in the UI)
 
-**Banner at the top of the page:**
-> **Facts-only. No investment advice.** Every answer cites one official source. Please don't enter PAN, Aadhaar, account or folio numbers, OTPs, emails or phone numbers.
+**Under the question box (always visible):**
+> **Facts-only. No investment advice.** Don't enter PAN, Aadhaar, account numbers, OTPs or other personal details.
 
 **Footer:**
 > Facts-only. No investment advice. Mutual fund investments are subject to market risks; read all scheme-related documents carefully. Independent student project, not affiliated with Groww or HDFC Mutual Fund.
